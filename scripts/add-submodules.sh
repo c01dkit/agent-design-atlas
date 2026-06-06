@@ -1,45 +1,96 @@
 #!/usr/bin/env bash
-# Add awesome-agents framework repos as shallow git submodules.
-# github.com is blocked directly; route through the local proxy via env vars.
-# .gitmodules records canonical github.com URLs (portable). Idempotent + retrying.
+# Add the awesome-agents framework repos as shallow git submodules.
+#
+# Connectivity: tries a DIRECT github.com connection first; only falls back to a
+# proxy if direct fails. The proxy is NOT hardcoded here — it is read from .env
+# (HTTP_PROXY=...), from a --proxy flag, or prompted interactively and saved to
+# .env. .env is gitignored and never uploaded.
+#
+# Usage:
+#   ./scripts/add-submodules.sh                # auto-detect; prompt for proxy if needed
+#   ./scripts/add-submodules.sh --proxy URL    # set & save proxy to .env, then run
 set -u
-cd "$(dirname "$0")/.." || exit 1
-
-export HTTP_PROXY="http://127.0.0.1:40809"
-export HTTPS_PROXY="http://127.0.0.1:40809"
-export http_proxy="$HTTP_PROXY" https_proxy="$HTTPS_PROXY"
-
+HERE="$(cd "$(dirname "$0")" && pwd)"
+cd "$HERE" && cd .. || exit 1
+ROOT="$PWD"
+ENV_FILE="$ROOT/.env"
 LOG="scripts/submodule-add.log"
-: > "$LOG"
-log(){ echo "$@" | tee -a "$LOG"; }
 
-cleanup(){
+save_proxy() {
+  local p="$1"
+  touch "$ENV_FILE"
+  grep -vE '^HTTPS?_PROXY=' "$ENV_FILE" 2>/dev/null > "$ENV_FILE.tmp" || true
+  mv "$ENV_FILE.tmp" "$ENV_FILE" 2>/dev/null || true
+  printf 'HTTP_PROXY=%s\nHTTPS_PROXY=%s\n' "$p" "$p" >> "$ENV_FILE"
+  echo "  -> saved proxy to .env"
+}
+
+# load .env (plain VAR=val lines become shell vars; not yet exported to children)
+[ -f "$ENV_FILE" ] && . "$ENV_FILE"
+
+# --proxy <url> flag: set & persist
+if [ "${1:-}" = "--proxy" ] && [ -n "${2:-}" ]; then HTTP_PROXY="$2"; save_proxy "$2"; fi
+
+CAND="${HTTP_PROXY:-${HTTPS_PROXY:-${http_proxy:-${https_proxy:-}}}}"
+# clear proxy from the environment so the direct test is genuinely direct
+unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy
+
+reach() { # $1 = proxy url ; empty = direct
+  if [ -n "${1:-}" ]; then
+    curl -fsS -m 12 -x "$1" -o /dev/null https://github.com 2>/dev/null
+  else
+    curl -fsS -m 12 --noproxy '*' -o /dev/null https://github.com 2>/dev/null
+  fi
+}
+
+PROXY=""
+echo "-> testing direct connection to github.com ..."
+if reach ""; then
+  echo "  OK: direct connection works, no proxy needed"
+else
+  echo "  FAIL: direct connection blocked"
+  if [ -z "$CAND" ] && [ -t 0 ]; then
+    read -r -p "  enter http proxy (e.g. http://127.0.0.1:7890), Enter to skip: " CAND
+    [ -n "$CAND" ] && save_proxy "$CAND"
+  fi
+  if [ -n "$CAND" ]; then
+    echo "-> testing proxy $CAND ..."
+    if reach "$CAND"; then echo "  OK: proxy reachable"; else echo "  WARN: proxy test failed, trying anyway"; fi
+    PROXY="$CAND"
+  else
+    echo "  WARN: no proxy configured; trying direct anyway. Re-run with --proxy URL if it fails."
+  fi
+fi
+[ -n "$PROXY" ] && export HTTP_PROXY="$PROXY" HTTPS_PROXY="$PROXY" http_proxy="$PROXY" https_proxy="$PROXY"
+
+git config core.longpaths true 2>/dev/null  # some repos contain very long paths (Windows)
+
+: > "$LOG"
+log() { echo "$@" | tee -a "$LOG"; }
+cleanup() {
   local path="$1"
   git submodule deinit -f "$path" >/dev/null 2>&1
   git rm -f "$path" >/dev/null 2>&1
   rm -rf "$path" ".git/modules/$path" 2>/dev/null
   git config -f .gitmodules --remove-section "submodule.$path" >/dev/null 2>&1
 }
-
-add(){
+add() {
   local path="$1" url="$2" try
   if [ -e "$path/.git" ] || git config -f .gitmodules --get "submodule.$path.url" >/dev/null 2>&1; then
     log "SKIP (exists): $path"; return 0
   fi
   for try in 1 2 3; do
-    log "ADD : $path  (try $try)"
-    if timeout 600 git submodule add --depth 1 "$url" "$path" >>"$LOG" 2>&1; then
+    log "ADD : $path (try $try)"
+    if timeout 600 git -c core.longpaths=true submodule add --depth 1 "$url" "$path" >>"$LOG" 2>&1; then
       git config -f .gitmodules "submodule.$path.shallow" true
-      log "OK  : $path"
-      return 0
+      log "OK  : $path"; return 0
     fi
     cleanup "$path"; sleep 3
   done
-  log "FAIL: $path  ($url)"
-  return 1
+  log "FAIL: $path ($url)"; return 1
 }
 
-log "=== framework submodules start (via proxy) ==="
+log "=== framework submodules start ==="
 add agents-example/openclaw                https://github.com/openclaw/openclaw
 add agents-example/hermes-agent            https://github.com/nousresearch/hermes-agent
 add agents-example/llama-agentic-system    https://github.com/meta-llama/llama-agentic-system
@@ -90,6 +141,4 @@ add agents-example/open-multi-agent        https://github.com/JackChen-me/open-m
 add agents-example/aeon                    https://github.com/aaronjmars/aeon
 add agents-example/cordum                  https://github.com/cordum-io/cordum
 log "=== done ==="
-log "TOTAL OK  : $(grep -c '^OK  :' "$LOG")"
-log "TOTAL SKIP: $(grep -c '^SKIP' "$LOG")"
-log "TOTAL FAIL: $(grep -c '^FAIL:' "$LOG")"
+log "OK: $(grep -c '^OK  :' "$LOG")  SKIP: $(grep -c '^SKIP' "$LOG")  FAIL: $(grep -c '^FAIL:' "$LOG")"

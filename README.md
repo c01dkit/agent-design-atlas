@@ -42,6 +42,10 @@ Developers and researchers who want to **learn agent design from the ground up**
 
 The framework list comes from [kyrolabs/awesome-agents](https://github.com/kyrolabs/awesome-agents); each framework remains the property of its original authors.
 
+### License
+
+Released under the [MIT License](./LICENSE).
+
 ---
 
 <div align="center">

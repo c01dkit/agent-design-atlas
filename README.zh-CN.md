@@ -42,6 +42,10 @@ Agent Design Atlas 把 [awesome-agents](https://github.com/kyrolabs/awesome-agen
 
 框架清单来自 [kyrolabs/awesome-agents](https://github.com/kyrolabs/awesome-agents)；各框架版权归其原作者所有。
 
+### 许可
+
+本项目以 [MIT License](./LICENSE) 开源。
+
 ---
 
 <div align="center">
