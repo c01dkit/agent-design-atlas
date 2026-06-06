@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const COMPONENTS: [string, string][] = [
+  ['reasoning-loop', '推理循环'], ['planning', '规划'], ['memory', '记忆'], ['tool-use', '工具'],
+  ['model-abstraction', '模型'], ['multi-agent-orchestration', '编排'], ['context-engineering', '上下文'],
+  ['skills-plugins', '技能'], ['observability-eval', '可观测'], ['runtime-execution', '运行时'],
+  ['human-in-the-loop-governance', '治理'], ['state-persistence', '状态'],
+];
+const HUE: Record<string, number> = { 'reasoning-loop':285,'planning':320,'memory':30,'tool-use':150,'model-abstraction':230,'multi-agent-orchestration':265,'context-engineering':350,'skills-plugins':62,'observability-eval':190,'runtime-execution':15,'human-in-the-loop-governance':2,'state-persistence':205 };
+
+const frameworks = (await getCollection('frameworks')).filter((e) => e.id !== '_index');
+const clean = (s: string) => s.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_m,a,b)=>(b||a)).replace(/[`*]/g,'').replace(/\\\|/g,'|').trim();
+const isNA = (s: string) => { const t = clean(String(s ?? '')); return !t || /^(n\/?a|none|无|暂无|没有|尚无|不适用|不涉及|—|-+|待确认|待补充)/i.test(t); };
+function parseTable(body: string) {
+  const out: Record<string, { impl: string; na: boolean }> = {};
+  const sec = body.split(/^##\s+/m).find((s) => s.startsWith('组件实现'));
+  if (!sec) return out;
+  for (const line of sec.split('\n')) {
+    const t = line.trim(); if (!t.startsWith('|') || t.includes('---')) continue;
+    const cells = line.split(/(?<!\\)\|/).map((c) => c.trim());
+    if (cells.length < 3 || /组件/.test(cells[1])) continue;
+    const m = cells[1].match(/\[\[([a-z0-9-]+)/i); if (!m) continue;
+    out[m[1]] = { impl: clean(cells[2] || ''), na: isNA(cells[2] || '') };
+  }
+  return out;
+}
+const rows = frameworks.map((e) => {
+  const tags: string[] = e.data?.tags ?? [];
+  const lang = (tags.find((t) => t.startsWith('lang/')) ?? 'lang/?').slice(5);
+  const paradigms = tags.filter((t) => t.startsWith('paradigm/')).map((t) => t.slice(9));
+  const cells = parseTable(String(e.body ?? ''));
+  const covered = COMPONENTS.filter(([s]) => cells[s] && !cells[s].na).length;
+  return { id: e.id, title: e.data?.title ?? e.id, lang, paradigms, cells, covered };
+}).sort((a, b) => b.covered - a.covered || a.title.localeCompare(b.title));
+const langs = [...new Set(rows.map((r) => r.lang))].filter((l) => l !== '?').sort();
+const allParadigms = [...new Set(rows.flatMap((r) => r.paradigms))].sort();
+const totalYes = rows.reduce((n, r) => n + r.covered, 0);
+---
+<BaseLayout title="对比矩阵" description="50 个框架 × 12 个组件的源码级实现热力矩阵">
+  <p class="eyebrow">横纵交汇</p>
+  <h1 class="mx-h1">框架 × 组件 矩阵</h1>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="搜索框架…" aria-label="搜索框架" />
+    <select id="lang" aria-label="按语言筛选"><option value="">全部语言</option>{langs.map((l) => <option value={l}>{l}</option>)}</select>
+    <select id="para" aria-label="按范式筛选"><option value="">全部范式</option>{allParadigms.map((p) => <option value={p}>{p}</option>)}</select>
+    <span id="count" class="count"></span>
+  </div>
+
+  <div id="mxDetail" class="mx-detail">
+    <span class="dot2"></span>
+    <span class="dt"><b class="d-fw">悬停任意单元格</b> · <span class="d-comp">查看该框架在该组件上的实现</span><br /><span class="d-impl">实现要点会显示在这里（含来源 path:line 摘要）。</span></span>
+  </div>
+
+  <div class="mx-scroll">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th class="corner">框架 \ 组件</th>
+          {COMPONENTS.map(([s, label]) => <th class="colh" style={`--h:${HUE[s]}`}><a href={`/components/${s}/`}>{label}</a></th>)}
+          <th class="cov-h">覆盖</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr data-name={r.id} data-lang={r.lang} data-paradigm={r.paradigms.join(' ')}>
+            <th class="rowh"><a href={`/frameworks/${r.id}/`}>{r.title}</a><span class="rl">{r.lang}</span></th>
+            {COMPONENTS.map(([s, label]) => {
+              const c = r.cells[s]; const na = !c || c.na;
+              return <td class={na ? 'cell na' : 'cell yes'} style={!na ? `--h:${HUE[s]}` : undefined}
+                data-h={HUE[s]} data-fw={r.title} data-comp={label} data-impl={c ? c.impl : 'N/A'} data-href={`/frameworks/${r.id}/`}></td>;
+            })}
+            <td class="cov" style={`--p:${Math.round((r.covered / 12) * 100)}`}>{r.covered}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="mx-foot muted">{rows.length} 个框架 · {totalYes} 个已实现组件格 · 列色相对应组件，深度笔记见各框架页</p>
+</BaseLayout>
+
+<style>
+  .mx-h1 { font-size: var(--text-2xl); margin-top: 0.2rem; }
+  .mx-sub { color: var(--ink-soft); max-width: 50rem; margin-bottom: 1.2rem; }
+  .controls { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.9rem; }
+  .controls input, .controls select { font: inherit; font-size: var(--text-sm); padding: 0.45rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-2); color: var(--ink); }
+  .controls input:focus, .controls select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .count { font-family: var(--mono); font-size: var(--text-xs); color: var(--ink-faint); margin-left: auto; }
+
+  .mx-detail { position: sticky; top: 64px; z-index: 6; display: flex; gap: 0.6rem; align-items: flex-start; height: 7rem; overflow: hidden; padding: 0.7rem 0.95rem; margin-bottom: 0.9rem; border: 1px solid var(--line); border-left: 4px solid oklch(62% 0.16 var(--h, 285)); border-radius: var(--radius-sm); background: var(--paper-2); box-shadow: var(--shadow-1); transition: border-color var(--dur) var(--ease); }
+  .mx-detail .dot2 { width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-top: 0.3rem; flex: none; background: oklch(62% 0.16 var(--h, 285)); }
+  .mx-detail .dt { font-size: var(--text-sm); line-height: 1.5; }
+  .mx-detail .d-fw { font-family: var(--display); }
+  .mx-detail .d-impl { color: var(--ink-soft); font-size: 0.82rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .mx-scroll { overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); max-height: 78vh; }
+  .matrix { border-collapse: separate; border-spacing: 0; font-size: var(--text-sm); width: max-content; min-width: 100%; }
+  .matrix th, .matrix td { border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+  .matrix thead th { position: sticky; top: 0; z-index: 5; background: var(--paper-2); padding: 0.5rem 0.45rem; font-size: var(--text-xs); font-weight: 700; text-align: center; white-space: nowrap; }
+  .matrix thead th.colh { border-bottom: 3px solid oklch(62% 0.16 var(--h, 285)); }
+  .matrix thead th.colh a { color: var(--ink-soft); text-decoration: none; writing-mode: vertical-rl; display: inline-block; padding: 0.2rem 0; }
+  .matrix thead th.colh.col-hi { background: var(--paper-3); box-shadow: inset 0 -4px 0 oklch(62% 0.16 var(--h, 285)); }
+  .matrix thead th.colh.col-hi a { color: var(--ink); }
+  .corner { left: 0; z-index: 6 !important; text-align: left !important; min-width: 11rem; }
+  .rowh { position: sticky; left: 0; z-index: 2; background: var(--paper); text-align: left; padding: 0.4rem 0.7rem; min-width: 11rem; max-width: 11rem; }
+  .rowh a { text-decoration: none; font-weight: 600; }
+  .rowh a:hover { color: var(--accent); }
+  .rowh.row-hi { background: var(--accent-soft); }
+  .rowh .rl { display: block; font-family: var(--mono); font-size: 0.66rem; color: var(--ink-faint); }
+  .cell { width: 30px; min-width: 30px; height: 30px; padding: 0; cursor: pointer; transition: filter var(--dur) var(--ease); }
+  .cell.yes { background: oklch(62% 0.16 var(--h, 285)); box-shadow: inset 0 0 0 3px var(--paper-2); }
+  .cell.yes:hover { filter: brightness(1.15) saturate(1.1); }
+  .cell.na { background: repeating-linear-gradient(45deg, transparent, transparent 4px, var(--line) 4px, var(--line) 5px); cursor: default; }
+  .cell.col-hi, .cell.row-hi { box-shadow: inset 0 0 0 2px var(--ink); }
+  .cov { text-align: center; font-family: var(--mono); font-weight: 700; color: oklch(55% 0.18 calc(120 + var(--p, 0) * 1.4)); }
+  .cov-h { position: sticky; top: 0; background: var(--paper-2); padding: 0.5rem; font-size: var(--text-xs); }
+  .mx-foot { margin-top: 1rem; font-size: var(--text-sm); }
+</style>

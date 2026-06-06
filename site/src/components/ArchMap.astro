@@ -1,0 +1,59 @@
+---
+const HUE: Record<string, number> = { 'reasoning-loop':285,'planning':320,'context-engineering':350,'tool-use':150,'memory':30,'model-abstraction':230,'multi-agent-orchestration':265,'skills-plugins':62,'observability-eval':190,'runtime-execution':15,'human-in-the-loop-governance':2,'state-persistence':205 };
+type Node = [string, string];
+const layers: { label: string; note: string; core?: boolean; nodes: Node[] }[] = [
+  { label: '治理', note: '总览 · 约束', nodes: [['human-in-the-loop-governance', '人在环 / 治理']] },
+  { label: '协作', note: '多 agent 编排', nodes: [['multi-agent-orchestration', '多智能体编排']] },
+  { label: '控制核心', note: '决定下一步', core: true, nodes: [['context-engineering', '上下文工程'], ['reasoning-loop', '推理循环'], ['planning', '规划']] },
+  { label: '能力', note: '与外部世界交互', nodes: [['tool-use', '工具调用'], ['memory', '记忆'], ['skills-plugins', '技能 / 插件']] },
+  { label: '模型', note: '决策引擎', nodes: [['model-abstraction', '模型抽象']] },
+  { label: '工程底座', note: '可靠运行', nodes: [['state-persistence', '状态 / 持久化'], ['runtime-execution', '运行时'], ['observability-eval', '可观测 / 评估']] },
+];
+---
+<figure class="archmap">
+  <figcaption><span class="fc-k">组件协作</span>12 个组件按层次协作——治理在顶、底座在下，核心推理调用能力、依赖模型。点击任意组件查看它在各框架的实现。</figcaption>
+  <div class="layers">
+    {layers.map((ly, i) => (
+      <>
+        <div class={ly.core ? 'lyr core' : 'lyr'}>
+          <div class="lyr-meta"><span class="lyr-label">{ly.label}</span><span class="lyr-note">{ly.note}</span></div>
+          <div class="rail" aria-hidden="true"><span class="rail-dot" style={`--h:${HUE[ly.nodes[0][0]]}`}></span></div>
+          <div class="nodes">
+            {ly.nodes.map(([slug, name]) => (
+              <a class={'node key'} href={`/components/${slug}/`} style={`--h:${HUE[slug]}`}>
+                <span class="nd"></span>{name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </>
+    ))}
+  </div>
+</figure>
+
+<style>
+  .archmap { margin: 1.6rem 0 0; padding: 1.5rem 1.4rem; border: 1px solid var(--line); border-radius: var(--radius); background: color-mix(in oklch, var(--paper-2) 65%, transparent); }
+  .archmap figcaption { font-size: var(--text-sm); color: var(--ink-soft); margin-bottom: 1.4rem; line-height: 1.6; text-wrap: pretty; }
+  .fc-k { font-family: var(--mono); font-size: var(--text-xs); letter-spacing: 0.08em; color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.12rem 0.5rem; border-radius: 999px; margin-right: 0.6rem; white-space: nowrap; }
+  .layers { display: grid; gap: 0; }
+  .lyr { display: grid; grid-template-columns: 6.5rem 1.6rem 1fr; align-items: center; min-height: 3.4rem; }
+  .lyr-meta { text-align: right; padding-right: 0.2rem; }
+  .lyr-label { display: block; font-family: var(--display); font-weight: 700; font-size: 0.92rem; line-height: 1.1; }
+  .lyr-note { font-family: var(--mono); font-size: 0.64rem; color: var(--ink-faint); }
+  /* continuous vertical spine with a per-layer dot */
+  .rail { position: relative; align-self: stretch; }
+  .rail::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: var(--line-strong); }
+  .lyr:first-child .rail::before { top: 50%; }
+  .lyr:last-child .rail::before { bottom: 50%; }
+  .rail-dot { position: absolute; left: 50%; top: 50%; width: 11px; height: 11px; border-radius: 50%; transform: translate(-50%, -50%); background: oklch(64% 0.16 var(--h, 40)); box-shadow: 0 0 0 4px var(--paper-2); }
+  .nodes { display: flex; flex-wrap: wrap; gap: 0.55rem; padding: 0.55rem 0; }
+  .node { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--ink); font-weight: 600; font-size: var(--text-sm); padding: 0.55rem 0.95rem; border-radius: 10px; background: var(--paper); border: 1px solid var(--line); border-left: 3px solid oklch(62% 0.16 var(--h, 40)); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease); }
+  .node .nd { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: oklch(63% 0.17 var(--h, 40)); flex: none; }
+  .node:hover { transform: translateY(-2px); background: oklch(63% 0.16 var(--h, 40) / 0.12); box-shadow: var(--shadow-1); }
+  .node.key { border-left-width: 4px; box-shadow: inset 0 0 0 1.5px oklch(62% 0.16 var(--h, 285) / 0.45); }
+  @media (max-width: 600px) {
+    .lyr { grid-template-columns: 1fr; min-height: 0; gap: 0.3rem; padding-bottom: 0.6rem; }
+    .lyr-meta { text-align: left; } .rail { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .node:hover { transform: none; } }
+</style>

@@ -1,0 +1,75 @@
+---
+import { Code } from 'astro:components';
+import impl from '../data/impl.json';
+interface Props { slug: string }
+const { slug } = Astro.props;
+const list: any[] = (impl as any)[slug] || [];
+const withCode = list.filter((x) => x.code).length;
+const HUE: Record<string, number> = { "reasoning-loop":285,"planning":320,"memory":30,"tool-use":150,"model-abstraction":230,"multi-agent-orchestration":265,"context-engineering":350,"skills-plugins":62,"observability-eval":190,"runtime-execution":15,"human-in-the-loop-governance":2,"state-persistence":205 };
+const hue = HUE[slug] ?? 40;
+const SHIKI = new Set(['python','typescript','tsx','javascript','jsx','go','csharp','rust','java','ruby','kotlin','swift','markdown','json','yaml','toml','bash','sql','text']);
+const safeLang = (l: string) => (l && SHIKI.has(l) ? l : 'text');
+---
+<section class="ig" style={`--h:${hue}`}>
+  <p class="ig-meta"><b>{list.length}</b> 个框架实现该组件 · <b>{withCode}</b> 个附源码节选 · 点击任意框架展开看实现要点与代码</p>
+  <div class="ig-list">
+    {list.map((x) => (
+      <details class="ig-item">
+        <summary>
+          <span class="ig-fw">{x.title}</span>
+          {x.lang && <span class="badge lang">{x.lang}</span>}
+          <span class="ig-sum">{x.impl}</span>
+          <span class="ig-caret" aria-hidden="true">+</span>
+        </summary>
+        <div class="ig-body">
+          <p class="ig-impl">{x.impl}</p>
+          {x.refs && x.refs.length > 0 && (
+            <div class="ig-refs">{x.refs.map((r: string) => <code class="ref">{r}</code>)}</div>
+          )}
+          {x.code && (
+            <figure class="codebox">
+              <figcaption class="cb-head">
+                <span class="cb-dots"><i></i><i></i><i></i></span>
+                <span class="cb-path">{x.codeRef}</span>
+                <span class="cb-lang">{x.codeLang}</span>
+              </figcaption>
+              <Code code={x.code} lang={safeLang(x.codeLang)} theme="github-dark" />
+            </figure>
+          )}
+          <a class="ig-link" href={`/frameworks/${x.id}/`}>查看 {x.title} 完整笔记 →</a>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ig { margin-top: 1rem; }
+  .ig-meta { font-size: var(--text-sm); color: var(--ink-soft); margin-bottom: 1rem; }
+  .ig-meta b { color: var(--accent-ink); font-family: var(--mono); }
+  .ig-list { display: grid; gap: 0.5rem; }
+  .ig-item { border: 1px solid var(--line); border-left: 3px solid oklch(62% 0.15 var(--h, 40)); border-radius: var(--radius-sm); background: var(--paper-2); overflow: hidden; }
+  .ig-item summary { display: flex; align-items: center; gap: 0.7rem; padding: 0.75rem 1rem; cursor: pointer; list-style: none; transition: background var(--dur) var(--ease); }
+  .ig-item summary::-webkit-details-marker { display: none; }
+  .ig-item summary:hover { background: oklch(62% 0.15 var(--h, 40) / 0.08); }
+  .ig-fw { font-family: var(--display); font-weight: 700; font-size: 1rem; flex: none; min-width: 8.5rem; }
+  .ig-sum { flex: 1; color: var(--ink-soft); font-size: var(--text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ig-caret { flex: none; font-family: var(--mono); font-size: 1.1rem; color: var(--ink-faint); transition: transform var(--dur) var(--ease); }
+  .ig-item[open] .ig-caret { transform: rotate(45deg); }
+  .ig-item[open] .ig-sum { display: none; }
+  .ig-body { padding: 0.2rem 1rem 1.1rem; border-top: 1px dashed var(--line); }
+  .ig-impl { margin: 0.9rem 0; color: var(--ink); line-height: 1.65; overflow-wrap: anywhere; }
+  .ig-refs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
+  .ig-refs .ref { font-family: var(--mono); font-size: var(--text-xs); background: var(--paper-3); border: 1px solid var(--line); border-radius: 5px; padding: 0.15rem 0.5rem; color: var(--ink-soft); word-break: break-all; }
+  .codebox { margin: 0 0 0.9rem; border-radius: 10px; overflow: hidden; border: 1px solid var(--line-strong); box-shadow: var(--shadow-1); }
+  .cb-head { display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0.85rem; background: oklch(26% 0.02 275); color: oklch(80% 0.02 275); font-family: var(--mono); font-size: var(--text-xs); }
+  .cb-dots { display: inline-flex; gap: 0.32rem; }
+  .cb-dots i { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+  .cb-dots i:nth-child(1) { background: #ff5f57; } .cb-dots i:nth-child(2) { background: #febc2e; } .cb-dots i:nth-child(3) { background: #28c840; }
+  .cb-path { color: oklch(86% 0.02 275); }
+  .cb-lang { margin-left: auto; opacity: 0.7; }
+  .codebox :global(pre.astro-code) { margin: 0; padding: 0.9rem 1rem; border-radius: 0; font-size: 0.78rem; line-height: 1.55; max-height: 22rem; overflow: auto; }
+  .ig-link { display: inline-block; font-weight: 600; color: var(--accent-ink); text-decoration: none; font-size: var(--text-sm); }
+  .ig-link:hover { color: var(--accent); }
+  @media (max-width: 640px) { .ig-fw { min-width: 0; } .ig-sum { display: none; } }
+</style>

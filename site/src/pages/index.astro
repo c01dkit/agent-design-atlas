@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArchMap from '../components/ArchMap.astro';
+import { getCollection } from 'astro:content';
+
+const noIndex = (e) => e.id !== '_index';
+const concepts = (await getCollection('concepts')).filter(noIndex);
+const components = (await getCollection('components')).filter(noIndex);
+const frameworks = (await getCollection('frameworks')).filter(noIndex);
+
+const T = (e) => (e?.data?.title) ?? e?.id;
+const order = ['what-is-an-agent', 'agent-loop-paradigms', 'single-vs-multi-agent', 'component-taxonomy', 'design-tradeoffs'];
+const path = order.map((id) => concepts.find((c) => c.id === id)).filter(Boolean);
+const HUE: Record<string, number> = { 'reasoning-loop':285,'planning':320,'context-engineering':350,'tool-use':150,'memory':30,'model-abstraction':230,'multi-agent-orchestration':265,'skills-plugins':62,'observability-eval':190,'runtime-execution':15,'human-in-the-loop-governance':2,'state-persistence':205 };
+
+const fwNames = frameworks.map((e) => ({ id: e.id, title: T(e) })).sort((a, b) => a.title.localeCompare(b.title));
+const half = Math.ceil(fwNames.length / 2);
+const rowA = [...fwNames.slice(0, half), ...fwNames.slice(0, half)];
+const rowB = [...fwNames.slice(half), ...fwNames.slice(half)];
+
+const clean = (s: string) => s.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_m,a,b)=>(b||a)).replace(/[`*]/g,'').replace(/\\\|/g,'|').trim();
+const isNA = (s: string) => { const t = clean(String(s ?? '')); return !t || /^(n\/?a|none|无|暂无|没有|尚无|不适用|不涉及|—|-+|待确认|待补充)/i.test(t); };
+const parse = (body: string) => { const o: Record<string, boolean> = {}; const sec = body.split(/^##\s+/m).find((s) => s.startsWith('组件实现')); if (sec) for (const line of sec.split('\n')) { const t = line.trim(); if (!t.startsWith('|') || t.includes('---')) continue; const cells = line.split(/(?<!\\)\|/).map((x) => x.trim()); if (cells.length < 3 || /组件/.test(cells[1])) continue; const m = cells[1].match(/\[\[([a-z0-9-]+)/i); if (m) o[m[1]] = !isNA(cells[2] || ''); } return o; };
+const miniComps = ['reasoning-loop', 'planning', 'tool-use', 'memory', 'model-abstraction', 'multi-agent-orchestration', 'observability-eval'];
+const mini = frameworks.map((e) => { const c = parse(String(e.body ?? '')); return { id: e.id, n: miniComps.filter((s) => c[s]).length, c }; }).sort((a, b) => b.n - a.n).slice(0, 6);
+---
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-amb" aria-hidden="true"></div>
+    <p class="eyebrow">通读 50 个开源框架 · 源码级图谱</p>
+    <h1>把 Agent <em>拆开</em> 来看</h1>
+    <p class="lede">
+      一个 LLM Agent 由若干<strong>组件</strong>构成；同一个组件，在不同框架里有<strong>不同实现</strong>。
+      本图谱用两个维度组织对 50 个开源 agent 框架的源码级阅读——
+      <span class="hl">横向</span>看组件，<span class="hl">纵向</span>看框架。
+    </p>
+    <div class="stats">
+      <div><b>{frameworks.length}</b><span>框架笔记</span></div>
+      <div><b>{components.length}</b><span>横向组件</span></div>
+      <div><b>{concepts.length}</b><span>理念</span></div>
+      <div><b>∞</b><span>源码 path:line</span></div>
+    </div>
+  </section>
+
+  <section class="ticker" aria-label="收录的框架">
+    <div class="marquee"><div class="marquee-track">{rowA.map((f) => <a href={`/frameworks/${f.id}/`}>{f.title}</a>)}</div></div>
+    <div class="marquee rev"><div class="marquee-track">{rowB.map((f) => <a href={`/frameworks/${f.id}/`}>{f.title}</a>)}</div></div>
+  </section>
+
+  <section class="axes" aria-label="两个维度 + 交汇">
+    <a class="axis" href="/components/">
+      <span class="tag">横向 · Horizontal</span>
+      <h2>组件</h2>
+      <p>推理循环、规划、记忆、工具、编排…… 把 agent 拆成 {components.length} 个可独立讨论的零件，逐个看各框架如何实现。</p>
+      <span class="go">浏览组件 →</span>
+    </a>
+
+    <a class="axis mtx" href="/matrix/">
+      <span class="tag">交汇 · Matrix</span>
+      <h2>对比矩阵</h2>
+      <p>横向组件 × 纵向框架 = 一张按列着色、可筛选、悬停十字定位的实现热力图。</p>
+      <span class="go">打开矩阵 →</span>
+    </a>
+
+    <a class="axis" href="/frameworks/">
+      <span class="tag">纵向 · Vertical</span>
+      <h2>框架</h2>
+      <p>LangChain、CrewAI、AutoGen、smolagents…… 每个框架一篇统一 schema 的源码级深度分析，可下钻到具体实现。</p>
+      <span class="go">浏览框架 →</span>
+    </a>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">从这里开始</p>
+    <h2 class="block-title">学习路径</h2>
+    <ol class="path">
+      {path.map((c, i) => (
+        <li>
+          <a href={`/concepts/${c.id}/`}>
+            <span class="n">{String(i + 1).padStart(2, '0')}</span>
+            <span class="t">{T(c)}</span>
+            <span class="d">{c.data?.aliases?.[0] ?? ''}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="block">
+    <p class="eyebrow">参考架构</p>
+    <h2 class="block-title">Agent组件清单</h2>
+    <ArchMap />
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { position: relative; padding: clamp(1rem, 4vw, 3.5rem) 0 2rem; max-width: 52rem; isolation: isolate; }
+  .hero-amb { position: absolute; inset: -30% -20% auto -20%; height: 70vh; z-index: -1; pointer-events: none; background: radial-gradient(38% 50% at 16% 24%, oklch(72% 0.15 45 / 0.26), transparent 70%), radial-gradient(34% 46% at 84% 10%, oklch(72% 0.13 80 / 0.20), transparent 70%), radial-gradient(40% 52% at 62% 56%, oklch(70% 0.12 30 / 0.16), transparent 70%); filter: blur(26px); animation: amb 20s ease-in-out infinite alternate; }
+  @keyframes amb { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(0,-4%,0) scale(1.1); } }
+  .hero h1 { font-size: var(--text-hero); line-height: 0.98; font-weight: 700; margin: 0.4rem 0; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .lede { font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.35rem); color: var(--ink-soft);  }
+  .lede strong { color: var(--ink); }
+  .hl { color: var(--accent); font-weight: 700; }
+  .stats { display: flex; gap: 2.2rem; flex-wrap: wrap; margin-top: 2rem; }
+  .stats div { display: flex; flex-direction: column; }
+  .stats b { font-family: var(--display); font-size: 2.1rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .stats span { font-family: var(--mono); font-size: var(--text-xs); color: var(--ink-faint); margin-top: 0.3rem; letter-spacing: 0.05em; }
+
+  .ticker { margin: var(--space-section) 0; display: grid; gap: 0.6rem; }
+  .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .marquee-track { display: inline-flex; gap: 0.7rem; white-space: nowrap; will-change: transform; animation: marq 70s linear infinite; }
+  .marquee.rev .marquee-track { animation-direction: reverse; animation-duration: 88s; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track a { font-family: var(--mono); font-size: var(--text-sm); color: var(--ink-soft); text-decoration: none; padding: 0.3rem 0.8rem; border: 1px solid var(--line); border-radius: 999px; transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
+  .marquee-track a:hover { color: var(--accent-ink); border-color: var(--accent); background: var(--accent-soft); }
+  @keyframes marq { to { transform: translateX(-50%); } }
+
+  .axes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; align-items: stretch; margin-top: var(--space-section); }
+  @media (max-width: 860px) { .axes { grid-template-columns: 1fr; } }
+  .axis { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .axis:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-2); }
+  .axis .tag { font-family: var(--mono); font-size: var(--text-xs); color: var(--accent); letter-spacing: 0.08em; }
+  .axis h2 { font-size: var(--text-xl); margin: 0.3rem 0 0.6rem; }
+  .axis p { color: var(--ink-soft); font-size: var(--text-sm); flex: 1; }
+  .axis .go { margin-top: 1rem; font-weight: 600; color: var(--accent-ink); }
+  .mtx-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 0.2rem 0 0.9rem; }
+  .mtx-grid .mc { aspect-ratio: 1; border-radius: 3px; background: var(--paper-3); box-shadow: inset 0 0 0 1px var(--line); }
+  .mtx-grid .mc.on { background: oklch(64% 0.15 var(--h, 40)); box-shadow: inset 0 0 0 2px var(--paper-2); }
+  .axis.mtx:hover .mc.on { filter: brightness(1.08) saturate(1.05); }
+
+  .block { margin-top: var(--space-section); }
+  .block-title { font-size: var(--text-2xl); margin-top: 0.2rem; }
+  .block-sub { color: var(--ink-soft); margin-top: 0.5rem; }
+  /* learning path = 5 horizontal cards */
+  .path { list-style: none; padding: 0; margin-top: 1.3rem; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.7rem; }
+  @media (max-width: 900px) { .path { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .path { grid-template-columns: 1fr; } }
+  .path li { display: flex; }
+  .path a { display: flex; flex-direction: column; gap: 0.35rem; width: 100%; text-decoration: none; color: inherit; padding: 1.1rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .path a:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-2); }
+  .path .n { font-family: var(--mono); font-size: 1.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .path .t { font-family: var(--display); font-weight: 700; font-size: 1.02rem; letter-spacing: -0.01em; margin-top: auto; }
+  .path .d { color: var(--ink-faint); font-size: var(--text-xs); font-family: var(--mono); }
+  .cta-row { margin-top: 1.6rem; }
+  .cta { display: inline-block; text-decoration: none; font-weight: 650; padding: 0.85rem 1.4rem; border-radius: 999px; background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: oklch(99% 0 0); box-shadow: var(--shadow-1); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); color: oklch(99% 0 0); }
+  @media (prefers-reduced-motion: reduce) { .hero-amb, .marquee-track { animation: none; } }
+</style>

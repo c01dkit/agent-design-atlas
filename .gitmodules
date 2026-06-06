@@ -1,0 +1,200 @@
+[submodule "agents-example/swarm"]
+	path = agents-example/swarm
+	url = https://github.com/openai/swarm
+	shallow = true
+[submodule "agents-example/openclaw"]
+	path = agents-example/openclaw
+	url = https://github.com/openclaw/openclaw
+	shallow = true
+[submodule "agents-example/hermes-agent"]
+	path = agents-example/hermes-agent
+	url = https://github.com/nousresearch/hermes-agent
+	shallow = true
+[submodule "agents-example/mastra"]
+	path = agents-example/mastra
+	url = https://github.com/mastra-ai/mastra
+	shallow = true
+[submodule "agents-example/modus"]
+	path = agents-example/modus
+	url = https://github.com/hypermodeinc/modus
+	shallow = true
+[submodule "agents-example/llama-agentic-system"]
+	path = agents-example/llama-agentic-system
+	url = https://github.com/meta-llama/llama-agentic-system
+	shallow = true
+[submodule "agents-example/swarms"]
+	path = agents-example/swarms
+	url = https://github.com/kyegomez/swarms
+	shallow = true
+[submodule "agents-example/llamaindex"]
+	path = agents-example/llamaindex
+	url = https://github.com/jerryjliu/llama_index
+	shallow = true
+[submodule "agents-example/langchain"]
+	path = agents-example/langchain
+	url = https://github.com/hwchase17/langchain
+	shallow = true
+[submodule "agents-example/botpress"]
+	path = agents-example/botpress
+	url = https://github.com/botpress/botpress
+	shallow = true
+[submodule "agents-example/strands"]
+	path = agents-example/strands
+	url = https://github.com/strands-agents/sdk-python
+	shallow = true
+[submodule "agents-example/voltagent"]
+	path = agents-example/voltagent
+	url = https://github.com/VoltAgent/voltagent
+	shallow = true
+[submodule "agents-example/agentic-context-engine"]
+	path = agents-example/agentic-context-engine
+	url = https://github.com/kayba-ai/agentic-context-engine
+	shallow = true
+[submodule "agents-example/semantic-kernel"]
+	path = agents-example/semantic-kernel
+	url = https://github.com/microsoft/semantic-kernel
+	shallow = true
+[submodule "agents-example/agent-llm"]
+	path = agents-example/agent-llm
+	url = https://github.com/Josh-XT/Agent-LLM
+	shallow = true
+[submodule "agents-example/llm-agents"]
+	path = agents-example/llm-agents
+	url = https://github.com/mpaepper/llm_agents
+	shallow = true
+[submodule "agents-example/e2b"]
+	path = agents-example/e2b
+	url = https://github.com/e2b-dev/e2b
+	shallow = true
+[submodule "agents-example/dust"]
+	path = agents-example/dust
+	url = https://github.com/dust-tt/dust
+	shallow = true
+[submodule "agents-example/metagpt"]
+	path = agents-example/metagpt
+	url = https://github.com/geekan/MetaGPT
+	shallow = true
+[submodule "agents-example/lagent"]
+	path = agents-example/lagent
+	url = https://github.com/InternLM/lagent
+	shallow = true
+[submodule "agents-example/autogen"]
+	path = agents-example/autogen
+	url = https://github.com/microsoft/autogen
+	shallow = true
+[submodule "agents-example/ag2"]
+	path = agents-example/ag2
+	url = https://github.com/ag2ai/ag2
+	shallow = true
+[submodule "agents-example/astron"]
+	path = agents-example/astron
+	url = https://github.com/iflytek/astron-agent
+	shallow = true
+[submodule "agents-example/agentverse"]
+	path = agents-example/agentverse
+	url = https://github.com/openbmb/agentverse
+	shallow = true
+[submodule "agents-example/maestro"]
+	path = agents-example/maestro
+	url = https://github.com/Doriandarko/maestro
+	shallow = true
+[submodule "agents-example/ailoy"]
+	path = agents-example/ailoy
+	url = https://github.com/brekkylab/ailoy
+	shallow = true
+[submodule "agents-example/agentscope"]
+	path = agents-example/agentscope
+	url = https://github.com/modelscope/agentscope
+	shallow = true
+[submodule "agents-example/crewai"]
+	path = agents-example/crewai
+	url = https://github.com/joaomdmoura/crewai
+	shallow = true
+[submodule "agents-example/agency-swarm"]
+	path = agents-example/agency-swarm
+	url = https://github.com/VRSEN/agency-swarm
+	shallow = true
+[submodule "agents-example/upsonic"]
+	path = agents-example/upsonic
+	url = https://github.com/upsonic/upsonic
+	shallow = true
+[submodule "agents-example/vectara-agentic"]
+	path = agents-example/vectara-agentic
+	url = https://github.com/vectara/py-vectara-agentic
+	shallow = true
+[submodule "agents-example/agentdock"]
+	path = agents-example/agentdock
+	url = https://github.com/AgentDock/AgentDock
+	shallow = true
+[submodule "agents-example/praisonai"]
+	path = agents-example/praisonai
+	url = https://github.com/MervinPraison/PraisonAI
+	shallow = true
+[submodule "agents-example/agentfield"]
+	path = agents-example/agentfield
+	url = https://github.com/Agent-Field/agentfield
+	shallow = true
+[submodule "agents-example/cortex-mem"]
+	path = agents-example/cortex-mem
+	url = https://github.com/sopaco/cortex-mem
+	shallow = true
+[submodule "agents-example/loongflow"]
+	path = agents-example/loongflow
+	url = https://github.com/baidu-baige/LoongFlow
+	shallow = true
+[submodule "agents-example/pipecat"]
+	path = agents-example/pipecat
+	url = https://github.com/pipecat-ai/pipecat
+	shallow = true
+[submodule "agents-example/pilotprotocol"]
+	path = agents-example/pilotprotocol
+	url = https://github.com/TeoSlayer/pilotprotocol
+	shallow = true
+[submodule "agents-example/agentset"]
+	path = agents-example/agentset
+	url = https://github.com/agentset-ai/agentset
+	shallow = true
+[submodule "agents-example/hcom"]
+	path = agents-example/hcom
+	url = https://github.com/aannoo/hcom
+	shallow = true
+[submodule "agents-example/nanobot"]
+	path = agents-example/nanobot
+	url = https://github.com/HKUDS/nanobot
+	shallow = true
+[submodule "agents-example/hive"]
+	path = agents-example/hive
+	url = https://github.com/aden-hive/hive
+	shallow = true
+[submodule "agents-example/connectonion"]
+	path = agents-example/connectonion
+	url = https://github.com/openonion/connectonion
+	shallow = true
+[submodule "agents-example/swarmclaw"]
+	path = agents-example/swarmclaw
+	url = https://github.com/swarmclawai/swarmclaw
+	shallow = true
+[submodule "agents-example/open-multi-agent"]
+	path = agents-example/open-multi-agent
+	url = https://github.com/JackChen-me/open-multi-agent
+	shallow = true
+[submodule "agents-example/aeon"]
+	path = agents-example/aeon
+	url = https://github.com/aaronjmars/aeon
+	shallow = true
+[submodule "agents-example/cordum"]
+	path = agents-example/cordum
+	url = https://github.com/cordum-io/cordum
+	shallow = true
+[submodule "agents-example/smolagents"]
+	path = agents-example/smolagents
+	url = https://github.com/huggingface/smolagents
+	shallow = true
+[submodule "agents-example/haystack"]
+	path = agents-example/haystack
+	url = https://github.com/deepset-ai/haystack
+	shallow = true
+[submodule "awesome-agents"]
+	path = awesome-agents
+	url = https://github.com/kyrolabs/awesome-agents
+	shallow = true

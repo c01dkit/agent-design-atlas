@@ -1,0 +1,134 @@
+---
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+interface Props { title?: string; description?: string; }
+const { title, description } = Astro.props;
+const nav = [
+  { href: '/', label: '首页' },
+  { href: '/concepts/', label: '理念' },
+  { href: '/components/', label: '组件' },
+  { href: '/frameworks/', label: '图鉴' },
+  { href: '/matrix/', label: '矩阵' },
+  { href: '/search/', label: '搜索' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => href === '/' ? path === '/' : path.startsWith(href);
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} · Agent Design Atlas` : 'Agent Design Atlas · Agent 设计图谱'}</title>
+    <meta name="description" content={description ?? 'Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱'} />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E" />
+    <ClientRouter />
+    <script is:inline>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script>
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap bar">
+        <a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a>
+        <button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button>
+        <nav class="nav" id="primaryNav" aria-label="主导航">
+          {nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+        </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button>
+      </div>
+    </header>
+    <main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap cols">
+        <div>Agent Design Atlas · 基于 <a href="https://github.com/kyrolabs/awesome-agents">awesome-agents</a> 的 50 个框架源码级图谱</div>
+        <div class="mono">知识库 single-source · Obsidian 兼容</div>
+      </div>
+    </footer>
+    <script is:inline>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); }
+      document.addEventListener('astro:page-load', boot);
+    </script>
+  </body>
+</html>

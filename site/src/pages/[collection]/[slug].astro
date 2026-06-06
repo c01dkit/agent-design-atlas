@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImplGallery from '../../components/ImplGallery.astro';
+import { getCollection, render } from 'astro:content';
+
+const COMPONENTS: [string, string][] = [
+  ['reasoning-loop','推理循环'],['planning','规划'],['memory','记忆'],['tool-use','工具'],
+  ['model-abstraction','模型'],['multi-agent-orchestration','编排'],['context-engineering','上下文'],
+  ['skills-plugins','技能'],['observability-eval','可观测'],['runtime-execution','运行时'],
+  ['human-in-the-loop-governance','治理'],['state-persistence','状态'],
+];
+const HUE: Record<string, number> = { 'reasoning-loop':285,'planning':320,'memory':30,'tool-use':150,'model-abstraction':230,'multi-agent-orchestration':265,'context-engineering':350,'skills-plugins':62,'observability-eval':190,'runtime-execution':15,'human-in-the-loop-governance':2,'state-persistence':205 };
+
+export async function getStaticPaths() {
+  const cols = ['concepts', 'components', 'frameworks', 'comparisons'];
+  const out = [];
+  for (const c of cols) {
+    const entries = (await getCollection(c)).filter((e) => e.id !== '_index');
+    for (const e of entries) out.push({ params: { collection: c, slug: e.id }, props: { entry: e, collection: c } });
+  }
+  return out;
+}
+
+const { entry, collection } = Astro.props;
+const { Content } = await render(entry);
+const d: any = entry.data ?? {};
+const tagVals = (p: string) => (d.tags ?? []).filter((t: string) => t.startsWith(p)).map((t: string) => t.slice(p.length));
+const labels: Record<string, string> = { concepts: '理念', components: '组件', frameworks: '图鉴', comparisons: '横纵对比' };
+const srcPath = collection === 'frameworks' ? `agents-example/${entry.id}/` : null;
+const lang = tagVals('lang/')[0];
+const paradigms = tagVals('paradigm/');
+const isFw = collection === 'frameworks';
+const isComp = collection === 'components';
+
+let coverage: { label: string; on: boolean; hue: number }[] | null = null;
+if (isFw) {
+  const clean = (s: string) => s.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_m,a,b)=>(b||a)).replace(/[`*]/g,'').replace(/\\\|/g,'|').trim();
+  const isNA = (s: string) => { const t = clean(String(s ?? '')); return !t || /^(n\/?a|none|无|暂无|没有|尚无|不适用|不涉及|—|-+|待确认|待补充)/i.test(t); };
+  const sec = String(entry.body ?? '').split(/^##\s+/m).find((s) => s.startsWith('组件实现'));
+  const cov: Record<string, boolean> = {};
+  if (sec) for (const line of sec.split('\n')) {
+    const t = line.trim(); if (!t.startsWith('|') || t.includes('---')) continue;
+    const cells = line.split(/(?<!\\)\|/).map((c) => c.trim());
+    if (cells.length < 3 || /组件/.test(cells[1])) continue;
+    const m = cells[1].match(/\[\[([a-z0-9-]+)/i); if (!m) continue;
+    cov[m[1]] = !isNA(cells[2] || '');
+  }
+  coverage = COMPONENTS.map(([s, label]) => ({ label, on: !!cov[s], hue: HUE[s] }));
+}
+const covered = coverage ? coverage.filter((c) => c.on).length : 0;
+const noteCls = 'note' + (isFw ? ' fw' : '') + (isComp ? ' comp' : '');
+---
+<BaseLayout title={d.title ?? entry.id}>
+  <article class={noteCls}>
+    <nav class="crumbs"><a href="/">首页</a> / <a href={`/${collection}/`}>{labels[collection]}</a></nav>
+    {isFw ? (
+      <header class="fw-hero">
+        <h1 class="fw-title">{d.title ?? entry.id}</h1>
+        <div class="note-meta">
+          {lang && <span class="badge lang">{lang}</span>}
+          {paradigms.map((p: string) => <span class="badge paradigm">{p}</span>)}
+          {d.license && <span class="badge">{d.license}</span>}
+          {d.status === 'stub' && <span class="badge status-stub">待补充</span>}
+          {d.repo && <a class="badge" href={d.repo} target="_blank" rel="noopener">repo ↗</a>}
+          {srcPath && <span class="badge mono">{srcPath}</span>}
+        </div>
+        {coverage && (
+          <div class="cov-strip" aria-label={`组件覆盖 ${covered}/12`}>
+            <div class="cov-bars">{coverage.map((c) => <i class={c.on ? 'on' : ''} style={`--h:${c.hue}`} title={`${c.label}: ${c.on ? '实现' : 'N/A'}`}></i>)}</div>
+            <span class="cov-num">{covered}/12 组件</span>
+          </div>
+        )}
+      </header>
+    ) : (
+      <div class="note-meta">
+        {tagVals('lang/').map((v: string) => <span class="badge lang">{v}</span>)}
+        {tagVals('paradigm/').map((v: string) => <span class="badge paradigm">{v}</span>)}
+      </div>
+    )}
+    <div class="prose"><Content /></div>
+    {isComp && (
+      <section class="ig-section">
+        <h2 class="ig-h">各框架实现对比 · 源码级</h2>
+        <ImplGallery slug={entry.id} />
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  /* full page width — consistent with landing pages */
+  .note { max-width: none; }
+  .note .prose :is(p, ul, ol, blockquote, h1, h2, h3, h4) { max-width: 74ch; }
+  .note .prose { max-width: none; }
+  .crumbs { font-family: var(--mono); font-size: var(--text-xs); color: var(--ink-faint); margin-bottom: 0.8rem; }
+  .crumbs a { color: var(--ink-soft); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+  .note-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+  .note-meta a.badge { text-decoration: none; }
+
+  .fw-hero { margin-bottom: 1.6rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--line); }
+  .fw-title { font-family: var(--display); font-size: clamp(2.3rem, 1.4rem + 3.4vw, 3.8rem); letter-spacing: -0.045em; line-height: 1; margin: 0.2rem 0 0.8rem; }
+  .fw-hero .note-meta { margin-bottom: 0.9rem; }
+  .cov-strip { display: flex; flex-direction: column; align-items: flex-start; gap: 0.45rem; }
+  .cov-bars { display: flex; gap: 4px; width: 100%; max-width: 26rem; }
+  .cov-bars i { flex: 1 1 0; min-width: 0; height: 9px; border-radius: 3px; background: var(--line); transition: transform var(--dur) var(--ease); }
+  .cov-bars i.on { background: oklch(63% 0.16 var(--h, 40)); }
+  .cov-bars i:hover { transform: scaleY(1.7); }
+  .cov-num { font-family: var(--mono); font-size: var(--text-xs); color: var(--ink-faint); }
+  .note.fw .prose > h1:first-of-type { display: none; }
+
+  /* components: hide the bottom markdown table (web uses the interactive gallery) */
+  .note.comp .prose table { display: none; }
+  .note.comp .prose > h2:last-of-type { display: none; }
+  .ig-section { margin-top: 2.6rem; }
+  .ig-h { font-family: var(--display); font-size: var(--text-xl); letter-spacing: -0.015em; margin: 0 0 1rem; padding-bottom: 0.35em; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 0.5rem; }
+  .ig-h::before { content: ""; width: 0.6rem; height: 1.05em; border-radius: 3px; background: var(--accent); }
+</style>

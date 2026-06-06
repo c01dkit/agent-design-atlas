@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArchMap from '../../components/ArchMap.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const cols = ['concepts', 'components', 'frameworks', 'comparisons'];
+  const labels: Record<string, string> = { concepts: '理念', components: '组件', frameworks: '图鉴', comparisons: '横纵对比' };
+  const subs: Record<string, string> = {
+    concepts: '跨框架的设计原理与心智模型——先有这些，再看具体框架。',
+    components: '横向：把 agent 拆成可独立讨论的组件，逐个看各框架如何实现。',
+    frameworks: '纵向：50 个开源框架的源码级深度分析，按设计范式分组、可下钻实现。',
+    comparisons: '横纵交汇：框架 × 组件矩阵、范式聚类、语言生态。',
+  };
+  const out = [];
+  for (const c of cols) {
+    const all = await getCollection(c);
+    const index = all.find((e) => e.id === '_index') ?? null;
+    const items = all
+      .filter((e) => e.id !== '_index')
+      .sort((a, b) => String(a.data?.title ?? a.id).localeCompare(String(b.data?.title ?? b.id), 'zh'));
+    out.push({ params: { collection: c }, props: { collection: c, label: labels[c], sub: subs[c], index, items } });
+  }
+  return out;
+}
+
+const { collection, label, sub, index, items } = Astro.props;
+const rendered = index ? await render(index) : null;
+const Content = rendered?.Content;
+const isFw = collection === 'frameworks';
+
+const stripWiki = (s: string) => s.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_m, a, b) => (b || a).trim());
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// extract the one-line abstract, render minimal inline markdown (bold + code) as safe HTML
+const abstract = (e: any) => {
+  const m = String(e.body ?? '').match(/>\s*\[!\w+\][^\n]*\n((?:>.*\n?)+)/);
+  if (!m) return '';
+  const raw = stripWiki(m[1].replace(/^>\s?/gm, '')).trim().replace(/\s+/g, ' ').slice(0, 142);
+  return esc(raw)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/[*`]/g, '');
+};
+const tagVals = (e: any, p: string) => (e.data?.tags ?? []).filter((t: string) => t.startsWith(p)).map((t: string) => t.slice(p.length));
+
+const PARA_LABEL: Record<string, string> = { multi: '多智能体协作', single: '单 Agent / 通用', rag: 'RAG · 数据为中心', platform: '平台 · 基础设施', voice: '语音 · 多模态', 'model-stack': '模型栈' };
+const PARA_ORDER = ['multi', 'single', 'rag', 'platform', 'voice', 'model-stack'];
+let groups: { p: string; label: string; items: any[] }[] = [];
+if (isFw) {
+  const byP: Record<string, any[]> = {};
+  for (const e of items) {
+    const p = ((e.data?.tags ?? []).find((t: string) => t.startsWith('paradigm/')) || 'paradigm/single').slice(9).split(' ')[0];
+    (byP[p] ||= []).push(e);
+  }
+  groups = PARA_ORDER.filter((p) => byP[p]).map((p) => ({ p, label: PARA_LABEL[p] || p, items: byP[p] }));
+  for (const p of Object.keys(byP)) if (!PARA_ORDER.includes(p)) groups.push({ p, label: PARA_LABEL[p] || p, items: byP[p] });
+}
+---
+<BaseLayout title={label} description={sub}>
+  <p class="eyebrow">{collection}</p>
+  <h1 class="page-h1">{label}</h1>
+  <p class="page-sub">{sub}</p>
+  {collection === 'components' && <ArchMap />}
+  {isFw ? (
+    <div class="groups">
+      {groups.map((g) => (
+        <section class="grp">
+          <h2 class="grp-h">{g.label}<span class="grp-n">{g.items.length}</span></h2>
+          <div class="cards">
+            {g.items.map((e) => (
+              <a class="card" href={`/frameworks/${e.id}/`}>
+                <h3>{e.data?.title ?? e.id}</h3>
+                <p class="card-abs" set:html={abstract(e)}></p>
+                <div class="meta">
+                  {tagVals(e, 'lang/').map((v: string) => <span class="badge lang">{v}</span>)}
+                  {e.data?.license && <span class="badge">{e.data.license}</span>}
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  ) : (
+    <>
+      {Content && <div class="prose moc"><Content /></div>}
+      <h2 class="all-h">全部 · {items.length}</h2>
+      <div class="cards">
+        {items.map((e) => (
+          <a class="card" href={`/${collection}/${e.id}/`}>
+            <h3>{e.data?.title ?? e.id}</h3>
+            <p class="card-abs" set:html={abstract(e)}></p>
+            <div class="meta">
+              {tagVals(e, 'lang/').map((v: string) => <span class="badge lang">{v}</span>)}
+              {tagVals(e, 'paradigm/').map((v: string) => <span class="badge paradigm">{v}</span>)}
+              {e.data?.status === 'stub' && <span class="badge status-stub">待补充</span>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </>
+  )}
+</BaseLayout>
+
+<style>
+  .page-h1 { font-size: var(--text-2xl); letter-spacing: -0.03em; margin-top: 0.2rem; }
+  .page-sub { color: var(--ink-soft); font-size: var(--text-lg); margin-bottom: 1.5rem; max-width: 46rem; }
+  .moc { margin: 1.8rem 0 2.5rem; max-width: none; }
+  .all-h { font-size: var(--text-xl); border-top: 1px solid var(--line); padding-top: 1.5rem; }
+  .groups { display: grid; gap: 2.2rem; margin-top: 1.5rem; }
+  .grp-h { font-size: var(--text-lg); display: flex; align-items: baseline; gap: 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); }
+  .grp-n { font-family: var(--mono); font-size: var(--text-xs); color: var(--ink-faint); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
+  .cards .card { min-width: 0; }
+  .card h3 { overflow-wrap: anywhere; }
+  .card-abs { overflow-wrap: anywhere; word-break: break-word; }
+  .card-abs code { font-family: var(--mono); font-size: 0.85em; background: var(--paper-3); padding: 0.05em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+  .card-abs strong { color: var(--ink); font-weight: 700; }
+  .meta { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.7rem; }
+</style>

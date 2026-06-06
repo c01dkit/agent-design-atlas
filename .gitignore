@@ -1,0 +1,30 @@
+# --- Node / Astro frontend (site/) ---
+node_modules/
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+*-debug.log*
+
+# --- Pagefind search index (generated) ---
+site/public/pagefind/
+site/.agents
+
+# --- Env / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+.idea/
+
+# --- Scratch / logs ---
+scripts/*.log
+
+# NOTE: agents-example/* are git submodules (gitlinks), tracked — not ignored.
+# local Claude Code config
+.claude/
+

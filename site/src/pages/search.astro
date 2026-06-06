@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="搜索" description="全文搜索所有概念、组件与框架笔记">
+  <p class="eyebrow">search</p>
+  <h1 class="s-h1">搜索</h1>
+  <p class="muted s-sub">全文检索所有顶层思考、组件与框架笔记。索引在构建（npm run build）后生成；开发模式下不可用。</p>
+  <div id="search"></div>
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.PagefindUI) {
+        new window.PagefindUI({ element: '#search', showSubResults: true, pageSize: 8, translations: { placeholder: '搜索框架、组件、概念…', zero_results: '未找到 [SEARCH_TERM] 的结果' } });
+      } else {
+        document.getElementById('search').innerHTML = '<p class="muted">搜索索引尚未生成。运行 <code>npm run build</code> 后在预览中可用。</p>';
+      }
+    });
+  </script>
+</BaseLayout>
+<style>
+  .s-h1 { font-size: var(--text-2xl); letter-spacing: -0.03em; margin-top: 0.2rem; }
+  .s-sub { margin-bottom: 1.5rem; }
+  :global(.pagefind-ui) { --pagefind-ui-primary: var(--accent); --pagefind-ui-font: var(--sans); --pagefind-ui-background: var(--paper-2); --pagefind-ui-border: var(--line); --pagefind-ui-text: var(--ink); }
+</style>
