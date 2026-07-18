@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CrewAI · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>CrewAI</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>MIT (LICENSE 文件 Copyright (c) 2025 crewAI, Inc.)</span><a class="badge" href="https://github.com/joaomdmoura/crewai" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/crewai/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="crewai">CrewAI</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个”从零自建、不依赖 LangChain”的 Python multi-agent 编排框架，核心隐喻是角色扮演的团队（Crew）：用 role/goal/backstory 定义 Agent，用 Task 描述工作，用 Process（sequential 顺序 / hierarchical 经理派活）驱动协作；同时提供事件驱动的 Flow 做生产级精确流程控制，二者可组合，兼顾”自治协作”与”确定性编排”。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>CrewAI 的核心范式是 <strong>multi-agent 角色协作 + 进程化任务编排</strong>，并在其上叠加一层 <strong>event-driven Flow</strong> 做生产控制。设计取舍：</p>
+<ul>
+<li><strong>两条主线 Crew vs Flow</strong>：<strong>Crew</strong> 走自治协作（agent 之间靠 delegation 工具互相派活，强调 agency）；<strong>Flow</strong> 走确定性编排（<code>@start</code>/<code>@listen</code>/<code>@router</code> + 结构化 state，强调可控、可持久化、单次 LLM 调用），README 明确把 Flow 定位为”enterprise/production 架构”。Crew 可作为 Flow 的一个步骤被 <code>kickoff()</code> 调用。</li>
+<li><strong>声明式四件套</strong>：<code>Agent</code>(role/goal/backstory) + <code>Task</code>(description/expected_output) + <code>Process</code> + <code>Crew</code>，外加 <code>@CrewBase</code>/<code>@agent</code>/<code>@task</code>/<code>@crew</code> 装饰器把 YAML（<code>agents.yaml</code>/<code>tasks.yaml</code>）绑定到类，CLI <code>crewai create crew</code> 脚手架生成项目骨架。</li>
+<li><strong>monorepo 包结构</strong>：源码在 <code>lib/crewai/src/crewai</code>（本笔记路径均相对此根之上的 <code>lib/crewai/src/</code>，即仓库内 <code>lib/crewai/src/crewai/...</code>）。骨架：<code>agent/</code>(Agent 核心) · <code>agents/</code>(executor/delegation/parser) · <code>crew.py</code> · <code>task.py</code> · <code>process.py</code> · <code>flow/</code>(DSL + runtime + persistence) · <code>llms/</code>(native provider + LiteLLM 回退) · <code>memory/</code>(LanceDB 统一记忆) · <code>tools/</code> · <code>knowledge/</code>(RAG) · <code>mcp/</code> · <code>events/</code>(事件总线) · <code>telemetry/</code>(OTel) · <code>skills/</code>。</li>
+<li><strong>不绑定 LangChain</strong>：自带 LLM 抽象、工具系统、记忆、RAG，独立实现；LLM 层用原生 SDK（openai/anthropic/gemini/azure/bedrock）+ LiteLLM 兜底。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> crewai </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent, Crew, Process, Task</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">researcher </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    role</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Senior Data Researcher"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    goal</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Uncover cutting-edge developments in AI"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    backstory</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"You're a seasoned researcher with a knack for the latest trends."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">research_task </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Task(</span></span>
+<span class="line"><span style="color:#FFAB70">    description</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Conduct thorough research about AI agents in 2025."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    expected_output</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"A list of 10 bullet points of the most relevant info."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    agent</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">researcher,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">crew </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Crew(</span></span>
+<span class="line"><span style="color:#FFAB70">    agents</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[researcher],</span></span>
+<span class="line"><span style="color:#FFAB70">    tasks</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[research_task],</span></span>
+<span class="line"><span style="color:#FFAB70">    process</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">Process.sequential,   </span><span style="color:#6A737D"># 或 Process.hierarchical（自动加经理 agent）</span></span>
+<span class="line"><span style="color:#FFAB70">    verbose</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(crew.kickoff(</span><span style="color:#FFAB70">inputs</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"topic"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"AI Agents"</span><span style="color:#E1E4E8">}))</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>双模 agent loop：LLM 支持 native function calling 则走结构化 tool_calls 回灌循环，否则回退 ReAct 文本模式（解析 <code>Action/Action Input</code>）；均循环至 <code>AgentFinish</code> 或 <code>max_iter</code></td><td><code>crewai/agents/crew_agent_executor.py:306</code> (<code>_invoke_loop</code>), <code>:327</code> (<code>_invoke_loop_react</code>), <code>:467</code> (<code>_invoke_loop_native_tools</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>①Crew 级 <code>planning=True</code>：跑前用 planning agent 为每个 task 生成 step-by-step plan 注入描述；②hierarchical 经理动态分解派活；任务编排本身是声明式 Task 列表</td><td><code>crewai/crew.py:1406</code> (<code>_handle_crew_planning</code>), <code>crewai/utilities/planning_handler.py:37</code> (<code>CrewPlanner</code>), <code>:80</code> (<code>_create_planning_agent</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>统一 <code>Memory</code>：保存时用 LLM 抽取记忆并推断 scope/category/importance，按 recency+semantic+importance 加权检索；默认 LanceDB 向量存储（亦支持 Qdrant）；<code>crew.memory=True</code> 启用</td><td><code>crewai/memory/unified_memory.py:56</code> (<code>Memory</code>), <code>crewai/memory/analyze.py</code> (<code>extract_memories_from_content</code>), <code>crewai/memory/storage/lancedb_storage.py</code>, <code>crewai/crew.py:653</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>BaseTool</code>(pydantic <code>args_schema</code>) / <code>Tool</code>；<code>@tool</code> 装饰器或子类化；native 模式转 OpenAI schema，ReAct 模式渲染文本；<code>ToolUsage</code> 负责选择/执行/缓存/容错</td><td><code>crewai/tools/base_tool.py</code> (<code>BaseTool</code>), <code>crewai/tools/tool_usage.py:73</code> (<code>ToolUsage</code>), <code>:123</code> (<code>use</code>), <code>crewai/tools/structured_tool.py</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>BaseLLM</code> 抽象基类 + <code>LLM.__new__</code> 工厂按 <code>provider/model</code> 前缀路由：openai/anthropic/azure/bedrock/gemini 走原生 SDK，其余回退 LiteLLM；<code>create_llm</code> 统一构造</td><td><code>crewai/llms/base_llm.py:129</code> (<code>BaseLLM</code>), <code>crewai/llm.py:315</code> (<code>LLM</code>), <code>:340</code> (<code>__new__</code> 路由), <code>crewai/utilities/llm_utils.py:13</code> (<code>create_llm</code>)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><code>Process.sequential</code>(按序执行 task) / <code>Process.hierarchical</code>(自动建经理 agent 持 <code>AgentTools</code> 委派)；agent 间经 Delegate/AskQuestion 工具协作；A2A 协议跨进程</td><td><code>crewai/process.py:4</code>, <code>crewai/crew.py:1464</code> (<code>_run_sequential_process</code>), <code>:1468</code>/<code>:1473</code> (<code>_run_hierarchical_process</code>/<code>_create_manager_agent</code>), <code>crewai/tools/agent_tools/delegate_work_tool.py:16</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>Task 描述模板插值(<code>{topic}</code>)；task context 由前序 TaskOutput 串联(<code>_get_context</code>)；执行前注入 knowledge(RAG) 检索与 memory 召回；超窗时 <code>respect_context_window</code> 处理</td><td><code>crewai/agent/core.py:782</code> (<code>_prepare_task_execution</code>+knowledge), <code>crewai/crew.py:1564</code> (<code>_get_context</code>), <code>crewai/knowledge/knowledge.py</code>, <code>crewai/agents/crew_agent_executor.py:444</code> (context length)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><code>skills/</code> 模块：发现并激活 Skill（<code>discover_skills</code>/<code>activate_skill</code>，YAML 元数据）；<code>crewai_tools</code> 独立包提供数百个工具；MCP 客户端把外部 MCP server 工具接入</td><td><code>crewai/skills/loader.py</code> (<code>discover_skills</code>/<code>activate_skill</code>), <code>crewai/skills/models.py</code>, <code>crewai/mcp/client.py:54</code> (<code>MCPClient</code>), <code>lib/crewai-tools/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>内置事件总线 <code>crewai_event_bus</code>(LLM/Tool/Agent/Memory 全生命周期事件) + OpenTelemetry 匿名遥测(可 <code>OTEL_SDK_DISABLED</code> 关)；Task guardrail / task_evaluator 做输出评估</td><td><code>crewai/events/event_bus.py</code>, <code>crewai/telemetry/telemetry.py:1</code>, <code>crewai/tasks/llm_guardrail.py:49</code> (<code>LLMGuardrail</code>), <code>crewai/utilities/evaluators/task_evaluator.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库；<code>crew.kickoff()</code> 同步执行(支持 <code>kickoff_async</code>/<code>kickoff_for_each</code>/<code>stream</code>)，async task 用 ThreadPool 并行；CLI <code>crewai create/run/install</code>；AMP 云控制面做生产部署</td><td><code>crewai/crew.py:963</code> (<code>kickoff</code>), <code>:1547</code> (async task 并行), <code>crewai/flow/runtime.py:1925</code> (Flow <code>kickoff</code>), <code>crewai/cli/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>Task <code>human_input=True</code>：agent 出终答后请求人工反馈并据此再迭代；Flow 侧 <code>human_feedback</code> DSL 做流程级审批；before/after_kickoff 钩子</td><td><code>crewai/task.py:227</code> (<code>human_input</code>), <code>crewai/agents/crew_agent_executor.py:1596</code> (<code>_handle_human_feedback</code>), <code>crewai/flow/human_feedback.py</code>, <code>crewai/project/annotations.py:42</code> (<code>before_kickoff</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>Flow 结构化 <code>state</code>(Pydantic BaseModel) + <code>@persist</code>/<code>persistence</code> 默认 SQLite 落盘，支持断点续跑；Crew 侧 <code>CheckpointConfig</code>+<code>apply_checkpoint</code> 做 task 级 checkpoint 恢复</td><td><code>crewai/flow/runtime.py:244</code> (<code>FlowState</code>), <code>crewai/flow/persistence/sqlite.py</code>, <code>crewai/flow/persistence/decorators.py:163</code> (<code>persist</code>), <code>crewai/state/checkpoint_config.py:159</code> (<code>CheckpointConfig</code>), <code>:214</code> (<code>apply_checkpoint</code>)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>角色扮演心智模型</strong>：用 role/goal/backstory 的”团队”隐喻降低多智能体上手门槛，是 CrewAI 区别于 graph 派（LangGraph）的最大特色——开发者描述”谁、做什么、目标”，而非显式画状态图。</li>
+<li><strong>Crew(自治) vs Flow(确定) 双层</strong>：早期只有 Crew，自治协作虽灵活但难以保证生产可控性；后来加入 Flow（事件驱动 + 结构化 state + 持久化）补足确定性，README 直接对标 LangGraph 并强调 5.76x 性能优势。代价是框架表面积变大、两套心智需要学习取舍。</li>
+<li><strong>“从零自建”独立性</strong>：明确不依赖 LangChain，自带 LLM/工具/记忆/RAG。LLM 层”原生 SDK 优先 + LiteLLM 兜底”兼顾性能与广覆盖（<code>llm.py:340</code>）。</li>
+<li><strong>声明式 + 装饰器 + YAML</strong>：<code>@CrewBase</code>/<code>@agent</code>/<code>@task</code> 把配置与代码分离，利于非工程角色维护 prompt；但魔法装饰器与 forward-ref 重建（<code>__init__.py</code> 大量 <code>model_rebuild</code>）增加了调试复杂度。</li>
+<li><strong>记忆代际更替</strong>：当前版本(1.14.7a1)记忆已统一为 LLM 分析 + LanceDB 向量的 <code>unified_memory.Memory</code>，未见旧版 ShortTerm/LongTerm/Entity 分立类——与较老文档/教程描述不一致，使用时需以源码为准。</li>
+<li><strong>遥测默认开启</strong>：OpenTelemetry 匿名遥测默认收集（版本/OS/agent 数/process 类型等，不含 prompt），可 <code>OTEL_SDK_DISABLED=true</code> 关闭；<code>share_crew=True</code> 会上报更详细数据，隐私敏感场景需注意。</li>
+<li><strong>待确认</strong>：①本仓库为 monorepo（<code>lib/crewai</code> 元包依赖 <code>crewai-core</code>/<code>crewai-cli</code>），核心逻辑实际分散在多个子包，部分实现细节可能下沉到 <code>crewai-core</code>（本笔记以 <code>lib/crewai/src/crewai</code> 为准）；②<code>BaseLLM</code> 具体行号未逐一核对，标注为类定义位置。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(multi-agent 编排)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/crewai/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

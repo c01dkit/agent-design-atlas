@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AgentDock · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>AgentDock</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>typescript</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/AgentDock/AgentDock" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agentdock/</span></div><div class="cov-strip" aria-label="组件覆盖 10/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:2" title="治理: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>10/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agentdock">AgentDock</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个 TypeScript 编写、后端优先（backend-first）的开源生产级 agent 与 workflow 构建平台，核心信条是 configurable determinism（可配置确定性）：用统一的 node-based 架构（BaseNode / AgentNode / Tools-as-Nodes）把 LLM 智能与确定性工作流缝合起来——既能让 agent 自由推理，又能用 orchestration step/sequence 把工具调用约束成可预测的执行路径。框架本体（agentdock-core）与一个完整的 Next.js 参考客户端分离，可独立嵌入任意 Node.js 后端。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AgentDock 是 <strong>monorepo</strong>：<code>agentdock-core/</code>（provider-independent 的核心库，本笔记焦点）+ 根目录的 Next.js 开源客户端（<code>src/</code>，core 的消费者/参考实现）+ <code>agents/</code>（35+ JSON 模板）。核心设计取舍：</p>
+<ul>
+<li><strong>一切皆 Node</strong>：<code>BaseNode</code>（<code>agentdock-core/src/nodes/base-node.ts:55</code>）是抽象基类，声明 <code>execute()</code>、输入/输出 ports（<code>NodePort</code>）、元数据、以及节点间的 <code>MessageBus</code> 通信。<code>AgentNode</code>（<code>nodes/agent-node.ts:107</code>，<code>type = 'core.agent'</code>）是编排 LLM+工具的专用核心节点；工具与自定义逻辑都被建模为扩展 <code>BaseNode</code> 的节点。</li>
+<li><strong>configurable determinism</strong>：非确定性的 <code>AgentNode</code>（LLM 推理）可以触发确定性的 sub-workflow / tool 序列；通过 orchestration 配置控制”哪些部分走 LLM 推理”，从而在创造性与可预测性之间取舍（README §Configurable Determinism）。</li>
+<li><strong>声明式 Agent = JSON 模板</strong>：agent 由 <code>AgentConfig</code>（<code>types/agent-config.ts:41</code>，Zod 校验）定义——<code>personality</code>（system prompt）、<code>nodes</code>（启用的能力/工具名）、<code>nodeConfigurations</code>（每个 provider/工具的配置）、<code>orchestration</code>（step/sequence/条件）、<code>chatSettings</code>（历史策略）。模板见 <code>agents/*/template.json</code>。</li>
+<li><strong>provider-independent</strong>：<code>CoreLLM</code>（<code>llm/core-llm.ts:84</code>）在 Vercel AI SDK（<code>ai</code> 包）之上做统一封装，<code>createLLM</code> 工厂按 provider 路由到各 adapter（anthropic/openai/google/groq/deepseek/cerebras）。</li>
+<li><strong>入口 API</strong>：<code>import { AgentNode, ... } from 'agentdock-core'</code>（<code>src/index.ts</code>）。<code>new AgentNode(id, { apiKey, agentConfig })</code> 后调用 <code>agentNode.handleMessage({ messages, sessionId, orchestrationManager })</code>，返回 Vercel AI SDK 的流式结果（<code>AgentDockStreamResult</code>），由调用方（API 路由/适配器）消费流并构造 HTTP 响应。</li>
+</ul>
+<p>最小示例（基于 README 的 node-based / <code>handleMessage</code> 范式 + <code>AgentConfig</code> 形态）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { AgentNode, createOrchestrationManager } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'agentdock-core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 1) 声明式 agent 配置（等价于 agents/*/template.json）</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> agentConfig</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  version: </span><span style="color:#9ECBFF">'1.0'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  agentId: </span><span style="color:#9ECBFF">'assistant'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">'Assistant'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  description: </span><span style="color:#9ECBFF">'A helpful assistant'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  personality: </span><span style="color:#9ECBFF">'You are a helpful assistant.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  nodes: [</span><span style="color:#9ECBFF">'llm.anthropic'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'search'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'think'</span><span style="color:#E1E4E8">], </span><span style="color:#6A737D">// 启用的工具节点</span></span>
+<span class="line"><span style="color:#E1E4E8">  nodeConfigurations: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    'llm.anthropic'</span><span style="color:#E1E4E8">: { model: </span><span style="color:#9ECBFF">'claude-sonnet-4-20250514'</span><span style="color:#E1E4E8">, temperature: </span><span style="color:#79B8FF">0.7</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  chatSettings: { historyPolicy: </span><span style="color:#9ECBFF">'all'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  options: { maxSteps: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8"> } </span><span style="color:#6A737D">// 多步工具调用上限</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 2) 构造 AgentNode（运行时依赖 OrchestrationManager 经方法注入）</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> agent</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> AgentNode</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'assistant'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  apiKey: process.env.</span><span style="color:#79B8FF">ANTHROPIC_API_KEY</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  provider: </span><span style="color:#9ECBFF">'anthropic'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  agentConfig</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> orchestrationManager</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createOrchestrationManager</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 3) 处理一条消息，得到 Vercel AI SDK 流式结果</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> agent.</span><span style="color:#B392F0">handleMessage</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  sessionId: </span><span style="color:#9ECBFF">'session-1'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  orchestrationManager,</span></span>
+<span class="line"><span style="color:#E1E4E8">  messages: [{ role: </span><span style="color:#9ECBFF">'user'</span><span style="color:#E1E4E8">, content: </span><span style="color:#9ECBFF">'Search for TS agent frameworks'</span><span style="color:#E1E4E8"> }]</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#6A737D">// result 是 streamText 结果：调用方消费 result 流并返回给前端</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>非显式 ReAct 循环；委托给 Vercel AI SDK <code>streamText</code> 的 <strong>multi-step tool calling</strong>：<code>AgentNode.handleMessage</code> 备好工具与 prompt 后调 <code>LLMOrchestrationService.streamWithOrchestration</code>→<code>CoreLLM.streamText</code>，由 SDK 在 <code>maxSteps</code>(默认5) 内自动跑”LLM→tool→回灌→再 LLM”。每个 step 经 <code>onStepFinish</code> 回调追踪已用工具</td><td><code>nodes/agent-node.ts:414,557</code> (<code>maxSteps</code>), <code>llm/llm-orchestration-service.ts:157,216</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无独立 planner；规划=人写的 <strong>orchestration steps</strong>（声明式状态机）+ LLM 自身推理。step 可设 <code>sequence</code>(强制工具顺序) 与 <code>conditions</code>(<code>tool_used</code>/<code>sequence_match</code>) 实现确定性多阶段流程；另有 <code>agent-planner</code> 模板做”设计其他 agent”</td><td><code>types/orchestration.ts</code>, <code>orchestration/core.ts</code>, <code>agents/agent-planner/template.json</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>四层记忆：Working/Episodic/Semantic/Procedural（<code>memory/types/*</code>），由 <code>MemoryManager</code> 统管；写入经 <strong>PRIME</strong> 抽取器（LLM <code>generateObject</code> 按重要度分类落库，2-tier 选模）；召回 <code>RecallService</code> 支持 hybrid（关键词+向量）；含 LazyDecay 衰减、连接图谱、巩固</td><td><code>memory/MemoryManager.ts</code>, <code>memory/extraction/PRIMEExtractor.ts:39</code>, <code>memory/services/RecallService.ts</code>, <code>memory/index.ts</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>工具=扩展 <code>BaseNode</code> 的节点；<code>createTool({name,description,parameters:zod,execute})</code> 创建（<code>nodes/tool/index.ts:190</code>）；全局 <code>DefaultToolRegistry</code> 单例注册，<code>getToolsForAgent(nodeNames)</code> 按 agent 的 <code>nodes</code> 取工具；运行时 <code>streamWithOrchestration</code> 包装 execute 注入 <code>llmContext</code>(CoreLLM 实例)</td><td><code>nodes/tool/index.ts:69,190</code>, <code>nodes/tool-registry.ts:48,93</code>, <code>nodes/agent-node.ts:344,458</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>CoreLLM</code> 统一封装 Vercel AI SDK <code>LanguageModel</code>，暴露 <code>generateText/streamText/generateObject</code> 等；<code>createLLM</code> 工厂 + <code>ProviderRegistry</code> 按 provider 路由 adapter（anthropic/openai/google/groq/deepseek/cerebras）；支持 primary+fallback 双 LLM</td><td><code>llm/core-llm.ts:84</code>, <code>llm/create-llm.ts</code>, <code>llm/provider-registry.ts</code>, <code>llm/providers/*-adapter.ts</code>, <code>nodes/agent-node.ts:152</code> (fallback)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>N/A（核心层）。无 agent-to-agent / 子 agent 派生运行时；“orchestration” 指<strong>单 agent 内的工具/step 编排</strong>而非多 agent。Multi-Agent Collaboration 在 README roadmap 标 <strong>Planned</strong>；节点间有 <code>MessageBus</code> 原语但未用于多 agent</td><td><code>nodes/base-node.ts:107</code> (sendMessage), README §Roadmap</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><code>createSystemPrompt(agentConfig, dynamicState)</code> 由 personality+动态 orchestration 状态(activeStep/recentlyUsedTools)拼 system prompt，并注入当前日期/时区；<code>applyHistoryPolicy</code> 按 <code>none/lastN/all</code> 裁剪历史；模板级 <code>tokenOptimization</code>(compressToolOutputs/maxToolOutputTokens)</td><td><code>utils/prompt-utils.ts:25,70</code> (<code>createSystemPrompt</code>/<code>addOrchestrationToPrompt</code>), <code>utils/message-utils.ts:89</code> (<code>applyHistoryPolicy</code>), <code>nodes/agent-node.ts:534</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>通过 <strong>node 扩展</strong>实现：自定义能力=继承 <code>BaseNode</code>/<code>BaseTool</code> 的节点，经 <code>NodeRegistry</code>/<code>ToolRegistry</code> 注册（<code>register-core-nodes.ts</code>）；agent 在 <code>nodes:[]</code> 中按名启用。无独立 “skill/plugin” 概念，统一收敛到 node 系统</td><td><code>nodes/node-registry.ts</code>, <code>nodes/register-core-nodes.ts</code>, <code>nodes/base-node.ts:55</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>内置 <strong>Evaluation Framework</strong>：<code>runEvaluation</code> runner + 多评估器（RuleBased/LLMJudge/NLPAccuracy/ToolUsage/LexicalSimilarity/KeywordCoverage/Sentiment/Toxicity），结果落 <code>JsonFileStorage</code>；结构化分类日志 <code>logger</code>(LogCategory)；token 用量经 <code>onFinish</code> 累积进 orchestration 状态（cumulativeTokenUsage）</td><td><code>evaluation/runner/index.ts</code>, <code>evaluation/evaluators/*</code>, <code>logging/</code>, <code>llm/llm-orchestration-service.ts:421</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库（<code>agentdock-core</code>，<code>tsup</code> 打包，含 <code>.</code>+<code>/server</code> 两个 export，区分 edge/Node）；自身不起服务，由 Next.js 客户端（Vercel 一键部署）或宿主后端驱动；流式执行依赖 Vercel AI SDK，serverless 下用 <code>@vercel/functions</code> waitUntil 跑后台任务</td><td><code>agentdock-core/package.json:6</code>, <code>llm/llm-orchestration-service.ts:26,55</code>, README §Getting Started, <code>vercel.json</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>N/A（核心层无一等 HITL 原语，无审批/打断 API）。治理体现为：BYOK（密钥本地加密，<code>memory/services/EncryptionService.ts</code>）、orchestration 对工具可用性的确定性约束、<code>SECURITY.md</code>；交互式审批留给宿主客户端实现</td><td><code>orchestration/core.ts</code> (getAllowedTools), <code>memory/services/EncryptionService.ts</code>, <code>SECURITY.md</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>会话隔离 <code>SessionManager&#x3C;T></code>（泛型，按 sessionId 存取，TTL）；orchestration 状态（activeStep/sequenceIndex/recentlyUsedTools/tokenUsage）经 <code>OrchestrationStateManager</code> 持久化；<strong>Storage Abstraction</strong>：统一 <code>StorageProvider</code> 接口 + 大量 KV/向量 adapter（Memory/Redis/Vercel KV/SQLite/Postgres/Mongo/DynamoDB/S3/Pinecone/Qdrant/Chroma…）+ 迁移工具</td><td><code>session/index.ts:33</code>, <code>orchestration/state.ts</code>, <code>storage/factory.ts</code>, <code>storage/adapters/*</code>, <code>storage/migration/index.ts</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>configurable determinism 是核心卖点</strong>：与多数”放手让 LLM 自主 ReAct”的框架不同，AgentDock 用声明式 orchestration step + <code>sequence</code>（强制工具顺序）+ <code>conditions</code>（<code>tool_used</code>/<code>sequence_match</code> 触发状态转移）把工具调用收束成可预测路径——<code>getAllowedTools</code>（<code>orchestration/core.ts:351</code>）每轮按当前 step 过滤 LLM 可见工具。即”非确定性 agent 包裹确定性 workflow”。</li>
+<li><strong>node-based 单一抽象</strong>：agent、tool、自定义逻辑全部是 <code>BaseNode</code>，靠 registry 组装、靠 ports/MessageBus 连接。代价是抽象偏重、上手需理解 node/registry/orchestration 三件套；好处是统一可组合、为可视化 workflow builder（AgentDock Pro）铺路。</li>
+<li><strong>backend-first + provider-independent</strong>：核心库刻意不绑死前端/服务形态，<code>streamText</code> 结果直接交给宿主（Next.js 客户端是参考实现，可一键 Vercel 部署）。LLM 全走 Vercel AI SDK，新增 provider 只需加 adapter。</li>
+<li><strong>记忆系统是重头戏</strong>：四层记忆 + PRIME 智能抽取 + hybrid 召回 + LazyDecay 衰减 + 连接图谱 + 巩固，配套 SQLite-vec / pgvector / Pinecone / Qdrant / Chroma 等向量后端——比同类框架的”向量库 KV”成熟得多（虽然 README 仍标 memory/vector “In Progress”）。</li>
+<li><strong>存储抽象极广</strong>：一个 <code>StorageProvider</code> 接口对接十余种后端（边缘 KV 到云数据库到多种向量库），并有 <code>StorageMigrator</code>，适合从本地 demo 平滑迁到生产。</li>
+<li><strong>明显短板/待确认</strong>：①核心层<strong>无多 agent 协作、无 MCP、无一等 HITL/审批</strong>（均为 roadmap Planned），需自行在客户端实现；②<code>agentdock-core</code> 标 <code>private</code>、版本 <code>0.1.0-161-1</code>、Status Beta，尚未作为正式 npm 包发布（README roadmap 明确”developed locally, will be published…”）；③<code>AgentNode</code> 构造函数里残留 <code>console.log('AgentNode Constructor - Test Log...')</code>（<code>nodes/agent-node.ts:119</code>）等调试代码，工程成熟度仍在打磨。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式（platform / 电池齐全）：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · <a class="wikilink" href="/frameworks/mastra/">mastra</a> · <a class="wikilink" href="/frameworks/botpress/">botpress</a> · <a class="wikilink" href="/frameworks/dust/">dust</a> · 源码：<code>agents-example/agentdock/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Strands Agents · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Strands Agents</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge paradigm" data-astro-cid-fwpw2zac>model-driven</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0 (strands-py/LICENSE)</span><a class="badge" href="https://github.com/strands-agents/sdk-python" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/strands/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="strands-agents">Strands Agents</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">AWS 出品的 model-driven（模型驱动） Python Agent SDK：几行代码就能起一个 agent，把”规划/工具选择/反思/何时停”全部交给底层模型在一个极简的 event loop 里自驱，框架本身只做模型抽象、工具调度、上下文管理与多智能体编排这些”脚手架”，刻意不写硬编码的编排逻辑。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Strands 的核心信条是 <strong>model-driven approach</strong>（README 第 13、35 行）：与 plan-execute、状态机、显式 graph 那类”框架替你决定下一步做什么”的范式相反，Strands 认为现代大模型已经足够强，能自己完成”思考→选工具→看结果→继续推理→给答案”的循环（<code>agent.py:114-122</code> 的 6 步 workflow 注释即此理念的直接表达）。因此框架的工作不是”编排智能”，而是<strong>给模型提供一个干净、可观测、可扩展的运行时</strong>，让模型在循环里自主决策。具体取舍：</p>
+<ul>
+<li><strong>极简自驱 event loop</strong>：整个推理内核就是 <code>event_loop_cycle()</code>（<code>event_loop/event_loop.py:179</code>）一个递归协程——调模型→若 <code>stop_reason=="tool_use"</code> 则执行工具→把结果回灌→<code>recurse_event_loop()</code> 再来一轮（<code>event_loop.py:400,790</code>），直到模型自己 <code>end_turn</code>。没有 planner、没有状态机，<strong>“下一步做什么”完全由模型 token 决定</strong>。这就是 model-driven 落在代码上的样子。</li>
+<li><strong>模型可插拔是第一公民</strong>：<code>Model</code> 抽象基类（<code>models/model.py:158</code>）只要求实现 <code>stream()</code> / <code>structured_output()</code> / <code>get_config()</code>，自带 13+ provider（Bedrock 默认、Anthropic、OpenAI、Gemini、Ollama、LiteLLM、Mistral、Writer、SageMaker…）。换模型 = 换一行构造参数，agent 逻辑零改动——“model-driven”的前提是”model-agnostic”。</li>
+<li><strong>函数即工具</strong>：<code>@tool</code> 装饰器（<code>tools/decorator.py:731</code>）用 <code>inspect</code> + type hints + <code>docstring_parser</code> + Pydantic 自动把普通 Python 函数转成带 JSON schema 的工具，docstring 即给模型的说明书。</li>
+<li><strong>薄内核 + hooks/plugins 扩展</strong>：不靠继承扩展，靠 typed hook 事件系统（<code>hooks/registry.py</code>）与 <code>Plugin</code>（<code>plugins/</code>）；retry、session、conversation_manager、model 生命周期本身都注册为 hook。</li>
+<li><strong>包结构</strong>：<code>agent/</code>（Agent 入口 + conversation_manager 上下文管理）、<code>event_loop/</code>（推理内核 + 流式 + 重试）、<code>models/</code>（13+ provider）、<code>tools/</code>（装饰器/注册表/执行器/MCP/结构化输出）、<code>multiagent/</code>（graph/swarm/a2a）、<code>session/</code>（file/s3 持久化）、<code>telemetry/</code>（OTEL tracer + metrics）、<code>hooks/</code> + <code>plugins/</code> + <code>vended_plugins/</code>（skills/steering/context_offloader）、<code>experimental/</code>（bidi 语音双向流、checkpoint、steering）。</li>
+<li><strong>入口 API</strong>：<code>from strands import Agent</code>；<code>agent("prompt")</code> 同步返回 <code>AgentResult</code>（内部 <code>run_async</code> 跑 <code>invoke_async</code> → <code>stream_async</code>，见 <code>agent.py:528,539,810</code>）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> strands </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent, tool</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@tool</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> word_count</span><span style="color:#E1E4E8">(text: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Count words in text.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    This docstring is used by the LLM to understand the tool's purpose.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(text.split())</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 不传 model 时默认 BedrockModel（Claude Sonnet @ us-west-2），几行即成 agent</span></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span><span style="color:#FFAB70">tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[word_count])</span></span>
+<span class="line"><span style="color:#E1E4E8">response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent(</span><span style="color:#9ECBFF">"How many words are in this sentence?"</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># 模型自行决定是否调用工具</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>model-driven 自驱循环</strong>：调模型→<code>stop_reason=="tool_use"</code> 则执行工具→结果回灌→递归重开，无 planner/状态机，全靠模型决策；<code>max_tokens</code> 默认硬失败</td><td><code>event_loop/event_loop.py:179</code> (<code>event_loop_cycle</code>), <code>event_loop.py:400</code> (<code>recurse_event_loop</code>), <code>event_loop.py:790</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无显式 planner——这正是 model-driven 的取舍：规划交给模型隐式完成。结构化分解可借 <code>multiagent/graph.py</code> 的依赖图或 <code>swarm.py</code> 的自治移交，但单 agent 层无独立规划组件</td><td>N/A（单 agent 内核）；<code>multiagent/graph.py:241</code> (<code>GraphBuilder</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>agent.messages</code> 列表（多轮）；上下文窗口由 <code>ConversationManager</code> 管：滑窗 <code>SlidingWindowConversationManager</code>（默认）/ 摘要 <code>SummarizingConversationManager</code>（<code>:54</code>，LLM 摘要旧消息）/ <code>NullConversationManager</code>；<strong>无内置向量记忆/RAG</strong></td><td><code>agent/conversation_manager/sliding_window_conversation_manager.py</code>, <code>summarizing_conversation_manager.py:54</code>；向量记忆 N/A</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>@tool</code> 装饰器经 <code>inspect</code>+type hints+<code>docstring_parser</code>+Pydantic 自动生成 JSON schema；原生 function calling；支持目录热加载(<code>load_tools_from_directory</code>)、<code>ToolProvider</code>、agent-as-tool；默认并发执行</td><td><code>tools/decorator.py:731</code> (<code>tool</code>), <code>tools/registry.py:32</code> (<code>ToolRegistry</code>), <code>tools/executors/concurrent.py:19</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><strong>框架核心</strong>：<code>Model</code> ABC 仅需 <code>stream</code>/<code>structured_output</code>/<code>get_config</code>；13+ provider，默认 <code>BedrockModel</code>(Claude Sonnet)；传 str 走 Bedrock model-id，传实例走自定义；<code>stateful</code> 属性标记服务端托管会话</td><td><code>models/model.py:158</code> (<code>Model</code>), <code>models/bedrock.py:72</code> (<code>BedrockModel</code>), <code>agent.py:231</code> (默认装配)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>三模式：①<code>Graph</code> 确定性依赖图（支持环/嵌套，<code>GraphBuilder</code> 声明边）；②<code>Swarm</code> 自治协作团队（工具化 handoff + 共享上下文）；③A2A 协议(server/executor)；另 <code>agent.as_tool()</code> 把 agent 当工具</td><td><code>multiagent/graph.py:429</code> (<code>Graph</code>), <code>multiagent/swarm.py:237</code> (<code>Swarm</code>), <code>multiagent/a2a/</code>, <code>agent/agent.py:697</code> (<code>as_tool</code>)</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system_prompt 支持 str 或 <code>SystemContentBlock</code> 列表(含 cache point)；<code>ConversationManager</code> 在 <code>ContextWindowOverflowException</code> 时 <code>reduce_context</code> 重试(<code>agent.py:1055</code>)；<code>count_tokens</code> 启发式估算(tiktoken 或 chars/4)做前瞻压缩；<code>context_offloader</code> vended plugin</td><td><code>agent.py:1208</code> (<code>_initialize_system_prompt</code>), <code>models/model.py:263</code> (<code>count_tokens</code>), <code>vended_plugins/context_offloader/</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>两层：<code>Plugin</code>(注册 hooks/装配 agent，<code>plugins/</code>) + typed hook 事件；<code>AgentSkills</code> vended plugin 把带 frontmatter 的 SKILL.md 注入 system prompt 并提供 <code>skills</code> 激活工具，按需加载；MCP=即插即用工具源</td><td><code>plugins/plugin.py</code>, <code>vended_plugins/skills/agent_skills.py:45</code> (<code>AgentSkills</code>), <code>tools/mcp/mcp_client.py:104</code> (<code>MCPClient</code>)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>一等公民 OpenTelemetry：<code>Tracer</code> 为 agent/cycle/model/tool 起 span(<code>telemetry/tracer.py:77</code>)，<code>EventLoopMetrics</code> 记 token/延迟/cycle，<code>StrandsTelemetry</code> 一键装配；<code>callback_handler</code> 流式回调(默认 <code>PrintingCallbackHandler</code>)；评估走 OTEL 导出</td><td><code>telemetry/tracer.py:77</code> (<code>Tracer</code>), <code>telemetry/metrics.py</code> (<code>EventLoopMetrics</code>), <code>telemetry/config.py</code> (<code>StrandsTelemetry</code>)</td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库；<code>agent()</code> 同步(<code>run_async</code> 跨线程跑 event loop)，<code>invoke_async</code>/<code>stream_async</code> 异步流式；工具默认并发执行；<code>agent.cancel()</code> 线程安全优雅取消；<code>experimental.bidi</code> 提供语音双向流式 runtime；并发调用默认抛 <code>ConcurrencyException</code></td><td><code>agent.py:484</code> (<code>__call__</code>), <code>agent.py:810</code> (<code>stream_async</code>), <code>_async.py</code> (<code>run_async</code>), <code>experimental/bidi/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>Interrupt</code>/<code>InterruptException</code> 暂停 agent 等人类输入，经 session 持久化后 resume(<code>agent.py:878</code>)；<code>AfterInvocationEvent.resume</code> 钩子可注入新输入续跑；<code>experimental/steering</code> 提供 LLM/ledger 引导；guardrail 触发 <code>redactContent</code> 自动脱敏(<code>agent.py:1310</code>)</td><td><code>interrupt.py:11</code> (<code>Interrupt</code>), <code>agent.py:1004-1015</code> (resume), <code>experimental/steering/</code>, <code>agent.py:1310</code> (<code>_redact_user_content</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td><code>agent.state</code>=JSON 可序列化 KV(<code>agent/state.py</code>)；<code>SessionManager</code> ABC 经 hooks 自动落盘 messages/state/conversation_manager_state，含 <code>FileSessionManager</code>/<code>S3SessionManager</code>/<code>RepositorySessionManager</code>；<code>take_snapshot</code>/<code>load_snapshot</code> 内存快照；<code>checkpointing</code> 在 cycle 边界暂停可恢复</td><td><code>session/session_manager.py:31</code> (<code>SessionManager</code>), <code>session/file_session_manager.py</code>, <code>session/s3_session_manager.py</code>, <code>agent.py:1238</code> (<code>take_snapshot</code>), <code>experimental/checkpoint/</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“框架只做脚手架，智能归模型”</strong>：与 <a class="wikilink" href="/frameworks/crewai/">CrewAI</a> 的角色/任务编排、<a class="wikilink" href="/frameworks/metagpt/">MetaGPT</a> 的 SOP 流水线、<a class="wikilink" href="/frameworks/langchain/">LangChain</a> 的 chain 显式拼装相比，Strands 把”下一步做什么”彻底下放给模型，框架内核小到只有一个递归 event loop。优点是代码极简、随模型能力升级自动变强；代价是行为可预测性低、强依赖底层模型的工具调用与反思能力（弱模型上效果会明显打折）。</li>
+<li><strong>AWS 血统但 model-agnostic</strong>：默认 <code>BedrockModel</code>(Claude Sonnet @ us-west-2，需配 AWS 凭证)、内置 <code>S3SessionManager</code>/<code>SageMaker</code> provider，AWS 生态集成深；但 <code>Model</code> 抽象让它同时支持 OpenAI/Gemini/Ollama/本地 llama.cpp，并非锁死 AWS。</li>
+<li><strong>可观测性是一等公民</strong>：原生 OpenTelemetry（agent/cycle/model/tool 四级 span + token/cost metrics），在”模型自驱、行为不可预测”的范式下，这种深度 tracing 是必要的可解释性补偿——这是 model-driven 框架的合理工程取舍。</li>
+<li><strong>企业级特性齐全</strong>：session 持久化(file/s3/repo)、checkpoint、interrupt 人在环、guardrail 脱敏、并发锁、优雅取消、A2A 协议、MCP 原生支持、结构化输出(Pydantic)、prompt caching——production-ready 而非玩具。</li>
+<li><strong>多智能体三选一</strong>：确定性 <code>Graph</code>（要可控流程时用）vs 自治 <code>Swarm</code>（要涌现协作时用）vs A2A（跨服务），且三者可嵌套、agent 还能 <code>as_tool()</code> 互嵌——编排层灵活度高。</li>
+<li><strong>monorepo 现状</strong>：仓库是 monorepo（Python SDK 在 <code>strands-py/</code>，另有 TS SDK <code>strands-ts/</code>、WASM、文档站）；本笔记基于 Python SDK。<code>experimental/</code> 下的 bidi 语音双向流、steering、checkpoint 标注为实验特性，API 可能变动。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/model-abstraction/">model-abstraction</a> · <a class="wikilink" href="/components/reasoning-loop/">reasoning-loop</a></li>
+<li>同范式(single + model-driven/电池齐全)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · <a class="wikilink" href="/frameworks/smolagents/">smolagents</a> · <a class="wikilink" href="/frameworks/crewai/">crewai</a> · 源码：<code>agents-example/strands/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

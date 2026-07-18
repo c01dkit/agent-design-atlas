@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pipecat · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Pipecat</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>voice</span><span class="badge" data-astro-cid-fwpw2zac>BSD-2-Clause</span><a class="badge" href="https://github.com/pipecat-ai/pipecat" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/pipecat/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="pipecat">Pipecat</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个开源的 实时语音与多模态对话 AI 框架（pyproject 自述 “framework for voice (and multimodal) assistants”）：把音频/视频、STT/LLM/TTS 服务、WebRTC/WebSocket 传输统一抽象成在 Pipeline 中单向流动的 Frame，由一串 FrameProcessor 事件驱动地逐级处理，专门解决实时语音对话里的低延迟、打断（barge-in）、轮次（turn）管理问题。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Pipecat 的核心范式不是”agent 推理循环”，而是 <strong>frame-based 流式管道（pipeline of frame processors）</strong>——更接近 GStreamer / 数字音频工作站的数据流模型，而非 ReAct。设计取舍：</p>
+<ul>
+<li><strong>一切皆 Frame</strong>：音频、文本、图像、控制信号都是 <code>Frame</code> dataclass（<code>src/pipecat/frames/frames.py</code> 定义 ~236 个 Frame 类型）。Frame 有方向：<code>DOWNSTREAM</code>（输入→输出，承载数据）与 <code>UPSTREAM</code>（确认/错误回传），见 <code>processors/frame_processor.py:56</code> 的 <code>FrameDirection</code>。</li>
+<li><strong>一切皆 FrameProcessor</strong>：<code>FrameProcessor</code>（<code>processors/frame_processor.py:175</code>）是唯一处理单元；它接收 frame、处理、用 <code>push_frame()</code>（<code>:702</code>）推给下游。STT/LLM/TTS service、transport、aggregator、filter 全是它的子类。处理器用 <code>link()</code>（<code>:536</code>）串成链。</li>
+<li><strong>Pipeline 即处理器链</strong>：<code>Pipeline</code>（<code>pipeline/pipeline.py:91</code>）把一个 processor 列表首尾相连，并自动在两端包上 <code>PipelineSource</code>/<code>PipelineSink</code>（<code>:21</code>/<code>:55</code>）。<code>ParallelPipeline</code>（<code>pipeline/parallel_pipeline.py:24</code>）让多条子管道并行。</li>
+<li><strong>Worker = 可运行单元（1.3.0 新模型）</strong>：管道本身不自跑，要包进 <code>PipelineWorker</code>（<code>pipeline/worker.py:170</code>，<code>BaseWorker</code> 子类），由 <code>WorkerRunner</code>（<code>workers/runner.py:80</code>）驱动并管信号/优雅退出。旧的 <code>PipelineTask</code>（<code>pipeline/worker.py:1273</code>）/<code>PipelineRunner</code> 已弃用为别名。</li>
+<li><strong>事件驱动</strong>：几乎所有对象继承 <code>BaseObject</code>，支持事件回调（如 transport 的 <code>@event_handler("on_client_connected")</code>）；打断、轮次开始/结束都通过特定 Frame 在管道里传播来驱动状态变化，而非集中式调度。</li>
+<li><strong>多 worker / bus（合并自 pipecat-subagents）</strong>：单管道之外，多个 worker 可经 <code>WorkerBus</code>（<code>bus/bus.py</code>，默认 <code>AsyncQueueBus</code>，分布式可换 pgmq/redis）用 job RPC 协作。</li>
+</ul>
+<p>最小示例（取自 <code>examples/getting-started/06-voice-agent.py</code>，典型 STT→LLM→TTS 语音回环）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.pipeline.pipeline </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Pipeline</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.pipeline.worker </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> PipelineParams, PipelineWorker</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.processors.aggregators.llm_context </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> LLMContext</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.processors.aggregators.llm_response_universal </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    LLMContextAggregatorPair, LLMUserAggregatorParams,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.audio.vad.silero </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> SileroVADAnalyzer</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.services.deepgram.stt </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> DeepgramSTTService</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.services.openai.llm </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> OpenAILLMService</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.services.cartesia.tts </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> CartesiaTTSService</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pipecat.workers.runner </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> WorkerRunner</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">stt </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DeepgramSTTService(</span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">llm </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OpenAILLMService(</span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">settings</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">OpenAILLMService.Settings(</span></span>
+<span class="line"><span style="color:#FFAB70">    system_instruction</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"You are a helpful assistant in a voice conversation."</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">tts </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CartesiaTTSService(</span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">context </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> LLMContext()</span></span>
+<span class="line"><span style="color:#E1E4E8">user_agg, assistant_agg </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> LLMContextAggregatorPair(</span></span>
+<span class="line"><span style="color:#E1E4E8">    context, </span><span style="color:#FFAB70">user_params</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">LLMUserAggregatorParams(</span><span style="color:#FFAB70">vad_analyzer</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">SileroVADAnalyzer()))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">pipeline </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Pipeline([</span></span>
+<span class="line"><span style="color:#E1E4E8">    transport.input(),   </span><span style="color:#6A737D"># 传输层进帧（麦克风/WebRTC）</span></span>
+<span class="line"><span style="color:#E1E4E8">    stt,                 </span><span style="color:#6A737D"># 语音转文字</span></span>
+<span class="line"><span style="color:#E1E4E8">    user_agg,            </span><span style="color:#6A737D"># 聚合用户轮次</span></span>
+<span class="line"><span style="color:#E1E4E8">    llm,                 </span><span style="color:#6A737D"># 大模型</span></span>
+<span class="line"><span style="color:#E1E4E8">    tts,                 </span><span style="color:#6A737D"># 文字转语音</span></span>
+<span class="line"><span style="color:#E1E4E8">    transport.output(),  </span><span style="color:#6A737D"># 传输层出帧（扬声器）</span></span>
+<span class="line"><span style="color:#E1E4E8">    assistant_agg,       </span><span style="color:#6A737D"># 聚合助手轮次</span></span>
+<span class="line"><span style="color:#E1E4E8">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">worker </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> PipelineWorker(pipeline, </span><span style="color:#FFAB70">params</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">PipelineParams(</span><span style="color:#FFAB70">enable_metrics</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">runner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> WorkerRunner()</span></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#E1E4E8"> runner.add_workers(worker)</span></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#E1E4E8"> runner.run()</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>非 ReAct</strong>；范式是 frame-based 流式管道：Frame 沿 processor 链单向流动，每个 <code>FrameProcessor.process_frame()</code> 处理后 <code>push_frame()</code> 给下游；推理本身委托给 LLM service（function-calling 多轮由 <code>run_function_calls</code> 把结果回灌进 <code>LLMContext</code> 再触发下一轮 inference）</td><td><code>processors/frame_processor.py:615</code> (<code>process_frame</code>), <code>:702</code> (<code>push_frame</code>), <code>services/llm_service.py:888</code> (<code>run_function_calls</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>框架内核无显式 planner；任务分解交给 LLM 自身或上层应用。结构化”分解”体现在管道编排（<code>Pipeline</code>/<code>ParallelPipeline</code>）与多 worker job RPC（<code>@job</code> + <code>job_group</code> 扇出），而非自动 plan</td><td><code>pipeline/pipeline.py:91</code>, <code>pipeline/parallel_pipeline.py:24</code>, <code>pipeline/job_decorator.py</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>LLMContext</code> 累积对话消息（<code>add_message</code>/<code>get_messages</code>）；长期/向量=可选 <code>Mem0MemoryService</code>（<code>FrameProcessor</code>，接 mem0ai 向量记忆，extra <code>mem0</code>）；亦有 <code>persistent-context</code> 示例做会话落盘</td><td><code>processors/aggregators/llm_context.py:93,372</code>, <code>services/mem0/memory.py:35</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>LLM service 上 <code>register_function(name, handler)</code> 注册函数，handler 收 <code>FunctionCallParams</code>；支持 direct function、并行/顺序执行、<code>cancel_on_interruption</code>、超时；外部工具经 <code>MCPClient.register_tools(llm)</code> 把 MCP server 工具批量注册</td><td><code>services/llm_service.py:754</code> (<code>register_function</code>), <code>:136</code> (<code>FunctionCallParams</code>), <code>:888</code> (<code>run_function_calls</code>), <code>services/mcp_service.py:146</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>服务基类体系 <code>AIService</code>→<code>LLMService</code>/<code>STTService</code>/<code>TTSService</code>/<code>VisionService</code>；60+ provider 实现（openai/anthropic/google/groq…）；<code>BaseLLMAdapter</code>（泛型）把统一 <code>LLMContext</code>/<code>ToolsSchema</code> 转成各家 provider 的 messages/tools 格式</td><td><code>services/llm_service.py:245</code> (<code>LLMService</code>), <code>services/ai_service.py</code>, <code>adapters/base_llm_adapter.py:33,94,129</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>两路：①进程内 <code>ParallelPipeline</code> 并行多条管道；②多 <strong>worker</strong> 经 <code>WorkerBus</code> 协作——<code>@job(name=, sequential=)</code> 暴露 handler，调用方 <code>async with self.job(name)</code> / <code>self.job_group(*names)</code> 发请求并等 <code>JobStatus</code>；<code>WorkerRegistry</code> 跟踪本地/远程 worker（pgmq/redis 可跨进程）</td><td><code>pipeline/parallel_pipeline.py:24</code>, <code>pipeline/job_context.py</code>, <code>pipeline/job_decorator.py</code>, <code>bus/bus.py</code>, <code>registry/</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><code>LLMContext</code> 为单一上下文真相，由 <code>LLMContextAggregatorPair</code> 拆成 user/assistant 两个 aggregator 在管道里增量聚合；<code>system_instruction</code> 经 service 注入并可 <code>append_system_instruction</code>；<code>LLMContextSummaryRequestFrame</code> 触发上下文摘要（context-summarization 示例）</td><td><code>processors/aggregators/llm_context.py:93</code>, <code>processors/aggregators/llm_response_universal.py</code> (<code>LLMContextAggregatorPair</code>), <code>services/llm_service.py:476,638</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”skill/plugin”系统；扩展点即”写一个 <code>FrameProcessor</code> 子类”或”新增一个 service（扩展对应 base 类）“。第三方框架以 processor 形式接入：<code>processors/frameworks/</code>（LangChain、Strands Agents、RTVI）</td><td><code>processors/frame_processor.py:175</code>, <code>processors/frameworks/langchain.py</code>, <code>processors/frameworks/strands_agents.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><code>BaseObserver</code> 旁路监听 frame 流（<code>on_process_frame</code>/<code>on_push_frame</code>），不改管道；内置 turn/latency/startup observer；<code>PipelineParams(enable_metrics=, enable_usage_metrics=)</code> 收集 token/延迟；OpenTelemetry 追踪经 <code>TurnTraceObserver</code> + <code>utils/tracing/</code>（extra <code>tracing</code>），Sentry 集成</td><td><code>observers/base_observer.py</code>, <code>observers/turn_tracking_observer.py</code>, <code>pipeline/worker.py:135</code> (<code>PipelineParams</code>), <code>utils/tracing/turn_trace_observer.py:36</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td><code>PipelineWorker</code> 包管道，<code>WorkerRunner.run()</code> 异步驱动并管 SIGINT/SIGTERM 优雅退出（<code>auto_end=True</code> 时根 worker 跑完即结束，长驻服务用 <code>False</code>）；<code>pipecat.runner</code>（extra <code>runner</code>：uvicorn+fastapi）提供 dev 服务器与 <code>create_transport</code>；可部署到 Pipecat Cloud</td><td><code>workers/runner.py:80,160,195</code>, <code>pipeline/worker.py:170</code>, <code>workers/base_worker.py:102,321</code>, <code>runner/run.py</code>, <code>runner/utils.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>实时交互而非审批治理：<strong>打断/barge-in</strong>——<code>InterruptionFrame</code>（携 <code>asyncio.Event</code>，到 sink 时 set）由用户轮次开始策略触发；<strong>轮次管理</strong>——<code>UserTurnStrategies</code>（start: VAD+转写; stop）判定用户起止说话；<code>RTVIProcessor</code> 作为客户端↔管道协议桥接收文本/音频/函数结果</td><td><code>turns/user_turn_strategies.py:55</code>, <code>turns/user_start/vad_user_turn_start_strategy.py</code>, <code>processors/frameworks/rtvi/processor.py:49</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>运行态在 <code>LLMContext</code>（消息）+ worker 内部状态；<code>EndFrame</code>/<code>StopFrame</code> 为 uninterruptible（打断也不丢）；序列化主要面向 <strong>wire 传输</strong>：<code>FrameSerializer.serialize/deserialize</code>（Twilio/Plivo/Vonage/Telnyx/Exotel/Genesys/protobuf）把 frame 转电话/WebSocket 协议；跨 worker 状态走 bus 的 <code>BusMessage</code></td><td><code>serializers/base_serializer.py:23,80,92</code>, <code>serializers/twilio.py</code>, <code>frames/frames.py</code>, <code>bus/messages.py</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>为”实时语音”而生，不是通用 agent harness</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 这类 single-agent ReAct 框架正交——Pipecat 的一等公民是音频流、延迟、打断、轮次，而不是”思考-行动循环”。LLM 在这里只是管道中一个 processor，function-calling 多轮是 service 内部行为。</li>
+<li><strong>frame/processor 抽象的代价与收益</strong>：统一成 ~236 个 Frame + 单一 <code>FrameProcessor</code> 接口，换来极强的可组合性（任意 STT/LLM/TTS/transport 自由拼接、并行、加 filter/observer），但学习曲线偏陡——必须理解 frame 方向、push 时机、打断时 <code>frame.complete()</code> 的契约（不向下游传 <code>InterruptionFrame</code> 的处理器<strong>必须</strong>调 <code>complete()</code>，否则会卡住等待者）。</li>
+<li><strong>打断处理是核心难点的一等抽象</strong>：<code>InterruptionFrame</code> 携带 <code>asyncio.Event</code>、uninterruptible frame（<code>EndFrame</code>/<code>StopFrame</code>）、VAD 触发的用户轮次开始策略，共同构成低延迟 barge-in 机制——这是语音框架区别于文本 agent 框架的关键工程点。</li>
+<li><strong>极广的 provider 生态</strong>：pyproject 列了 60+ 可选 extra（STT/TTS/LLM/传输/电话/avatar），全部走统一 base 类 + adapter，换 provider 基本只改构造行。</li>
+<li><strong>新 worker/bus 模型（1.3.0）</strong>：把”pipeline task”重构为 <code>BaseWorker</code>/<code>WorkerRunner</code>，并内置多 worker job RPC（本地 AsyncQueueBus，分布式 pgmq/redis），向”多协作 worker”演进；旧 <code>PipelineTask</code>/<code>PipelineRunner</code> 保留为弃用别名。</li>
+<li><strong>待确认/坑</strong>：①star 数为约数，本次未联网核实；②<code>PipelineTask</code>/<code>PipelineRunner</code>/<code>tool_resources</code>/<code>pipeline_task</code> 等大量 1.2–1.3 弃用别名仍在，跟教程时注意版本；③不少能力靠 optional extra，缺装会 import 失败。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/tool-use/">tool-use</a></li>
+<li>范式（voice / 流式管道）：本库唯一 · 源码：<code>agents-example/pipecat/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

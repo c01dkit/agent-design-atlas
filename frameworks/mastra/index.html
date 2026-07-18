@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mastra · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Mastra</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>typescript</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0（`ee/` 目录为 Mastra Enterprise License 源码可见但需企业许可，见 LICENSE.md）</span><a class="badge" href="https://github.com/mastra-ai/mastra" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/mastra/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="mastra">Mastra</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个面向现代 TypeScript 全栈的 opinionated agent 框架（Y Combinator W25，Kepler Software 出品）：用 Agent（自主工具循环）+ 声明式 graph workflow（.then()/.branch()/.parallel()/.dowhile()/.foreach()）两条互补的执行原语，配齐 40+ provider 的模型路由、三层 memory（对话历史/工作记忆/语义召回）、Zod 工具、suspend/resume 人在环、OTel 风格 AI tracing 与 evals，目标是”从原型一路到生产”并能内嵌进 React/Next/Node 或独立部署为服务。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Mastra 是 <strong>turborepo + pnpm workspace 的大型 TS monorepo</strong>，骨架全在 <code>packages/core/src</code>，设计取舍如下：</p>
+<ul>
+<li><strong>两条执行原语，职责分离</strong>：<code>Agent</code>（<code>agent/agent.ts</code>，7800+ 行的核心类）做”自主 reasoning + 工具迭代”，让 LLM 自己决定调哪些工具、何时停；<code>Workflow</code>（<code>workflows/workflow.ts</code>）做”显式可控的多步编排”，用链式声明 DSL 表达控制流。关键点是<strong>二者同构</strong>：agent 的 reasoning loop 本身就是用 workflow 引擎实现的（<code>loop/</code> 把一次 agent 运行编译成 <code>agentic-loop</code> workflow），workflow 的 step 又能直接包一个 agent 或 tool（<code>createStepFromAgent</code>/<code>createStepFromTool</code>，<code>workflows/workflow.ts:430,600</code>）。</li>
+<li><strong>中央编排器 + 依赖注入</strong>：<code>Mastra</code> 类（<code>mastra/index.ts:524</code>）是配置 hub，注册 agents/workflows/storage/vectors/logger/observability，并把 storage、tracing 等横切能力注入给各组件（<code>agent.getMemory()</code> 会自动从 Mastra 注入 storage）。</li>
+<li><strong>包结构</strong>：<code>agent/</code>（含 <code>durable/</code> 持久化执行、<code>message-list/</code>、<code>network</code>）、<code>workflows/</code>（声明式引擎 + step）、<code>tools/</code>、<code>memory/</code>、<code>llm/model/</code>（router + gateways）、<code>loop/</code>（agentic loop 编译）、<code>processors/</code>（输入/输出处理管线）、<code>observability/</code>（AI tracing span 体系）、<code>storage/</code>（可插拔 DB，domains 分库）、<code>mcp/</code>、<code>workspace/skills/</code>（SKILL.md）、<code>evals/</code>、<code>scorers</code>/<code>a2a</code>/<code>voice</code> 等。电池单独成包：<code>@mastra/memory</code>、<code>@mastra/rag</code>、<code>@mastra/evals</code>、<code>@mastra/mcp</code>、<code>@mastra/deployer</code>、<code>create-mastra</code> 脚手架、<code>playground</code> 调试 UI。</li>
+<li><strong>入口 API</strong>：<code>import { Agent } from '@mastra/core/agent'</code>，<code>agent.stream()</code>/<code>agent.generate()</code> 跑自主循环，<code>agent.network()</code> 跑多 agent 路由。</li>
+</ul>
+<p>最小示例（综合 README 与 <code>agent/agent.ts:387</code> 构造器 JSDoc）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Mastra } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@mastra/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Agent } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@mastra/core/agent'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createTool } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@mastra/core/tools'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { z } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'zod'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> getWeather</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createTool</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  id: </span><span style="color:#9ECBFF">'get-weather'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  description: </span><span style="color:#9ECBFF">'Get weather for a city'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  inputSchema: z.</span><span style="color:#B392F0">object</span><span style="color:#E1E4E8">({ city: z.</span><span style="color:#B392F0">string</span><span style="color:#E1E4E8">() }),</span></span>
+<span class="line"><span style="color:#E1E4E8">  outputSchema: z.</span><span style="color:#B392F0">object</span><span style="color:#E1E4E8">({ tempC: z.</span><span style="color:#B392F0">number</span><span style="color:#E1E4E8">() }),</span></span>
+<span class="line"><span style="color:#B392F0">  execute</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">city</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> ({ tempC: </span><span style="color:#79B8FF">21</span><span style="color:#E1E4E8"> }),  </span><span style="color:#6A737D">// city 已按 inputSchema 校验</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> weatherAgent</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Agent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">'Weather Agent'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  instructions: </span><span style="color:#9ECBFF">'You help users with weather information'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  model: </span><span style="color:#9ECBFF">'openai/gpt-5'</span><span style="color:#E1E4E8">,          </span><span style="color:#6A737D">// 字符串走内置模型路由，连接 40+ provider</span></span>
+<span class="line"><span style="color:#E1E4E8">  tools: { getWeather },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 中央编排器统一注册（注入 storage / observability 等）</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> mastra</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Mastra</span><span style="color:#E1E4E8">({ agents: { weatherAgent } });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> res</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> weatherAgent.</span><span style="color:#B392F0">generate</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Weather in Tokyo?'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(res.text);</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>自主工具循环，但<strong>用 workflow 引擎实现</strong>：一次运行编译成 <code>agentic-loop</code>，靠 <code>.dowhile(agenticExecution, …)</code> 反复执行 LLM 调用→工具调用步骤，直到 <code>stepResult.isContinued</code> 为 false；停止条件由 <code>stopWhen</code>（StopCondition 数组，如 step 计数）与 <code>maxSteps</code> 控制，每轮触发 <code>onIterationComplete</code> 钩子可注入反馈/继续/中止</td><td><code>loop/loop.ts:11</code>, <code>loop/workflows/agentic-loop/index.ts:80</code> (<code>.dowhile</code>), <code>loop/workflows/agentic-execution/index.ts</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无显式 planner；自主规划交给 LLM。<strong>显式规划走声明式 workflow</strong>：开发者用 <code>.then/.branch/.parallel/.dowhile/.foreach/.map</code> 手工编排为 DAG；多 agent 场景由 routing agent 动态决定下一个 primitive（见多智能体编排）</td><td><code>workflows/workflow.ts:1775</code> (<code>then</code>),<code>2142</code> (<code>branch</code>),<code>2294</code> (<code>foreach</code>); <code>loop/network/index.ts:224</code> (router 提示)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>抽象基类 <code>MastraMemory</code>（<code>@mastra/memory</code> 提供实现）：短期=线程对话历史（storage 持久化）；长期=<strong>working memory</strong>（tool-call 模式更新的结构化 markdown/schema）；向量=<strong>semantic recall</strong>（需配 <code>vector</code> store + <code>embedder</code>，相似度召回历史消息）；另有 observational memory</td><td><code>memory/memory.ts:114</code> (<code>MastraMemory</code>),<code>124</code> (<code>vector</code>/<code>embedder</code>),<code>638</code> (<code>getWorkingMemory</code>),<code>170</code> (<code>semanticRecall</code> 校验)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>createTool({ id, description, inputSchema, outputSchema, execute })</code>，Zod/Standard-Schema 定义入参出参，运行时自动校验输入输出（<code>validateToolInput</code>/<code>validateToolOutput</code>）；工具也可声明 <code>suspendSchema</code>/<code>resumeSchema</code> 支持 HITL；兼容 Vercel AI SDK tool 与 MCP 工具</td><td><code>tools/tool.ts:557</code> (<code>createTool</code>),<code>77</code> (<code>Tool</code> 类),<code>296</code> (execute 校验包装),<code>102</code> (suspend/resume schema)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>字符串 <code>provider/model</code> 经 <code>ModelRouterLanguageModel</code> 解析（<code>gateway-resolver</code> + <code>provider-registry.json</code>，覆盖 40+ provider），统一为 AI SDK v5/v6 <code>LanguageModelV2</code>；也接受直接传入 AI SDK model 实例；<code>resolveModelConfig</code> 兜底 v4 包装；支持 model fallbacks / retries</td><td><code>llm/model/router.ts:108</code> (<code>ModelRouterLanguageModel</code>),<code>97</code> (<code>defaultGateways</code>); <code>llm/model/resolve-model.ts</code>; <code>llm/model/provider-registry.json</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>三条路：①<code>agent.network(messages, opts)</code> 用一个 <strong>routing agent</strong> 在 sub-agents/workflows/tools 间动态路由迭代直至完成；②sub-agent：在 <code>agents:</code> 注册的 <code>SubAgent</code> 被包成工具供主 agent 调用（<code>getToolsForExecution</code>）；③workflow 内 <code>createStep(agent)</code> 把 agent 当步骤静态编排；另有 A2A 协议（<code>@mastra/core/a2a</code>）</td><td><code>agent/agent.ts:6377</code> (<code>network</code>); <code>agent/subagent.ts:43</code> (<code>SubAgent</code>); <code>loop/network/index.ts:297</code> (routing); <code>workflows/workflow.ts:430</code> (<code>createStepFromAgent</code>)</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><strong>processor 管线</strong>：input/output/error processors（及可作 processor 的 workflow）在 LLM 调用前后改写消息/系统提示/工具集，内置 token-limiter、message-selection、system-prompt-scrubber、moderation、PII、prompt-injection、structured-output 等；system-reminders 注入；<code>instructions</code>/<code>model</code>/<code>tools</code> 均支持 <code>DynamicArgument</code>（按 requestContext 动态解析）</td><td><code>processors/processors/</code> (token-limiter/message-selection/…), <code>processors/index.ts:52</code> (<code>ProcessorContext</code>), <code>memory/system-reminders.ts</code>, <code>agent/agent.ts:334</code> (动态 instructions)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><strong>Skills</strong>=<code>SKILL.md</code>（gray-matter frontmatter）文件，经 <code>workspace/skills/</code> 发现（local/versioned/composite source + glob），由 <code>SkillsProcessor</code> 注入（eager 或 on-demand 发现），并暴露为 skill 工具；<strong>兼容 Claude Code <code>~/.claude/skills/</code></strong>（<code>workspace/filesystem/local-filesystem.ts:83</code>）。插件式扩展主要靠 processors + tools + storage domains，而非继承</td><td><code>workspace/skills/workspace-skills.ts</code>, <code>workspace/skills/tools.ts</code>, <code>processors/processors/skills.ts</code>, <code>agent/agent.ts:828</code> (<code>getSkillsProcessors</code>), <code>storage/domains/skills/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><strong>AI tracing</strong>：<code>SpanType</code> 枚举（AGENT_RUN/WORKFLOW_RUN/MODEL_GENERATION/TOOL_CALL/MEMORY_OPERATION/RAG_* 等）构成结构化 span 树，经 <code>Observability</code> 入口（<code>@mastra/observability</code>，含 storage/platform/OTel exporter）导出；<strong>evals/scorers</strong>：<code>@mastra/evals</code> + <code>evals/scoreTraces</code> 对 trace 打分；<code>logger/</code> 分级日志</td><td><code>observability/types/tracing.ts:35</code> (<code>SpanType</code>), <code>mastra/index.ts:295,844</code> (<code>observability</code>/<code>registerExporter</code>), <code>evals/</code>, <code>loggers</code> 包</td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>库 + 服务双形态：<code>agent.stream()</code> 流式（基于 ReadableStream + <code>MastraModelOutput</code>）；嵌入 React/Next/Node 或经 <code>@mastra/deployer</code>/server-adapters 部署为独立 HTTP 服务；<code>create-mastra</code> 脚手架 + <code>playground</code> 本地调试 UI；<code>engines.node>=22.13</code>；工具默认本进程执行，可控并发（<code>toolCallConcurrency</code>）</td><td><code>loop/loop.ts:139</code> (<code>MastraModelOutput</code>), <code>deployer/</code>, <code>server/</code>, <code>create-mastra</code> 包, <code>loop/workflows/agentic-execution/tool-call-concurrency.ts</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><strong>suspend/resume</strong>：workflow step 与 tool 均可声明 <code>suspendSchema</code>/<code>resumeSchema</code>，执行中 <code>suspend()</code> 暂停并把状态落 storage，之后 <code>resume()</code> 携用户输入恢复（可无限期暂停）；<code>requireToolApproval</code> 工具审批；<strong>DurableAgent</strong> 把整次 agent 运行包成可持久/可恢复的 workflow</td><td><code>workflows/workflow.ts:389</code> (suspend/resume schema),<code>1799</code> (<code>canSuspend</code>); <code>tools/hitl.md</code>; <code>loop/loop.ts:24</code> (<code>requireToolApproval</code>); <code>agent/durable/durable-agent.ts:158</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>可插拔 storage（<code>MastraStorage</code> base + composite store + filesystem/in-memory/外部 DB 适配器），按 <strong>domain 分库</strong>（agents/skills/workspaces/mcp-clients/scorer-definitions…）持久化线程、消息、memory、workflow snapshot；workflow 快照支持 <code>resumeStream()</code>；<code>request-context</code>/<code>di</code> 管运行时上下文</td><td><code>storage/base.ts</code>, <code>storage/domains/</code> (skills/agents/…), <code>workflows/workflow.ts:66</code> (<code>shouldPersistSnapshot</code>), <code>agent/save-queue/</code>, <code>request-context/</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“agent 即 workflow” 的统一执行模型</strong>：与多数框架把 ReAct 循环写死成 while 不同，Mastra 把一次 agent 运行<strong>编译成内部 workflow</strong>（<code>agentic-loop</code>），从而免费获得 workflow 的 suspend/resume、snapshot、tracing span、并发控制。代价是核心 <code>agent.ts</code> 体量巨大（7800+ 行）、调用链很深，阅读门槛高。</li>
+<li><strong>声明式 graph workflow 是一等公民</strong>：<code>.then/.branch/.parallel/.dowhile/.dountil/.foreach/.map/.sleep</code> 链式 DSL（<code>workflows/workflow.ts</code>）给”需要确定性控制流”的场景一条不依赖 LLM 自主性的路径，且 step 可互嵌 agent/tool/processor——这是 Mastra 区别于纯 ReAct 框架的核心卖点。</li>
+<li><strong>TS 原生 + Zod 全程</strong>：工具/工作流/结构化输出都用 Zod（或 Standard Schema）做边界校验并推导类型，类型安全是 opinionated 取向；peerDependency 同时支持 zod v3/v4，并维护 v4/v5/v6 多套 AI SDK provider 适配（dependencies 里大量 <code>@ai-sdk/*</code> alias）。</li>
+<li><strong>生产电池齐全</strong>：模型路由（40+ provider/gateway）、三层 memory、processor 安全管线（moderation/PII/prompt-injection）、AI tracing + evals、deployer + playground、MCP server/client、A2A、voice/tts——对标”完整平台”而非极简库。</li>
+<li><strong>与 Claude Code 生态兼容</strong>：Skills 用 <code>SKILL.md</code> + frontmatter，且显式允许 <code>~/.claude/skills/</code> 路径，可直接复用 Claude 技能。</li>
+<li><strong>双许可</strong>：核心 Apache-2.0，但 <code>ee/</code> 目录（如 <code>auth/ee/</code>、<code>agent-builder/ee/</code>）是 Mastra Enterprise License，生产用需企业许可（README + LICENSE.md 明确，与 ConnectOnion 那种”声明不一致”不同，这里是有意为之）。</li>
+<li><strong>待确认</strong>：stars 数为估计值（README 用动态 badge，未在源码固化）；<code>maxSteps</code> 的默认值未在已读文件中以常量形式定位（由调用方/<code>stopWhen</code> 传入，缺省时循环以 LLM <code>finishReason</code> 自然停止）——具体默认行为待确认。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式（TS + 声明式 workflow + 平台电池）：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a>（Python 对照）· 源码：<code>agents-example/mastra/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

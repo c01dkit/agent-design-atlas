@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>llm-agents · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>llm-agents</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge" data-astro-cid-fwpw2zac>MIT (LICENSE 文件 + setup.py classifier 一致声明)</span><a class="badge" href="https://github.com/mpaepper/llm_agents" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/llm-agents/</span></div><div class="cov-strip" aria-label="组件覆盖 8/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:205" title="状态: N/A" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>8/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="llm-agents">llm-agents</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个极简（几百行）的教学型 single-agent 库，受 LangChain 启发、刻意”从零手搓”，用纯文本 prompt 脚手架 + 正则解析复刻经典 ReAct（Thought / Action / Action Input / Observation）循环，目的是让人用最少代码看懂”LLM 驱动的 agent 到底怎么跑起来”。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>llm-agents 的核心是 <strong>“ReAct 的最小可读实现”</strong>：作者明说 LangChain 很好但抽象层和文件太多，于是把”一个简单 agent 最重要的部分从零搓一遍”（<code>README.md:5-7</code>）。设计取舍：</p>
+<ul>
+<li><strong>Prompt 即控制流，正则即解析器</strong>：没有 function-calling、没有 JSON schema、没有 graph。整个推理范式被压在一个文本模板 <code>PROMPT_TEMPLATE</code>（<code>llm_agents/agent.py:14</code>）里，要求 LLM 严格按 <code>Thought/Action/Action Input/Observation</code> 格式输出，再用一条正则 <code>r"Action: ...Action Input:..."</code>（<code>agent.py:88</code>）把动作和入参抠出来。</li>
+<li><strong>pydantic BaseModel 当骨架</strong>：<code>Agent</code>、<code>ChatLLM</code>、<code>ToolInterface</code> 全是 <code>pydantic.BaseModel</code> 子类（<code>agent.py:36</code>、<code>llm.py:8</code>、<code>tools/base.py:3</code>），靠它做字段校验和默认值，没有自定义元类或依赖注入。</li>
+<li><strong>工具 = 实现 <code>use()</code> 的 BaseModel</strong>：工具接口只有 <code>name</code> / <code>description</code> 两个字段和一个 <code>use(input_text)->str</code> 方法（<code>tools/base.py</code>），约定极弱、可读性极高。</li>
+<li><strong>薄 LLM 层</strong>：<code>ChatLLM</code> 仅包了一层 <code>openai.ChatCompletion.create</code>（旧版 openai&#x3C;1.0 API），默认 <code>gpt-3.5-turbo</code> + <code>temperature=0</code>，靠 <code>stop</code> 参数阻止 LLM 幻觉出 Observation（<code>llm.py:13</code>、<code>agent.py:42</code>）。</li>
+<li><strong>包结构</strong>：<code>llm_agents/agent.py</code>（循环+解析）、<code>llm_agents/llm.py</code>（模型封装）、<code>llm_agents/tools/</code>（base + python_repl/search(SerpAPI)/google_search/searx/hackernews 五个具体工具）；顶层 <code>run_agent.py</code> 交互式入口。仅此而已。</li>
+<li><strong>入口 API</strong>：<code>from llm_agents import Agent, ChatLLM, PythonREPLTool</code>，<code>agent.run(question)</code> 返回最终答案字符串（<code>agent.py:56</code>）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> llm_agents </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent, ChatLLM, PythonREPLTool, HackerNewsSearchTool, SerpAPITool</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span><span style="color:#FFAB70">llm</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">ChatLLM(), </span><span style="color:#FFAB70">tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[PythonREPLTool(), SerpAPITool(), HackerNewsSearchTool()])</span></span>
+<span class="line"><span style="color:#E1E4E8">result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent.run(</span><span style="color:#9ECBFF">"Your question to the agent"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Final answer is </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">result</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>经典文本式 <strong>ReAct</strong>：<code>run()</code> 里 <code>while num_loops &#x3C; max_loops(默认15)</code> 循环——把累积的 <code>previous_responses</code> 填回 prompt → LLM 生成 Thought+Action → 正则解析出工具 → 执行 → 把 <code>Observation: &#x3C;result></code> 拼回去；命中 <code>Final Answer:</code> 即返回</td><td><code>agent.py:56</code> (<code>run</code>), <code>agent.py:14</code> (<code>PROMPT_TEMPLATE</code>), <code>agent.py:80</code> (<code>decide_next_action</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无显式 planner，规划完全交给 LLM 在 Thought 步自行推演；prompt 仅提示”Thought/Action 重复 N 次直到确定答案”，无分解/子任务结构</td><td><code>agent.py:14</code> (PROMPT_TEMPLATE 内 <code>... repeats N times</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>仅”短期”=本次 <code>run</code> 的 <code>previous_responses</code> 列表（每轮把 generated+Observation 追加，整段塞回 prompt）；无跨会话/长期/向量记忆</td><td><code>agent.py:57,76,78</code> (<code>previous_responses</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>文本协议而非原生 function-calling：工具实现 <code>ToolInterface.use(input_text)->str</code>；<code>tool_description</code>/<code>tool_names</code>/<code>tool_by_names</code> 把工具列表渲染进 prompt 供 LLM 选；解析后按名查表调用，未知工具抛 <code>ValueError</code>。内置 PythonREPL/SerpAPI/Google/Searx/HackerNews</td><td><code>tools/base.py:3</code> (<code>ToolInterface</code>), <code>agent.py:44-54,73-75</code>, <code>tools/python_repl.py:34</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>单一 <code>ChatLLM</code> pydantic 类，硬编码调用 OpenAI 旧版 <code>openai.ChatCompletion.create</code>；只暴露 <code>model</code>/<code>temperature</code>，无多 provider 路由、无统一消息抽象（单条 user message）</td><td><code>llm.py:8</code> (<code>ChatLLM</code>), <code>llm.py:13</code> (<code>generate</code>)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>N/A——纯 single-agent，无子 agent、无 agent 间通信</td><td>N/A</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>极简：每轮把全部历史 <code>'\n'.join(previous_responses)</code> 原样拼回 prompt（无摘要/压缩/裁剪）；唯一”工程”手段是 <code>stop_pattern=['\nObservation:', ...]</code> 防止 LLM 续写假 Observation</td><td><code>agent.py:69</code> (拼接), <code>agent.py:42</code> (<code>stop_pattern</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无插件系统；“扩展”=自定义继承 <code>ToolInterface</code> 的工具类传入 <code>tools=[...]</code>（README 明示可自建工具）</td><td><code>tools/base.py:3</code>, <code>README.md:57</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>仅靠 <code>print()</code>：开头打印渲染后的 prompt、每轮打印 generated+Observation（<code>agent.py:66,77</code>）；无结构化 trace、无 token/cost 统计、无 eval 框架。<code>tests/</code> 目录仅含 setup 校验与空 unit/integration 包</td><td><code>agent.py:66,77</code> (print), <code>tests/test_setup_validation.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库，同步单进程顺序执行；<code>pip install -e .</code> 安装，<code>python run_agent.py</code> 交互式提问运行；无服务化/异步/沙箱</td><td><code>setup.py:3</code>, <code>run_agent.py:3</code>, <code>README.md:28-44</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>唯一”人在环”是 <code>run_agent.py</code> 启动时 <code>input()</code> 收集一次问题；无审批/拦截/危险操作治理——PythonREPL 直接 <code>exec()</code> 任意代码，无沙箱（安全风险）</td><td><code>run_agent.py:4</code>, <code>tools/python_repl.py:21</code> (<code>exec</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>N/A——状态仅存活于单次 <code>run()</code> 的内存列表，进程结束即丢失，无任何落盘/恢复</td><td>N/A (<code>agent.py:57</code> runtime-only)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>教学优先，刻意不抽象</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 那类”电池全包”的生产框架相反，llm-agents 的全部价值就在”短到能一口气读完”。它把 ReAct 范式裸露在一个 prompt 模板和一条正则里，是理解 LangChain 早期 <code>ZeroShotAgent</code> 内部机制的最佳读物（多个工具文件头部直接注明 “Based on/Taken from hwchase17/langchain”）。</li>
+<li><strong>文本协议 vs function-calling</strong>：用 <code>Action:/Action Input:</code> 文本格式 + 正则解析，而非 OpenAI 原生 tool calling。优点是模型无关、直观；代价是脆弱——LLM 一旦不按格式输出，<code>_parse</code> 直接抛 <code>ValueError</code>（<code>agent.py:91</code>），没有重试/纠错。</li>
+<li><strong>强项是”可读性”，短板是”健壮性/生产性”</strong>：无记忆持久化、无多 agent、无可观测、无沙箱、无错误恢复；PythonREPL 用裸 <code>exec()</code> 执行 LLM 生成代码属明显安全隐患，仅适合本地学习实验。</li>
+<li><strong>依赖已显陈旧</strong>：基于 2023 年代码，<code>llm.py</code> 调用的是 <code>openai&#x3C;1.0</code> 的 <code>openai.ChatCompletion</code>/全局 <code>openai.api_key</code> 写法，在新版 openai SDK 下需改写；<code>pydantic</code> 仍按 v1 风格（<code>name = "..."</code> 类级赋值、<code>Field(alias=...)</code>）使用。</li>
+<li><strong>待确认</strong>：<code>__init__.py</code> 导出 <code>SearxSearchTool</code>/<code>GoogleSearchTool</code>，但 README 示例与默认 <code>run_agent.py</code> 仅用 PythonREPL/SerpAPI/HackerNews，这两个搜索工具是否经常被实际使用待确认；<code>stars ~1k</code> 为约数，具体以仓库为准。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/reasoning-loop/">reasoning-loop</a></li>
+<li>同范式(single / 教学极简)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/llm-agents/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Astron Agent · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Astron Agent</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge paradigm" data-astro-cid-fwpw2zac>rag</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0（仓库 LICENSE 文件确认）</span><a class="badge" href="https://github.com/iflytek/astron-agent" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/astron/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="astron-agent">Astron Agent</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">科大讯飞开源的企业级、商业友好的 Agentic Workflow 开发平台（对应商用产品「讯飞星辰 / SuperAgent」），不是单包 SDK 而是一整套多语言微服务系统：React 控制台 + Java Spring Boot 后端 + 一组 Python/Go 核心微服务（agent 执行引擎、workflow DAG 编排、knowledge RAG、memory、tenant 多租户）+ 插件体系（AI 工具 / MCP / RPA / Link / Skill），靠 Docker Compose / Helm 一键高可用部署，目标是让企业「从决策到行动」闭环地搭出可商用的智能体应用。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Astron 的取舍是「<strong>平台化而非库化</strong>」：核心价值不是一个优雅的 Agent 类，而是把「编排 + 模型管理 + 工具生态 + RPA + 多租户 + 部署运维」整合成一个可私有化部署的生产平台。</p>
+<ul>
+<li><strong>分层多语言微服务</strong>（<code>docs/PROJECT_MODULES_zh.md</code>）：
+<ul>
+<li>UI 层 <code>console/frontend/</code>：React 18 + TS + Vite + Ant Design + ReactFlow（工作流可视化编辑器）。</li>
+<li>后端聚合层 <code>console/backend/</code>：Java 21 + Spring Boot 3.5，子模块 <code>hub</code>/<code>toolkit</code>/<code>commons</code>，对前端出 REST + SSE。</li>
+<li>核心微服务层 <code>core/</code>：<code>agent</code>（Python/FastAPI，Agent 执行引擎，DDD 分层 api/service/domain/engine）、<code>workflow</code>（Python/FastAPI，Spark Flow DAG 编排引擎）、<code>knowledge</code>（Python/FastAPI，RAG）、<code>memory</code>（Python，会话/记忆 DB 服务）、<code>tenant</code>（<strong>Go 1.23 + Gin</strong>，多租户/配额）、<code>plugin/</code>（aitools/rpa/link）、<code>common</code>（Python 基础设施抽象）。</li>
+</ul>
+</li>
+<li><strong>通信方式</strong>：前端→后端 HTTP/REST+SSE；后端→核心服务 HTTP/REST；<strong>核心服务之间走 Kafka 事件驱动</strong>（topic <code>workflow-events</code>/<code>knowledge-events</code>/<code>agent-events</code>），数据面 MySQL + Redis + MinIO。</li>
+<li><strong>两个「Agent」语义并存</strong>：①<code>core/agent</code> 是单体 Agent 执行引擎，内部是 <strong>ReAct 式 CoT 文本推理循环</strong>（Chat / CoT / CoT-Process 三种 runner）；②<code>core/workflow</code> 是 <strong>DAG 工作流引擎</strong>，把 agent、llm、decision、iteration、loop、rpa、mcp、knowledge 等当作节点编排——多智能体/复杂流程靠 workflow 这层完成。</li>
+<li><strong>入口 API 形态</strong>：对外是 OpenAI 兼容的 chat completion 流式接口（<code>agent/api/v1/workflow_agent.py</code>，<code>StreamingResponse</code>），输入是结构化 <code>CustomCompletionInputs</code>（模型配置 + instruction + plugin 列表 + knowledge），由 <code>WorkflowAgentRunnerBuilder.build()</code> 组装 runner 后流式返回 <code>ReasonChatCompletionChunk</code>。</li>
+</ul>
+<p>最小用法（取自 README，平台部署而非 import 库）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 克隆仓库</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> clone</span><span style="color:#9ECBFF"> https://github.com/iflytek/astron-agent.git</span></span>
+<span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> docker/astronAgent</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 配置环境变量</span></span>
+<span class="line"><span style="color:#B392F0">cp</span><span style="color:#9ECBFF"> .env.example</span><span style="color:#9ECBFF"> .env</span></span>
+<span class="line"><span style="color:#B392F0">vim</span><span style="color:#9ECBFF"> .env</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 一键起全部服务（含 Casdoor 鉴权）</span></span>
+<span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> compose</span><span style="color:#79B8FF"> -f</span><span style="color:#9ECBFF"> docker-compose-with-auth.yaml</span><span style="color:#9ECBFF"> up</span><span style="color:#79B8FF"> -d</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 访问：前端 http://localhost/  ；Casdoor 控制台 http://localhost:8000（admin/123）</span></span></code></pre>
+<p>Agent 执行引擎内部的 ReAct 循环骨架（<code>core/agent/engine/nodes/cot/cot_runner.py:305</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span># CoT system prompt 强制文本格式（cot_prompt.py），模型按此循环输出：</span></span>
+<span class="line"><span>Thought:       &#x3C;评估当前状态></span></span>
+<span class="line"><span>Action:        &#x3C;从 {tool_names} 里选一个工具></span></span>
+<span class="line"><span>Action Input:  &#x3C;一行 JSON 参数></span></span>
+<span class="line"><span>Observation:   &#x3C;工具返回，由引擎回灌></span></span>
+<span class="line"><span>... (循环 max_loop 次，默认 30)</span></span>
+<span class="line"><span>Thought:       &#x3C;信息足够></span></span>
+<span class="line"><span>Final Answer:  &#x3C;最终回答></span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>ReAct 式 CoT</strong>：非原生 function-calling，而是 prompt 约定 <code>Thought/Action/Action Input/Observation/Final Answer</code> 文本格式，<code>while max_loop>loop_count</code> 循环：流式读 LLM→字符串切分解析出 action→执行 plugin→把 Observation 写回 scratchpad→重灌再问</td><td><code>engine/nodes/cot/cot_runner.py:305</code> (<code>run</code>), <code>:316</code> (while 循环), <code>:101</code> (<code>parse_cot_step</code>), <code>engine/nodes/cot/cot_prompt.py:1</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>单体 agent 无显式 planner，规划隐式交给 LLM 的 CoT；<strong>显式编排在 workflow 层</strong>：<code>decision</code> 节点用 router prompt 做意图分流/分支，<code>iteration</code>/<code>loop</code> 节点做循环分解，整个 DAG 由 DSL 描述</td><td><code>core/workflow/engine/nodes/decision/router_prompt.py</code>, <code>nodes/iteration/</code>, <code>nodes/loop/</code>, <code>engine/dsl_engine.py:786</code> (<code>WorkflowEngine</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>chat_history</code> 直接拼进 user prompt（<code>RunnerBase.create_history_prompt</code>）+ <code>Scratchpad</code> 累积步骤；长期=独立 <strong>memory 微服务</strong>（DB 化会话存储，暴露 create/ddl/dml/drop 等 DB 操作 API，前缀 <code>/xingchen-db/v1</code>）；向量记忆走 knowledge/RAG 服务</td><td><code>engine/nodes/base.py:28,139</code> (<code>Scratchpad</code>), <code>core/memory/database/api/router.py:15</code>, <code>core/knowledge/</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>工具=<code>BasePlugin</code>（name/description/<code>schema_template</code>/typ/<code>run</code> callable）；schema 以<strong>文本模板</strong>注入 system prompt 的 <code>{tools}</code>，非 JSON function schema；执行时按 action 名字符串匹配 plugin 并 <code>await plugin.run(action_input)</code>；找不到返回 400 占位</td><td><code>service/plugin/base.py:15</code> (<code>BasePlugin</code>), <code>cot_runner.py:367</code> (<code>run_plugin</code>), <code>cot_runner.py:44</code> (schema 注入)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>BaseLLMModel</code>（默认走 OpenAI 兼容 <code>AsyncOpenAI.chat.completions</code>）+ <code>ProviderLLMModel</code> 子类按 provider 适配：<code>AnthropicLLMModel</code>（/v1/messages + SSE 归一化）、<code>GoogleLLMModel</code>（generateContent SSE）；OpenAI 兼容白名单含 deepseek/doubao/qwen/zhipu/moonshot/minimax 等；<code>create_model()</code> 按 provider 字符串分发</td><td><code>domain/models/base.py:15,141,205,332</code>, <code>service/builder/base_builder.py:274</code> (<code>create_model</code>), <code>:46</code> (<code>OPENAI_COMPATIBLE_PROVIDERS</code>)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><strong>靠 workflow DAG 引擎</strong>而非 agent 间直接通信：<code>agent</code> 节点把一个完整 agent 嵌入工作流；<code>flow</code> 节点可嵌套调用其它 workflow（<code>WorkflowPlugin</code> 让 CoT 把别的 workflow 当工具调）；节点间靠 <code>VariablePool</code> 传值，引擎用 <code>asyncio.create_task</code> 并发调度依赖就绪的节点</td><td><code>core/workflow/engine/nodes/agent/agent_node.py</code>, <code>nodes/flow/flow_node.py</code>, <code>service/plugin/workflow.py</code>, <code>dsl_engine.py:786,1414</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>模板拼装式：system prompt 由 <code>{now}/{instruct}/{knowledge}/{tools}/{tool_names}/{r1_more}</code> 占位替换（对 <code>xdeepseekr1</code> 模型走专用模板分支），user prompt 拼 <code>{chat_history}+{question}+{scratchpad}</code>；knowledge 检索结果（含图片/表格引用替换）作为背景注入</td><td><code>cot_runner.py:44</code> (<code>create_system_prompt</code>), <code>cot_prompt.py:1</code>, <code>workflow_agent_builder.py:210</code> (引用替换)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>插件工厂多态：<code>LinkPluginFactory</code>（讯飞开放平台工具）/<code>McpPluginFactory</code>（MCP server 列表→工具，远程 HTTP 调用）/<code>WorkflowPluginFactory</code>/<code>SkillPluginFactory</code>；<strong>Skill 兼容 Claude Code 风格</strong>：生成 <code>read_skill_*</code>（读 SKILL.md + 相对路径资源）与 <code>run_skill_*</code>（在 e2b 沙箱执行命令）两个工具</td><td><code>service/builder/base_builder.py:81</code> (<code>build_plugins</code>), <code>service/plugin/mcp.py:90</code>, <code>service/plugin/skill.py:26</code> (<code>SkillPluginFactory</code>), <code>service/plugin/skill_sandbox.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>全链路 OpenTelemetry：<code>common/otlp</code>，每步 <code>span.start(...)</code> + <code>add_info_events</code>，结构化 <code>NodeLog</code>/<code>NodeTraceLog</code>/<code>Usage</code>（token 计数）逐节点落 trace；接入 DeepWiki 徽章。无内置自动化 eval 框架（评估口径 待确认）</td><td><code>core/common/otlp/</code>, <code>cot_runner.py:225</code> (<code>NodeLog</code> append), <code>engine/nodes/base.py:36</code> (<code>model_general_stream</code> trace)</td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>多进程微服务 + 异步：各 Python 服务 FastAPI/uvicorn，workflow 引擎 <code>asyncio</code> 并发跑 DAG 节点；代码节点 <code>code_node</code> 支持多 executor（<strong>e2b 沙箱</strong> / ifly / local / langchain）；部署 Docker Compose（<code>docker/astronAgent</code>）或 Helm（开发中），鉴权用 Casdoor，数据面 MySQL+Redis+Kafka+MinIO</td><td><code>core/workflow/engine/dsl_engine.py:786</code>, <code>engine/nodes/code/executor/e2b/e2b_executor.py</code>, <code>docker/</code>, <code>helm/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>workflow 的 <code>question_answer</code> 节点做人在环：中断工作流等待用户，靠 <code>EventRegistry</code> 注册中断事件，支持 <strong>resume / ignore / abort</strong> 三种恢复事件；治理侧有 <code>core/common/audit_system</code>（审计）+ <code>tenant</code> 服务（多租户/空间隔离/配额）+ Casdoor 鉴权</td><td><code>core/workflow/engine/nodes/question_answer/question_answer_node.py:174,321</code> (<code>EventRegistry</code>), <code>core/common/audit_system/</code>, <code>core/tenant/</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>运行态：workflow <code>VariablePool</code> + <code>WorkflowEngineCtx</code>（节点状态/链路）；DAG 引擎用 <code>pickle</code> 序列化做跨节点传递；持久化：MySQL（结构化）、Redis（缓存/会话/<code>EventRegistry</code> 注册表）、MinIO（文件）、memory 服务（会话 DB）、workflow 用 alembic 管理 schema 版本</td><td><code>dsl_engine.py:49</code> (<code>WorkflowEngineCtx</code>), <code>engine/entities/variable_pool.py</code>, <code>core/workflow/alembic/</code>, <code>core/memory/database/alembic/</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>平台 > 框架</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">connectonion</a>/<a class="wikilink" href="/frameworks/swarm/">swarm</a> 这类「import 一个类就跑」的库相反，Astron 的最小单位是一套要 <code>docker compose up</code> 的微服务系统。代价是上手重（要起 MySQL/Redis/Kafka/MinIO/Casdoor），收益是开箱即得高可用、多租户、可视化编排、RPA、审计——直接对标 Dify / Coze 这类企业平台而非 LangChain。</li>
+<li><strong>文本 ReAct 而非原生 tool-calling</strong>：CoT runner 用 prompt 约定的 <code>Thought/Action/Action Input/Observation</code> 文本格式 + 字符串切分解析（<code>cot_runner.py:80-147</code>），而非 OpenAI function calling 的结构化 tool_calls。好处是模型无关（任何能跟格式的 LLM 都能用，含 deepseek-r1 走专用模板），坏处是<strong>解析脆弱</strong>——格式跑偏即抛 <code>CotFormatIncorrectExc</code>，对弱指令模型不稳。</li>
+<li><strong>两层 Agent 分工清晰</strong>：单体推理循环（<code>core/agent</code>）专注「一个 agent + 一组工具」的 ReAct；真正的编排/分支/循环/多 agent 协作上移到 workflow DAG（<code>core/workflow</code>），workflow 还能把另一个 workflow 当工具回灌给 agent——形成「agent ⊂ workflow，workflow 又可作为 agent 的 tool」的互嵌结构。</li>
+<li><strong>企业基建齐全</strong>：Kafka 事件驱动解耦、Go 写的 tenant 服务追求高性能多租户、OTLP 全链路追踪、audit_system 审计、Casdoor 鉴权、e2b 代码沙箱、MaaS 私有化模型部署——这些是「企业级」的真实重量，也是它与玩具框架的分水岭。</li>
+<li><strong>讯飞生态深绑</strong>：Link 插件直连讯飞开放平台海量工具，RPA 插件接讯飞 RPA 执行器，默认模型路径走 MaaS（<code>MaasAuth</code> 取 sk），workflow 引擎命名 Spark Flow / iflytek_spark provider——开源版可换模型，但生态默认面向讯飞。</li>
+<li><strong>待确认</strong>：①stars 实际数值（README 仅徽章）；②是否有内置自动化 eval/回归框架（仅见 OTLP trace，未见 eval harness）；③Helm 部署「under development」，生产 K8s 路径尚未稳定。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/components/runtime-execution/">runtime-execution</a></li>
+<li>同范式（企业级平台/可视化编排）：<a class="wikilink" href="/frameworks/dust/">dust</a> · <a class="wikilink" href="/frameworks/botpress/">botpress</a> · 源码：<code>agents-example/astron/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

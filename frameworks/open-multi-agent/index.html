@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Open Multi-Agent · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Open Multi-Agent</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>typescript</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/JackChen-me/open-multi-agent" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/open-multi-agent/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="open-multi-agent">Open Multi-Agent</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个 TypeScript-native 的多智能体编排框架，信条是 “From a goal to a task DAG, automatically”：一次 runTeam(team, goal) 调用，让临时 coordinator agent 用一次 LLM 调用把自然语言目标拆成任务 DAG，按依赖拓扑并行执行 worker，最后再合成最终答案；仅 3 个运行时依赖，可嵌入任意 Node.js 18+ 后端。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>OMA 的核心范式是 <strong>goal-first（目标优先）的 coordinator 编排</strong>，刻意与 LangGraph / Mastra 这类 <strong>graph-first（先手画图）</strong> 框架对立：你只描述结果，coordinator 在运行时构建 DAG，而不是手工枚举每个 node/edge。设计取舍：</p>
+<ul>
+<li><strong>Coordinator 模式是杀手锏</strong>：<code>runTeam</code> 起一个临时 <code>coordinator</code> agent，把 goal + roster 喂进去，让它<strong>一次性</strong>输出 JSON 任务数组（title / description / assignee / dependsOn）；解析后灌入 <code>TaskQueue</code>，按依赖拓扑跑（独立任务并行、依赖任务等待），每个结果写入 <code>SharedMemory</code>，最后 coordinator 再做一次 synthesis（<code>src/orchestrator/orchestrator.ts:1070</code>）。</li>
+<li><strong>三种运行模式</strong>：<code>runAgent()</code> 单 agent 一次性；<code>runTeam()</code> 给目标自动拆解并行；<code>runTasks()</code> 你自己定义任务图与依赖。另有 <code>planOnly</code> 预览 DAG + <code>createPlanArtifact</code> / <code>runFromPlan</code> 固化并重放计划（不再调 coordinator）。</li>
+<li><strong>薄内核 + 分层</strong>：<code>Orchestrator</code>（顶层 API / 拆解 / 重试）→ <code>Team</code>（roster / MessageBus / SharedMemory）→ <code>AgentPool</code>（信号量并发 + 每 agent 互斥锁）→ <code>Agent</code>（生命周期）→ <code>AgentRunner</code>（对话+工具循环）→ <code>LLMAdapter</code>（12 内置 provider）/ <code>ToolRegistry</code>（6 内置工具 + delegate）。所有接口集中在 <code>src/types.ts</code> 避免循环依赖。</li>
+<li><strong>三依赖承诺</strong>：<code>dependencies</code> 仅 <code>@anthropic-ai/sdk</code> + <code>openai</code> + <code>zod</code>；<code>@google/genai</code>、<code>@aws-sdk/client-bedrock-runtime</code>、<code>@modelcontextprotocol/sdk</code>、<code>ai</code>(Vercel) 都是 <strong>optional peer</strong>，靠动态 <code>import()</code> 懒加载（<code>src/llm/adapter.ts:76</code> 的 <code>createAdapter</code> 工厂里逐 <code>case</code> lazy-import）。</li>
+<li><strong>入口 API</strong>：<code>import { OpenMultiAgent } from '@open-multi-agent/core'</code>，<code>new OpenMultiAgent(config).runTeam(team, goal)</code>（<code>src/index.ts:57</code>）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { OpenMultiAgent, </span><span style="color:#F97583">type</span><span style="color:#E1E4E8"> AgentConfig } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@open-multi-agent/core'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> agents</span><span style="color:#F97583">:</span><span style="color:#B392F0"> AgentConfig</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">'architect'</span><span style="color:#E1E4E8">, model: </span><span style="color:#9ECBFF">'claude-sonnet-4-6'</span><span style="color:#E1E4E8">, systemPrompt: </span><span style="color:#9ECBFF">'Design clean API contracts.'</span><span style="color:#E1E4E8">, tools: [</span><span style="color:#9ECBFF">'file_write'</span><span style="color:#E1E4E8">] },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">'developer'</span><span style="color:#E1E4E8">, model: </span><span style="color:#9ECBFF">'claude-sonnet-4-6'</span><span style="color:#E1E4E8">, systemPrompt: </span><span style="color:#9ECBFF">'Implement runnable TypeScript.'</span><span style="color:#E1E4E8">, tools: [</span><span style="color:#9ECBFF">'bash'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'file_read'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'file_write'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'file_edit'</span><span style="color:#E1E4E8">] },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">'reviewer'</span><span style="color:#E1E4E8">,  model: </span><span style="color:#9ECBFF">'claude-sonnet-4-6'</span><span style="color:#E1E4E8">, systemPrompt: </span><span style="color:#9ECBFF">'Review correctness and security.'</span><span style="color:#E1E4E8">, tools: [</span><span style="color:#9ECBFF">'file_read'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'grep'</span><span style="color:#E1E4E8">] },</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> orchestrator</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> OpenMultiAgent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  defaultModel: </span><span style="color:#9ECBFF">'claude-sonnet-4-6'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  onProgress</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(event.type, event.task </span><span style="color:#F97583">??</span><span style="color:#E1E4E8"> event.agent </span><span style="color:#F97583">??</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> team</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> orchestrator.</span><span style="color:#B392F0">createTeam</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'api-team'</span><span style="color:#E1E4E8">, { name: </span><span style="color:#9ECBFF">'api-team'</span><span style="color:#E1E4E8">, agents, sharedMemory: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 内置文件工具默认沙箱在 &#x3C;cwd>/.agent-workspace</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> orchestrator.</span><span style="color:#B392F0">runTeam</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  team,</span></span>
+<span class="line"><span style="color:#9ECBFF">  `Create a REST API for a todo list in ${</span><span style="color:#E1E4E8">process</span><span style="color:#9ECBFF">.</span><span style="color:#B392F0">cwd</span><span style="color:#9ECBFF">()</span><span style="color:#9ECBFF">}/.agent-workspace/todo-api/`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(result.success, result.totalTokenUsage.output_tokens)</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>worker 层为 ReAct 式 <code>while(true)</code>：LLM→提取 <code>tool_use</code>→<strong>并行</strong>执行工具→回灌 <code>tool_result</code>→循环，直到无 tool_call 或达 <code>maxTurns</code>(默认 10)；团队层为 <strong>plan-execute</strong>：coordinator 一次拆解 → 队列分轮并行执行 → coordinator 合成</td><td><code>src/agent/runner.ts:761</code> (主循环), <code>src/agent/runner.ts:948</code> (并行工具执行), <code>src/orchestrator/orchestrator.ts:565</code> (<code>executeQueue</code> 分轮调度)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td><strong>goal→任务 DAG 的一次性 LLM 拆解</strong>：coordinator 收 goal+roster，输出 <code>json</code> 任务数组；<code>parseTaskSpecs</code> 容错解析（fenced/裸数组），title 形式的 <code>dependsOn</code> 在 <code>loadSpecsIntoQueue</code> 中两遍映射为真实 task id；简单目标走 <code>isSimpleGoal</code> 短路只跑单 agent</td><td><code>src/orchestrator/orchestrator.ts:1232</code> (parse), <code>src/orchestrator/orchestrator.ts:358</code> (<code>parseTaskSpecs</code>), <code>src/orchestrator/orchestrator.ts:1773</code> (<code>loadSpecsIntoQueue</code>), <code>src/orchestrator/orchestrator.ts:150</code> (<code>isSimpleGoal</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>AgentRunner</code> 内 <code>conversationMessages</code>(单次 run) + <code>Agent.messageHistory</code>(跨 <code>prompt()</code> 多轮)；团队共享=<code>SharedMemory</code> 命名空间 KV(<code>&#x3C;agentName>/&#x3C;key></code>)，可选 <code>ttlTurns</code> 过期、<code>getSummary()</code> 生成 markdown 注入；可插拔 <code>MemoryStore</code>(默认 <code>InMemoryStore</code>，可换 Redis/PG)。<strong>无向量检索</strong></td><td><code>src/agent/agent.ts:103</code> (history), <code>src/memory/shared.ts:64</code> (<code>SharedMemory</code>), <code>src/memory/store.ts</code> (<code>InMemoryStore</code>), <code>src/memory/shared.ts:266</code> (<code>getSummary</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>defineTool()</code> + Zod schema → 自研 <code>zodToJsonSchema</code> 转 JSON Schema 喂 LLM；<code>ToolRegistry</code> 注册、三层过滤(preset→allowlist→denylist)；6 内置(<code>bash</code>/<code>file_read</code>/<code>file_write</code>/<code>file_edit</code>/<code>grep</code>/<code>glob</code>)；工具错误<strong>永不抛出</strong>，捕获为 <code>ToolResult{isError:true}</code></td><td><code>src/tool/framework.ts:71</code> (<code>defineTool</code>), <code>src/tool/framework.ts:273</code> (<code>zodToJsonSchema</code>), <code>src/agent/runner.ts:591</code> (<code>resolveTools</code> 三层过滤), <code>src/tool/built-in/index.ts</code>, <code>src/agent/runner.ts:958</code> (错误兜底)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>LLMAdapter</code> 接口(<code>chat</code>+<code>stream</code>) + <code>createAdapter()</code> 懒加载工厂，按 provider 名路由；12 内置 provider + 任意 OpenAI 兼容端点(<code>baseURL</code>)；统一 <code>thinking</code> 配置映射到 Anthropic thinking / Gemini thinkingConfig / OpenAI reasoning_effort；Vercel AI SDK 经 <code>AISdkAdapter</code> 桥接</td><td><code>src/llm/adapter.ts:76</code> (<code>createAdapter</code>), <code>src/llm/adapter.ts:42</code> (<code>SupportedProvider</code> 联合), <code>src/llm/*.ts</code> (12 provider), <code>src/llm/ai-sdk.ts</code> (AI SDK 桥)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><strong>核心范式</strong>：coordinator 拆 DAG → <code>TaskQueue</code> 拓扑解析(完成自动 unblock、失败级联) → <code>Scheduler</code> 自动分配(默认 <code>dependency-first</code>，另有 round-robin/least-busy/capability-match) → <code>AgentPool</code> 信号量并发执行；可选 <code>delegate_to_agent</code> 工具做同步子 agent 委派(带环检测/深度上限/池槽防死锁)</td><td><code>src/orchestrator/orchestrator.ts:1070</code> (<code>runTeam</code>), <code>src/task/queue.ts:55</code> (<code>TaskQueue</code>), <code>src/orchestrator/scheduler.ts:96</code> (<code>Scheduler</code>), <code>src/agent/pool.ts</code> (<code>AgentPool</code>), <code>src/tool/built-in/delegate.ts:24</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>4 种 <code>contextStrategy</code>：<code>sliding-window</code>(按 turn 边界保尾)、<code>summarize</code>(LLM 摘要旧消息+缓存)、<code>compact</code>(规则压缩、保留 tool_use/截断长文本)、<code>custom</code>；另 <code>compressToolResults</code> 压已消费工具输出；按 turn 边界切分避免孤立 <code>tool_use_id</code>；prompt 注入仅默认给”依赖任务输出”(default-deny)，<code>memoryScope:'all'</code> 才给全量</td><td><code>src/agent/runner.ts:547</code> (<code>applyContextStrategy</code>), <code>src/agent/runner.ts:442</code> (<code>summarizeMessages</code>), <code>src/agent/runner.ts:1126</code> (<code>compactMessages</code>), <code>src/orchestrator/orchestrator.ts:835</code> (<code>buildTaskPrompt</code> 默认仅注入依赖)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”skill/plugin”系统；扩展点为：①<code>defineTool()</code> 自定义工具；②<code>connectMCPTools()</code> 接 stdio MCP server 把其工具暴露给 agent；③实现 <code>LLMAdapter</code> 加 provider；④实现 <code>MemoryStore</code> 换后端</td><td><code>src/mcp.ts:5</code> (<code>connectMCPTools</code> 导出), <code>src/tool/mcp.ts</code>, <code>src/tool/framework.ts:71</code> (<code>defineTool</code>)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><code>onProgress</code> 结构化事件(task_start/complete/retry/skipped/budget_exceeded…) + <code>onTrace</code> span(llm_call/tool_call/task/agent/plan_ready/agent_stream) + 跑后 <code>renderTeamRunDashboard()</code> 生成纯 HTML 任务 DAG 仪表盘；密钥/token 经 <code>redaction.ts</code> 自动脱敏。无内置 eval 框架</td><td><code>src/orchestrator/orchestrator.ts:635</code> (progress 事件), <code>src/utils/trace.ts</code> (<code>emitTrace</code>/<code>generateRunId</code>), <code>src/dashboard/render-team-run-dashboard.ts:17</code>, <code>src/utils/redaction.ts</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯 ESM 库，嵌入任意 Node 18+；并发由 <code>AgentPool</code> 的 <code>Semaphore</code> 控制(默认 <code>maxConcurrency:5</code>)；文件工具沙箱在 <code>&#x3C;cwd>/.agent-workspace</code>(符号链接也解析进根，防 TOCTOU)，<code>bash</code> 不沙箱；JSON-first <code>oma</code> CLI 供 shell/CI；<code>tsc</code> 编译 src→dist</td><td><code>src/agent/pool.ts</code>, <code>src/utils/semaphore.ts</code>, <code>src/tool/built-in/path-safety.ts:30</code> (<code>resolvePathWithinCwd</code>), <code>src/cli/oma.ts</code>, <code>package.json:65</code> (engines node>=18)</td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>onPlanReady(tasks)</code> 在任何 agent 执行前审批整份计划(返 false 中止)；<code>onApproval(completed,next)</code> 在每轮任务之间审批；<code>planOnly</code> 只看不跑；<code>AbortSignal</code> 运行中取消；<code>beforeRun</code>/<code>afterRun</code> 钩子改写 prompt / 后处理结果；<code>maxTokenBudget</code> 硬性封顶花费</td><td><code>src/orchestrator/orchestrator.ts:1290</code> (<code>onPlanReady</code>), <code>src/orchestrator/orchestrator.ts:800</code> (<code>onApproval</code> 门), <code>src/agent/agent.ts:328</code> (<code>beforeRun</code>), <code>src/agent/agent.ts:391</code> (<code>afterRun</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>运行态全在内存：<code>TaskQueue</code> 持任务生命周期、<code>SharedMemory</code> 持跨 agent KV、<code>AgentPool</code> 每 run 临时(无跨 run 状态)；唯一可序列化产物是 <code>PlanArtifact</code>(纯 JSON，<code>createPlanArtifact</code>→<code>runFromPlan</code> 重放同一 DAG)。<strong>无内置 durable checkpoint</strong>(README 明确说明)</td><td><code>src/orchestrator/orchestrator.ts:1413</code> (<code>createPlanArtifact</code>), <code>src/orchestrator/orchestrator.ts:1448</code> (<code>runFromPlan</code>), <code>src/task/queue.ts:55</code> (内存队列), <code>src/memory/store.ts</code> (<code>InMemoryStore</code>)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>goal-first vs graph-first</strong>：与 <a class="wikilink" href="/frameworks/mastra/">Mastra</a>(显式 Supervisor 手工接线)、LangGraph JS(声明式编译图) 相反，OMA 让 coordinator 在运行时从一句目标生成 DAG——“工程师描述目标，而非图”。代价是拆解质量完全依赖 coordinator 一次 LLM 调用的输出；解析失败时退化为”每个 agent 一个任务”的兜底(<code>orchestrator.ts:1242</code>)。</li>
+<li><strong>极简依赖是卖点</strong>：仅 3 个运行时依赖，所有重 SDK(Gemini/Bedrock/MCP/Vercel AI) 都靠动态 <code>import()</code> 懒加载成 optional peer——未用的 provider 永不 resolve。这是与 CrewAI(Python 重生态) 的主要差异：同等编排能力，选型只看语言栈。</li>
+<li><strong>默认沙箱收窄</strong>：文件工具默认只能读写 <code>&#x3C;cwd>/.agent-workspace</code>，而非整个 <code>process.cwd()</code>，避免刚配好的 agent 误读项目源码/<code>.env</code>/<code>.git</code>；符号链接全程 realpath 解析关闭 TOCTOU 窗口。但 <code>bash</code> 工具<strong>不沙箱</strong>(CLAUDE.md 明确点出的非显然不变量)，危险操作无强隔离。</li>
+<li><strong>委派的多重护栏</strong>：<code>delegate_to_agent</code> 仅在 <code>runTeam</code>/<code>runTasks</code> 的池 worker 内注入(<code>runAgent</code> 与简单目标短路均不含)，拒绝自委派/成环/未知目标/深度>3/池槽耗尽；委派的 token 计入父预算，保证 <code>maxTokenBudget</code> 在委派链上仍准确。</li>
+<li><strong>失败语义分层</strong>：工具错误→<code>ToolResult</code> 不抛出；任务失败→级联 <code>fail</code> 到下游依赖(独立任务继续)；LLM API 错误→向上抛给调用方。审批拒绝/取消→<code>skipRemaining</code> 把剩余任务标 <code>skipped</code> 并级联。</li>
+<li><strong>reasoning 跨 provider 取舍</strong>：provider 原生 <code>ReasoningBlock</code> 默认在切换 adapter 时<strong>静默丢弃</strong>，除非开 <code>preserveReasoningAsText</code>(转成内联 <code>&#x3C;thinking></code> 文本，且永不反向解析回签名块)。</li>
+<li><strong>本地模型友好</strong>：<code>text-tool-extractor</code> 仅在服务端无原生 <code>tool_calls</code> 时兜底解析(Ollama/vLLM/LM Studio 把 tool call 当纯文本发)，原生调用始终优先；<code>topK</code>/<code>minP</code> 等参数对云 OpenAI 自动忽略、仅转发兼容端点。</li>
+<li><strong>待注意</strong>：①README 内 package 名为 <code>@open-multi-agent/core</code>、组织 repo 为 <code>open-multi-agent/open-multi-agent</code>，而本笔记记录的 repo 提示为 <code>JackChen-me/open-multi-agent</code>(原作者命名空间，README 提到旧包 <code>@jackchen_me/open-multi-agent</code> 已废弃)；②LICENSE 为 MIT 但版权年份写 2025，README 称 2026-04-01 发布，存在轻微不一致；③<code>Agent.prompt()</code> 的 TODO(#18) 尚未转发 trace context。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(TypeScript multi-agent / coordinator)：<a class="wikilink" href="/frameworks/mastra/">mastra</a> · <a class="wikilink" href="/frameworks/voltagent/">voltagent</a> · 源码：<code>agents-example/open-multi-agent/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

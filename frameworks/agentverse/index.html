@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AgentVerse · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>AgentVerse</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0</span><a class="badge" href="https://github.com/openbmb/agentverse" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agentverse/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agentverse">AgentVerse</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个面向研究的 多智能体（multi-agent）仿真与协作框架（OpenBMB / ICLR 2024 论文配套实现），核心信条是”用 YAML 配置 + 可插拔规则组件描述一个多智能体环境”：同时提供 simulation（自定义环境观察 LLM 群体涌现行为，如 NLP 课堂、囚徒困境、Pokemon）与 task-solving（把多个 agent 组装成”专家招募→决策→执行→评估”的自动协作系统）两套框架，两者共享 environment / agent / memory / llm 抽象。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AgentVerse 的核心范式不是”单 agent 的工具循环”，而是 <strong>environment 驱动的多 agent 回合制仿真</strong>——<code>environment.step()</code> 才是主循环，agent 只是被环境按规则调度的参与者。设计取舍：</p>
+<ul>
+<li><strong>环境即一等公民</strong>：<code>BaseEnvironment</code>（<code>agentverse/environments/base.py:20</code>）持有 <code>agents</code> 列表、<code>rule</code>、<code>max_turns</code>/<code>cnt_turn</code>，<code>AgentVerse.run()</code> 反复 <code>asyncio.run(environment.step())</code> 直到 <code>is_done()</code>（<code>agentverse/agentverse.py:47</code>）。</li>
+<li><strong>规则可插拔，环境=规则的组合</strong>：simulation 环境把行为拆成 <strong>5 个规则组件</strong>——Order（发言顺序）/ Visibility（可见性）/ Selector（消息筛选）/ Updater（记忆更新）/ Describer（环境描述），由 <code>SimulationRule</code> 组合（<code>agentverse/environments/simulation_env/rules/base.py:32</code>）。task-solving 环境则换成 <strong>4 个规则组件</strong>——RoleAssigner（专家招募）/ DecisionMaker（决策/讨论）/ Executor（执行）/ Evaluator（评估），由 <code>TasksolvingRule</code> 组合（<code>agentverse/environments/tasksolving_env/rules/base.py:28</code>）。“实现一个新环境≈实现一组新规则”。</li>
+<li><strong>注册表 + YAML 配置驱动</strong>：一切组件（env / agent / llm / memory / rule / output_parser）都用极简 <code>Registry</code>（<code>agentverse/registry.py:6</code>）以装饰器 <code>@xxx_registry.register("name")</code> 注册，再由 <code>initialization.py</code> 读 <code>config.yaml</code> 按 <code>type</code> 字段 <code>build()</code> 出来（<code>agentverse/initialization.py:59</code>）。零代码改动即可换环境/换 agent/换模型。</li>
+<li><strong>包结构</strong>：<code>agents/</code>（base + <code>simulation_agent/</code> 的 conversation/tool/reflection… + <code>tasksolving_agent/</code> 的 solver/critic/executor/evaluator/role_assigner/manager）；<code>environments/</code>（<code>simulation_env/</code> 与 <code>tasksolving_env/</code>，各带 <code>rules/</code> 子目录）；<code>memory/</code>（chat_history / summary / vectorstore / sde_team）、<code>memory_manipulator/</code>（basic / plan / reflection）、<code>llms/</code>（OpenAI/Azure/本地 vLLM/FSChat）、<code>output_parser/</code>、<code>tasks/</code>（几十个开箱即用配置）。</li>
+<li><strong>入口 API</strong>：CLI 为主——<code>agentverse-simulation --task ...</code> / <code>agentverse-tasksolving --task ...</code> / <code>agentverse-benchmark</code>（<code>setup.py:48</code>）；编程入口 <code>AgentVerse.from_task(task, tasks_dir)</code>（<code>agentverse/agentverse.py:25</code>）。</li>
+</ul>
+<p>最小示例（取自 README 的 CLI 用法，simulation 与 task-solving 各一）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Simulation：9 人 NLP 课堂（1 教授 + 8 学生），观察群体对话行为</span></span>
+<span class="line"><span style="color:#B392F0">agentverse-simulation</span><span style="color:#79B8FF"> --task</span><span style="color:#9ECBFF"> simulation/nlp_classroom_9players</span></span>
+<span class="line"><span style="color:#6A737D"># 带 GUI（gradio，访问 http://127.0.0.1:7860/）</span></span>
+<span class="line"><span style="color:#B392F0">agentverse-simulation-gui</span><span style="color:#79B8FF"> --task</span><span style="color:#9ECBFF"> simulation/nlp_classroom_9players</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Task-solving：多 agent 协作头脑风暴（专家招募→讨论→执行→评估）</span></span>
+<span class="line"><span style="color:#B392F0">agentverse-tasksolving</span><span style="color:#79B8FF"> --task</span><span style="color:#9ECBFF"> tasksolving/brainstorming</span></span>
+<span class="line"><span style="color:#6A737D"># 在 benchmark 数据集上跑（如 HumanEval）</span></span>
+<span class="line"><span style="color:#B392F0">agentverse-benchmark</span><span style="color:#79B8FF"> --task</span><span style="color:#9ECBFF"> tasksolving/humaneval/gpt-3.5</span><span style="color:#79B8FF"> --dataset_path</span><span style="color:#9ECBFF"> data/humaneval/test.jsonl</span><span style="color:#79B8FF"> --overwrite</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># 一个 simulation 环境的最小 config.yaml（取自 README 的 classroom 示例）</span></span>
+<span class="line"><span style="color:#85E89D">environment</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  env_type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">basic</span><span style="color:#6A737D">        # 注册名 sim-basic</span></span>
+<span class="line"><span style="color:#85E89D">  max_turns</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span></span>
+<span class="line"><span style="color:#85E89D">  rule</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    order</span><span style="color:#E1E4E8">:      { </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">sequential</span><span style="color:#E1E4E8"> }   </span><span style="color:#6A737D"># 轮流发言</span></span>
+<span class="line"><span style="color:#85E89D">    visibility</span><span style="color:#E1E4E8">: { </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">all</span><span style="color:#E1E4E8"> }          </span><span style="color:#6A737D"># 消息对所有 agent 可见</span></span>
+<span class="line"><span style="color:#85E89D">    selector</span><span style="color:#E1E4E8">:   { </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">basic</span><span style="color:#E1E4E8"> }        </span><span style="color:#6A737D"># 不筛选</span></span>
+<span class="line"><span style="color:#85E89D">    updater</span><span style="color:#E1E4E8">:    { </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">basic</span><span style="color:#E1E4E8"> }        </span><span style="color:#6A737D"># 更新到所有 agent</span></span>
+<span class="line"><span style="color:#85E89D">    describer</span><span style="color:#E1E4E8">:  { </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">basic</span><span style="color:#E1E4E8"> }        </span><span style="color:#6A737D"># 无额外环境描述</span></span>
+<span class="line"><span style="color:#85E89D">agents</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">agent_type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">conversation</span></span>
+<span class="line"><span style="color:#85E89D">    name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Professor Micheal</span></span>
+<span class="line"><span style="color:#85E89D">    role_description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">You are Prof. Micheal, ...</span></span>
+<span class="line"><span style="color:#85E89D">    memory</span><span style="color:#E1E4E8">: { </span><span style="color:#85E89D">memory_type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">chat_history</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#85E89D">    prompt_template</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">*</span><span style="color:#E1E4E8">professor_prompt</span></span>
+<span class="line"><span style="color:#85E89D">    llm</span><span style="color:#E1E4E8">: { </span><span style="color:#85E89D">llm_type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">text-davinci-003</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">model</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">text-davinci-003</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">temperature</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.7</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">max_tokens</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">250</span><span style="color:#E1E4E8"> }</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>非 ReAct 单 agent 循环，而是环境回合制</strong>：simulation 每个 <code>step()</code> 走 order→describer→agents 并发 astep→selector→updater→visibility（<code>basic.py:57</code>）；task-solving 每轮走 role_assign→decision_making→execute→evaluate（<code>basic.py:45</code>）。单 agent 内 <code>ConversationAgent.astep</code> 只是”填模板→LLM→parse→出 Message”带 max_retry 重试，无自循环</td><td>sim：<code>environments/simulation_env/basic.py:57</code>；task：<code>environments/tasksolving_env/basic.py:45</code>；agent：<code>agents/simulation_agent/conversation.py:50</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>task-solving 的”规划”= DecisionMaker 规则产出 <code>List[SolverMessage]</code> plan，支持多种拓扑：horizontal/vertical/central/concurrent/brainstorming/dynamic（<code>rules/decision_maker/</code>）；memory_manipulator 中另有 <code>plan</code> 变体辅助生成计划；simulation 无显式 planner</td><td><code>environments/tasksolving_env/rules/decision_maker/</code>（<code>base.py</code>、<code>vertical.py</code>、<code>horizontal.py</code>、<code>dynamic.py:16</code>）、<code>memory_manipulator/plan.py</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td><code>BaseMemory</code> 注册表多实现：<code>ChatHistoryMemory</code>（短期对话历史）、<code>SummaryMemory</code>（摘要压缩）、<code>VectorStoreMemory</code>（<strong>向量记忆</strong>，OpenAI embedding 存 content）、<code>SdeTeamMemory</code>；agent 默认 <code>ChatHistoryMemory</code>（<code>agents/base.py:25</code>）</td><td><code>memory/__init__.py</code>、<code>memory/chat_history.py</code>、<code>memory/summary.py</code>、<code>memory/vectorstore.py:16</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>ToolAgent</code>（simulation）内含 while 循环：LLM→parse 若为 <code>AgentAction</code> 则 <code>_call_tool</code> 执行并把 Observation 回灌，直到 <code>AgentFinish</code>（<code>tool.py:36</code>）；工具是 <strong>LangChain <code>BaseTool</code></strong>，经 <strong>BMTools</strong>（<code>load_single_tools</code>/<code>import_all_apis</code>）加载；task-solving 工具用经 XAgent ToolServer 的 <code>executor: tool_using</code></td><td><code>agents/simulation_agent/tool.py:31,116</code>、<code>initialization.py:49</code>、<code>environments/tasksolving_env/rules/executor/tool_using.py</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>BaseLLM</code> 抽象（<code>generate_response</code>/<code>agenerate_response</code>/<code>get_spend</code>，统一返回 <code>LLMResult</code>）+ <code>llm_registry</code>；主实现 <code>OpenAIChat</code>（含 Azure 分支）；本地模型经 vLLM / FSChat 走 OpenAI 兼容端点，<code>LOCAL_LLMS</code>/<code>LOCAL_LLMS_MAPPING</code> 列表登记</td><td><code>llms/base.py:19</code>、<code>llms/openai.py</code>、<code>llms/__init__.py:3</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><strong>框架本体即多 agent 编排</strong>。两条主线：① simulation 经 5 规则（order/visibility/selector/updater/describer）调度 N 个对话 agent 的回合制交互；② task-solving 经 4 规则把 agent 按 <code>AGENT_TYPES</code>（ROLE_ASSIGNMENT/SOLVER/CRITIC/EXECUTION/EVALUATION/MANAGER）组织成”招募→讨论→执行→评估”流水线，讨论拓扑可选 vertical/horizontal/central/dynamic</td><td><code>environments/simulation_env/rules/base.py:32</code>、<code>environments/tasksolving_env/rules/base.py:71</code>、<code>utils</code>(<code>AGENT_TYPES</code>)</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>prompt 用 <code>string.Template</code> 占位符填充：<code>${agent_name}</code>/<code>${env_description}</code>/<code>${role_description}</code>/<code>${chat_history}</code>（tool agent 另加 <code>${tools}</code>/<code>${tool_names}</code>/<code>${tool_observation}</code>）；<code>prepend_prompt_template</code>+<code>append_prompt_template</code> 分段拼接（<code>agents/base.py:62</code>）；环境描述由 Describer 规则按 agent 动态生成注入</td><td><code>agents/simulation_agent/conversation.py:84</code>、<code>agents/simulation_agent/tool.py:144</code>、<code>agents/base.py:62</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”技能/插件”系统；扩展点是 <strong>Registry + 继承</strong>：新规则组件/agent/env/memory/output_parser 用 <code>@registry.register(name)</code> 注册即可被 YAML 引用。算”规则即插件”，但非运行时热插拔技能</td><td><code>registry.py:6</code>、<code>initialization.py</code>、各 <code>rules/*/__init__.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>① 单例 <code>Logger</code>（仿 Auto-GPT 风格，彩色 + <code>logs/activity.log</code>/<code>error.log</code> + typewriter 效果，<code>logging.py:32</code>）；② 每个 agent 经 <code>get_spend()</code> 统计美元花费，环境 <code>report_metrics()</code> 汇总（<code>environments/base.py:50</code>）；③ task-solving Evaluator 规则给 plan 打分（score≥8 阈值即 accept，<code>tasksolving_env/basic.py:95</code>），<code>agentverse-benchmark</code> 在数据集上批量评测</td><td><code>logging.py:32</code>、<code>environments/base.py:50</code>、<code>environments/tasksolving_env/basic.py:95</code>、<code>agentverse_command/benchmark.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯 Python 库 + CLI；环境 <code>run()</code> 同步驱动、每个 step 内 <code>asyncio.gather</code> 并发跑多 agent 的 <code>astep</code>（<code>simulation_env/basic.py:67</code>）；4 个 console_scripts 入口（simulation / simulation-gui / tasksolving / benchmark，<code>setup.py:48</code>）；GUI 经 gradio，Pokemon demo 经 FastAPI+uvicorn(<code>pokemon_server.py</code>) + 前端(<code>ui/</code>)</td><td><code>agentverse.py:47</code>、<code>setup.py:48</code>、<code>pokemon_server.py</code>、<code>agentverse/gui.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>大部分自动化运行无内建审批；human-in-the-loop 主要见于：① Pokemon demo 玩家可作为一个 agent 实时介入对话（README）；② task-solving Evaluator 有被注释掉的 human_eval 交互式打分分支（<code>tasksolving_env/rules/base.py:148</code>，默认走 LLM 评估）。无系统化治理/权限框架</td><td><code>tasks/simulation/pokemon/</code>、<code>environments/tasksolving_env/rules/base.py:148</code>（human_eval，已注释）</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>运行态全在内存：环境的 <code>cnt_turn</code>/<code>last_messages</code>/<code>rule_params</code> 与各 agent 的 <code>memory</code>；<code>reset()</code> 清空重来。落盘仅限结果——task-solving <code>save_result()</code> 写 <code>./results/&#x3C;task>.txt</code>（plan/result/spend，<code>tasksolving.py:84</code>）、日志写 <code>logs/</code>。无会话恢复/检查点机制</td><td><code>tasksolving.py:84</code>、<code>environments/base.py:36</code>、<code>agents/base.py:25</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“环境 + 规则组件”是它最大的辨识度</strong>：与多数”agent 为中心、工具循环”的框架（如 <a class="wikilink" href="/frameworks/connectonion/">connectonion</a>）相反，AgentVerse 把多 agent 交互显式拆成可替换的规则原子（order/visibility/selector/updater/describer 或 role_assigner/decision_maker/executor/evaluator），用 YAML 描述一个”世界”。研究者改一个 <code>type</code> 字段就能切换发言顺序、可见性、讨论拓扑——非常适合做”涌现行为/协作机制”的对照实验，这也是其 ICLR 论文的核心卖点。</li>
+<li><strong>simulation vs task-solving 双框架共享底座</strong>：两套 env 都继承 <code>BaseEnvironment</code>、复用同一套 agent/memory/llm/registry，但规则集与 step 流程完全不同——前者偏开放式群体仿真，后者偏目标导向的”专家系统流水线”（招募专家→讨论出方案→执行→评分迭代，最高 max_turn 轮）。</li>
+<li><strong>配置驱动、轻代码</strong>：Registry + YAML 让”加一个场景”基本是写配置 + 写一个 output_parser，无需碰核心代码（README 的 classroom 教程即三步）。代价是抽象层级多、调试需理解规则装配链路。</li>
+<li><strong>强研究、弱生产</strong>：依赖偏研究态（pydantic <strong>1.10.7</strong>、langchain <strong>0.0.157</strong>、openai <strong>1.1.0</strong> 等被钉死的老版本，requirements.txt）；工具生态依赖外部 <strong>BMTools</strong>（simulation）与 <strong>XAgent ToolServer</strong>（task-solving），不内置；无沙箱、无鉴权、无会话持久化/检查点、无系统化 human-in-the-loop。</li>
+<li><strong>待确认/坑</strong>：① README 顶部明确标注 simulation 框架”正在重构”，需稳定纯 simulation 版本要切 <code>release-0.1</code> 分支；Pokemon 也仅在 <code>release-0.1</code> 可用。② <code>setup.py</code> 版本号为 <strong>0.1.8.1</strong>，与仓库实际状态可能不一致（待确认）。③ <code>DynamicDecisionMaker</code> 源码注释含”To Do: implement dynamic”，部分高级编排实现度待确认（<code>decision_maker/dynamic.py:24</code>）。④ 钉死的老依赖（langchain 0.0.157 / pydantic v1）对新环境安装不友好。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(multi-agent，仿真/协作)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/agentverse/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

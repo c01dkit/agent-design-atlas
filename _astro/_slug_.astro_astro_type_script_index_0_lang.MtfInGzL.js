@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/gate.CbEz4vGm.js","_astro/preload-helper.CxFQXtKk.js","_astro/firebase.CBSuAr2t.js","_astro/gate-config.CcpWYTSt.js"])))=>i.map(i=>d[i]);
+import{t as e}from"./preload-helper.CxFQXtKk.js";async function t(){if(!document.querySelector(`[data-gate]`))return;let{initGate:t}=await e(async()=>{let{initGate:e}=await import(`./gate.CbEz4vGm.js`);return{initGate:e}},__vite__mapDeps([0,1,2,3]));t()}document.addEventListener(`astro:page-load`,t);

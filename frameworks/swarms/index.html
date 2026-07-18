@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Swarms · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Swarms</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0</span><a class="badge" href="https://github.com/kyegomez/swarms" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/swarms/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="swarms">Swarms</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">企业级 Python 多智能体编排框架：以一个功能极重的 Agent（单文件 6400+ 行）为唯一原语，向上堆叠十余种可互换的 swarm 结构（Sequential / Concurrent / AgentRearrange / Graph / MixtureOfAgents / Hierarchical / GroupChat / MajorityVoting / Council / Debate / Heavy …），并用 SwarmRouter 一个入口在这些拓扑之间自由切换；模型层全量依赖 LiteLLM，兼容任意 provider。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Swarms 的设计取舍是 <strong>“一个胖 Agent + 一堆可组合的编排壳”</strong>：</p>
+<ul>
+<li><strong>Agent 即唯一原语</strong>：所有多智能体结构都只是包了一个或多个 <code>Agent</code> 实例的编排器。<code>Agent</code> 自身把 ReAct 循环、工具、记忆、MCP、流式、自治模式、持久化、可观测全部塞进单个类（<code>swarms/structs/agent.py:202</code>，约 6443 行）——属于”反 KISS”的厚内核。</li>
+<li><strong>结构即拓扑</strong>：<code>swarms/structs/</code>（60+ 文件）每个文件是一种 multi-agent 拓扑。它们不共享统一基类约束，而是各自实现 <code>run()</code>，靠 <code>SwarmRouter</code>（<code>swarms/structs/swarm_router.py:118</code>）按 <code>swarm_type</code> 字符串分派统一。<code>SwarmType</code> 共 17 种（<code>swarm_router.py:48</code>），含 <code>"auto"</code>（让 LLM 选拓扑）。</li>
+<li><strong>模型层外包给 LiteLLM</strong>：没有自研 provider 适配，<code>LiteLLM</code> 包装类（<code>swarms/utils/litellm_wrapper.py:132</code>）直接调用 <code>litellm.completion</code>，因此任意 LiteLLM 模型串（OpenAI/Anthropic/Groq/Gemini…）即插即用。</li>
+<li><strong>入口 API</strong>：官方强约束”只从顶层导入”——<code>from swarms import Agent, SequentialWorkflow, SwarmRouter, ...</code>（<code>swarms/__init__.py</code> 用 <code>from swarms.structs import *</code> 平铺导出）。<code>agent.run(task)</code> 是主入口（<code>agent.py:4690</code>）。</li>
+<li><strong>电池</strong>：<code>tools/</code>（函数→OpenAI schema、MCP 客户端、Pydantic 转换）、<code>telemetry/</code>（启动即向 swarms.world 上报，需开关）、<code>prompts/</code>、<code>cli/</code>、<code>v12</code> 新增 <code>persistent_memory</code>/<code>context_compression</code>/自治 <code>max_loops="auto"</code>。</li>
+</ul>
+<p>最小示例（取自 README / CLAUDE.md）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> swarms </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent, SequentialWorkflow</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 1) 单 agent —— 唯一原语</span></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    agent_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Analyst"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    model_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4.1"</span><span style="color:#E1E4E8">,       </span><span style="color:#6A737D"># 任意 LiteLLM 模型串</span></span>
+<span class="line"><span style="color:#FFAB70">    max_loops</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(agent.run(</span><span style="color:#9ECBFF">"Summarise the current state of LLM research."</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2) 把多个 agent 串成拓扑</span></span>
+<span class="line"><span style="color:#E1E4E8">pipeline </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> SequentialWorkflow(</span></span>
+<span class="line"><span style="color:#FFAB70">    agents</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">        Agent(</span><span style="color:#FFAB70">agent_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Researcher"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">model_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4.1"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">        Agent(</span><span style="color:#FFAB70">agent_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Writer"</span><span style="color:#E1E4E8">,     </span><span style="color:#FFAB70">model_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4.1"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">        Agent(</span><span style="color:#FFAB70">agent_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Editor"</span><span style="color:#E1E4E8">,     </span><span style="color:#FFAB70">model_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4.1"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    ],</span></span>
+<span class="line"><span style="color:#FFAB70">    max_loops</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(pipeline.run(</span><span style="color:#9ECBFF">"Write an article about the history of neural networks."</span><span style="color:#E1E4E8">))</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>ReAct 式 <code>while</code> 循环：<code>call_llm</code>→<code>parse_llm_output</code>→若有 tool_calls 则 <code>execute_tools</code> 回灌→重复，直到无 tool_call 或 <code>loop_count >= max_loops</code>；<code>max_loops="auto"</code> 时无上限直到自决完成</td><td><code>agent.py:1616</code> (主循环), <code>agent.py:1701</code> (<code>call_llm</code>), <code>agent.py:1787</code> (<code>execute_tools</code> 触发)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>可选 <code>plan_enabled</code>/<code>plan(task)</code>：用 planning_prompt+历史让 LLM 先产出 step-by-step 计划写入短期记忆；<code>max_loops="auto"</code> 走 <code>_run_autonomous_loop</code> 的 plan→execute→reflect 三段式；专门拓扑 <code>PlannerWorkerSwarm</code>/<code>AutoSwarmBuilder</code></td><td><code>agent.py:3159</code> (<code>plan</code>), <code>agent.py:2105</code> (<code>_run_autonomous_loop</code>), <code>structs/planner_worker_swarm.py</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>Conversation</code>（默认 in-memory 消息列表，<code>conversation.py:52</code>）；长期=v12 <code>persistent_memory</code> 把 <code>MEMORY.md</code> 作为 system 前导注入并逐轮追加（<code>conversation.py:281,420</code>）；<code>compact()</code> 摘要+归档（<code>conversation.py:314</code>）；<strong>无内建向量记忆</strong> → N/A</td><td><code>structs/conversation.py:52</code>, <code>agent.py:522</code> (<code>persistent_memory</code>), <code>conversation.py:314</code> (<code>compact</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>普通 Python 函数（带 docstring/type hints）→ <code>BaseTool.func_to_dict</code> 自动转 OpenAI function schema；Pydantic 模型经 <code>base_model_to_openai_function</code>；原生 function calling，结果回灌对话</td><td><code>tools/base_tool.py:69,142</code>, <code>tools/pydantic_to_json.py</code>, <code>agent.py:6042</code> (<code>execute_tools</code>), <code>agent.py:6367</code> (<code>tool_execution_retry</code>)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>不自研 provider：<code>LiteLLM</code> 包装类持有模型名/参数，<code>run()</code> 内组装 <code>completion_params</code> 调 <code>litellm.completion</code>；自动探测 vision/reasoning 支持，映射 <code>reasoning_effort</code>/<code>thinking_tokens</code></td><td><code>utils/litellm_wrapper.py:132</code> (<code>LiteLLM</code>), <code>litellm_wrapper.py:1151</code> (<code>run</code>), <code>litellm_wrapper.py:1335</code> (<code>completion</code>), <code>agent.py:1065</code> (<code>llm_handling</code>)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>核心卖点：60+ 拓扑文件，经 <code>SwarmRouter</code> 按 17 种 <code>SwarmType</code> 统一分派；含 Sequential/Concurrent(ThreadPool)/AgentRearrange(flow DSL)/Graph(DAG 拓扑排序)/MixtureOfAgents/Hierarchical/GroupChat/MajorityVoting/Council/Debate/Heavy/RoundRobin 等；另有 <code>handoffs</code> 让 agent 间移交</td><td><code>structs/swarm_router.py:118</code>, <code>swarm_router.py:48</code> (<code>SwarmType</code> 17 项), <code>structs/sequential_workflow.py:52</code>, <code>structs/concurrent_workflow.py:23</code>, <code>structs/agent_rearrange.py:34</code>, <code>structs/graph_workflow.py</code>, <code>structs/multi_agent_exec.py</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system_prompt 注入 + 历史拼接（<code>return_history_as_string</code>）；v12 <code>ContextCompressor</code> 在 token 用量超 90% 阈值时 <code>maybe_compress</code> 摘要旧消息；<code>transforms</code> 可在每轮重写 task_prompt；<code>dynamic_context_window</code> 工具</td><td><code>agent.py:528</code> (<code>ContextCompressor(threshold=0.9)</code>), <code>agents/context_compressor.py:40,162</code>, <code>agent.py:1658</code> (<code>handle_transforms</code>), <code>utils/dynamic_context_window.py</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”plugin 总线”；扩展点是 ①工具列表 ②可选拓扑结构。<code>dynamic_skills_loader</code>/<code>skill_orchestra</code>/<code>csv_to_agent</code>/<code>agent_loader</code>(markdown) 提供从文件/CSV/MD 动态装载 agent 与技能</td><td><code>structs/dynamic_skills_loader.py</code>, <code>structs/skill_orchestra.py</code>, <code>structs/csv_to_agent.py</code>, <code>utils/agent_loader_markdown.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>loguru 日志（<code>utils/loguru_logger.py</code>）；遥测默认向 swarms.world 上报 agent 数据（<code>SWARMS_TELEMETRY_ON</code> 开关，<code>telemetry/main.py:150</code>）；评估类拓扑 <code>council_as_judge</code>/<code>debate_with_judge</code>/<code>majority_voting</code> 充当 LLM-as-judge</td><td><code>telemetry/main.py:96,150</code>, <code>telemetry/bootup.py:8</code>, <code>structs/council_as_judge.py</code>, <code>utils/loguru_logger.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库；同步为主，<code>Concurrent</code>/<code>run_agents_concurrently</code> 用 <code>ThreadPoolExecutor</code>，另有 <code>arun</code>/<code>arun_stream</code> 异步与 asyncio 版；<code>aop.py</code>(Agent-as-server)、<code>cron_job.py</code>(schedule)、<code>batch_agent_execution</code>；<code>autosave</code> 落盘状态；<code>swarms</code> CLI 入口</td><td><code>structs/concurrent_workflow.py:403</code> (ThreadPool), <code>structs/multi_agent_exec.py</code>, <code>agent.py:3075</code> (<code>arun</code>), <code>structs/aop.py</code>, <code>structs/cron_job.py</code>, <code>cli/main.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>interactive=True</code> 进入 REPL，每轮经 <code>formatter.console.input</code> 收用户输入（<code>agent.py:1871</code>）；<code>AgentRearrange</code> flow DSL 支持插入 <code>-> H -></code> 人审步骤 + <code>custom_human_in_the_loop</code> 回调；无细粒度工具审批/沙箱</td><td><code>agent.py:433,1871</code> (<code>interactive</code>), <code>structs/agent_rearrange.py:34</code> (flow <code>H</code> 步骤 + <code>human_in_the_loop</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td><code>autosave</code> 把 <code>to_dict()</code> 状态序列化落盘（<code>agent.py:3456</code> 后台线程）；<code>Conversation.save_as_json</code>/<code>export</code>（<code>conversation.py:812,895</code>）；v12 <code>MEMORY.md</code> 跨进程持久（按 <code>agent_name</code> keyed）；对话默认 in-memory，无 DB 后端</td><td><code>agent.py:3456</code> (<code>autosave</code>), <code>structs/conversation.py:812</code> (<code>save_as_json</code>), <code>conversation.py:420</code> (MEMORY.md 追加), <code>utils/swarm_autosave.py</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“拓扑超市” vs 极简</strong>：与极简的 <a class="wikilink" href="/frameworks/swarm/">Swarm</a>（OpenAI 那个去框架化、约百行的 routine/handoff 实验品）<strong>截然相反</strong>——Swarms 是企业向的”全家桶”，强项是开箱即用的多种编排拓扑与一个 <code>SwarmRouter</code> 入口随意切换；同名但毫无关系。两者重名易混，本笔记特指 <code>kyegomez/swarms</code>。</li>
+<li><strong>胖 Agent 的代价</strong>：<code>Agent</code> 单类 6400+ 行、构造参数数十个，违背 KISS / 小文件原则；好处是单一对象即可拿到流式、工具、MCP、记忆、自治、持久化，学习曲线”会一个类就够”。坏处是可读性/可测试性差、参数交互暗坑多（CLAUDE.md 专列 “What to Avoid”：勿传 <code>tools=[]</code>、勿同时开 <code>streaming_on</code> 与 <code>streaming_callback</code>、长自治会话必开 <code>context_compression</code> 等）。</li>
+<li><strong>模型层零自研</strong>：完全押注 LiteLLM（pin 死 <code>1.76.1</code>），优点是 provider 覆盖极广、升级即享新模型；缺点是行为与坑都继承 LiteLLM，版本锁定。</li>
+<li><strong>编排即字符串</strong>：<code>SwarmRouter(swarm_type="...")</code> 与 <code>AgentRearrange(flow="A -> B, C -> D")</code> 把拓扑表达为可读字符串/DSL，是它”换架构不改编排代码”的核心卖点；<code>swarm_type="auto"</code> 进一步让 LLM 选拓扑。</li>
+<li><strong>遥测默认外发</strong>：<code>bootup()</code> 在 <code>import swarms</code> 时即运行，遥测经 <code>SWARMS_TELEMETRY_ON</code> 控制向 swarms.world 上报 agent/系统数据——企业落地需注意数据合规（可关闭）。</li>
+<li><strong>v12 向 Claude Code 看齐</strong>：<code>persistent_memory</code>(MEMORY.md) + <code>context_compression</code>(90% 阈值摘要) + <code>max_loops="auto"</code> 自治循环（自带 think/grep/bash/file 工具）= 长程自治 agent，对标闭源 harness 的压缩/子任务能力。</li>
+<li><strong>缺口</strong>：无内建向量记忆（RAG 需自接工具）、无独立插件总线（扩展靠工具+拓扑）、对话默认 in-memory（无 DB 后端）、HITL 较粗（REPL + flow <code>H</code> 步骤，无工具级审批/沙箱）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>注意区分：极简的 <a class="wikilink" href="/frameworks/swarm/">swarm</a>（OpenAI routine/handoff 实验）≠ 本框架 <code>kyegomez/swarms</code></li>
+<li>同范式(multi)：<a class="wikilink" href="/frameworks/swarm/">swarm</a> · 源码：<code>agents-example/swarms/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

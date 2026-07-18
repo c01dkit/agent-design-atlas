@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agent 组件总览 · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/" aria-current="page">理念</a><a href="/components/">组件</a><a href="/frameworks/">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/concepts/" data-astro-cid-fwpw2zac>理念</a></nav><div class="note-meta" data-astro-cid-fwpw2zac></div><div class="prose" data-astro-cid-fwpw2zac><h1 id="agent-组件总览">Agent 组件总览</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话总结</div>
+                </div>
+                <div class="callout-content">把任意 agent 框架”解剖”成一份通用的零件清单：推理循环、规划、上下文工程、工具、记忆、模型抽象、技能/插件、多智能体编排、状态/持久化、可观测/评估、运行时、人在环/治理。这份清单是横向比较所有框架的统一坐标系——纵向看每个零件的不同实现，见 component-matrix。</div>
+              
+</blockquote>
+<h2 id="参考架构">参考架构</h2>
+<p>一个”全功能”agent 大致是这样分层的（不是每个框架都全有）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌──────────────────────────────────────────────┐</span></span>
+<span class="line"><span>│  人在环 / 治理 (Human-in-the-loop, Governance) │  ← 审批、策略、审计</span></span>
+<span class="line"><span>├──────────────────────────────────────────────┤</span></span>
+<span class="line"><span>│  多智能体编排 (Orchestration)                   │  ← 角色/拓扑/通信</span></span>
+<span class="line"><span>├──────────────────────────────────────────────┤</span></span>
+<span class="line"><span>│  推理循环 (Reasoning Loop)   规划 (Planning)    │  ← agent 的"大脑控制流"</span></span>
+<span class="line"><span>│  上下文工程 (Context Engineering)               │</span></span>
+<span class="line"><span>├───────────────┬───────────────┬──────────────┤</span></span>
+<span class="line"><span>│  工具 (Tools) │  记忆 (Memory)│ 技能/插件     │  ← 能力与外部世界</span></span>
+<span class="line"><span>├───────────────┴───────────────┴──────────────┤</span></span>
+<span class="line"><span>│  模型抽象 (Model Abstraction)                   │  ← 统一各家 LLM</span></span>
+<span class="line"><span>├──────────────────────────────────────────────┤</span></span>
+<span class="line"><span>│  状态/持久化   运行时/执行   可观测/评估         │  ← 工程底座</span></span>
+<span class="line"><span>└──────────────────────────────────────────────┘</span></span></code></pre>
+<h2 id="12-个组件横向坐标系">12 个组件（横向坐标系）</h2>
+<h3 id="控制与推理">控制与推理</h3>
+<ol>
+<li><strong><a class="wikilink" href="/components/reasoning-loop/">推理循环</a></strong> — agent 的主循环：思考→行动→观察怎么转。承载 <a class="wikilink" href="/concepts/agent-loop-paradigms/">范式</a>。</li>
+<li><strong><a class="wikilink" href="/components/planning/">规划</a></strong> — 任务分解、计划生成与重规划；从”无规划 ReAct”到”显式 DAG”。</li>
+<li><strong><a class="wikilink" href="/components/context-engineering/">上下文工程</a></strong> — 怎么把对的信息放进有限的上下文窗口：prompt 模板、消息裁剪、压缩、记忆注入。</li>
+</ol>
+<h3 id="能力与外部世界">能力与外部世界</h3>
+<ol start="4">
+<li><strong><a class="wikilink" href="/components/tool-use/">工具调用</a></strong> — 如何定义工具、把工具暴露给模型、解析调用、执行、回灌结果。含 MCP。</li>
+<li><strong><a class="wikilink" href="/components/memory/">记忆</a></strong> — 短期（会话）、长期（跨会话）、向量检索；记忆的写入/检索/遗忘。</li>
+<li><strong><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></strong> — 统一不同 provider（OpenAI/Anthropic/本地…）的接口；流式、函数调用、多模态。</li>
+<li><strong><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></strong> — 把能力打包成可复用、可分发的单元（skill/plugin/extension）。</li>
+</ol>
+<h3 id="协作与编排">协作与编排</h3>
+<ol start="8">
+<li><strong><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></strong> — 角色、拓扑、通信、handoff（见 <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a>）。</li>
+<li><strong><a class="wikilink" href="/components/state-persistence/">状态与持久化</a></strong> — agent 状态如何表示、保存、恢复（checkpoint、断点续跑）。</li>
+</ol>
+<h3 id="工程化">工程化</h3>
+<ol start="10">
+<li><strong><a class="wikilink" href="/components/observability-eval/">可观测与评估</a></strong> — tracing、日志、token/成本、eval 框架。</li>
+<li><strong><a class="wikilink" href="/components/runtime-execution/">运行时与执行</a></strong> — 代码沙箱、并发、部署形态（库/服务/serverless/桌面）。</li>
+<li><strong><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环与治理</a></strong> — 审批门、策略enforcement、审计；生产安全的关键。</li>
+</ol>
+<h2 id="怎么用这份清单">怎么用这份清单</h2>
+<ul>
+<li><strong>读单个框架时</strong>：对照这 12 项，看它实现了哪些、强在哪、缺了什么——这正是 <a class="wikilink wikilink-new" href="/framework-note/">框架笔记模板</a>的组件表。</li>
+<li><strong>横向比较时</strong>：固定一个组件，看 N 个框架怎么做——这正是 <a class="wikilink" href="/comparisons/component-matrix/">对比矩阵</a>的一列/一行。</li>
+<li><strong>设计自己的 agent 时</strong>：当成 checklist，逐项决策。</li>
+</ul>
+<h2 id="关键要点">关键要点</h2>
+<ul>
+<li>不是每个框架都覆盖 12 项：轻量库（<a class="wikilink" href="/frameworks/smolagents/">smolagents</a>、<a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a>）聚焦少数核心；平台（<a class="wikilink" href="/frameworks/dust/">Dust</a>、<a class="wikilink" href="/frameworks/astron/">Astron</a>）覆盖更全。</li>
+<li>同一组件存在巨大的实现差异（纵向），这正是学习的重点。</li>
+<li>组件划分是分析工具，不是某个框架的真实模块边界。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li>横向落地：<a class="wikilink" href="/components/">组件维度</a></li>
+<li>纵向落地：<a class="wikilink" href="/frameworks/">框架维度</a> · <a class="wikilink" href="/comparisons/component-matrix/">component-matrix</a></li>
+<li>上游心智模型：<a class="wikilink" href="/concepts/what-is-an-agent/">what-is-an-agent</a> · <a class="wikilink" href="/concepts/agent-loop-paradigms/">agent-loop-paradigms</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

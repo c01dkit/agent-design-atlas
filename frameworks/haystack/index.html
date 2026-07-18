@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Haystack · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Haystack</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>rag</span><span class="badge paradigm" data-astro-cid-fwpw2zac>pipeline</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0</span><a class="badge" href="https://github.com/deepset-ai/haystack" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/haystack/</span></div><div class="cov-strip" aria-label="组件覆盖 9/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>9/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="haystack">Haystack</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">deepset 出品的 production-ready RAG &#x26; Agent 编排框架：核心是一套声明式 DAG Pipeline——任何标了 @component 的类（retriever / embedder / generator / ranker / agent…）都有类型化的 input/output sockets，用 add_component() + connect() 按数据流接成图，引擎按拓扑序（支持环路/分支）驱动执行；Agent 只是其中一个特殊 component，内部跑 LLM↔ToolInvoker 的 ReAct 式循环。强调 “context engineering”：检索、路由、记忆、生成全部透明可追踪、可序列化、可热插拔模型厂商。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Haystack 的世界观是 <strong>“一切皆 Component，编排即 DAG”</strong>，与 single-agent ReAct 框架（如 <a class="wikilink" href="/frameworks/connectonion/">connectonion</a>）的 “agent 是一等公民” 相反——这里 <strong>Pipeline（图）才是一等公民，Agent 是图里的一个节点</strong>。核心设计取舍：</p>
+<ul>
+<li><strong>Component 契约（鸭子类型 + 元类）</strong>：<code>@component</code> 装饰器（<code>haystack/core/component/component.py:644</code> 的 <code>component = _Component()</code>）通过 <code>ComponentMeta</code> 元类（<code>component.py:187</code>）在实例化时用 <code>inspect.signature</code> 解析 <code>run()</code> 的形参类型生成 <strong>InputSocket</strong>，用 <code>@component.output_types(...)</code> 装饰器（<code>component.py:534</code>）声明 <strong>OutputSocket</strong>。唯一硬性契约：必须有 <code>run()</code> 且返回 <code>Mapping</code>。</li>
+<li><strong>声明式 DAG + 类型检查连线</strong>：<code>Pipeline</code> 内部是 <code>networkx.MultiDiGraph</code>（<code>haystack/core/pipeline/base.py:112</code>）。<code>connect("retriever", "prompt_builder.documents")</code>（<code>base.py:441</code>）在<strong>连线时</strong>就校验 sender 的 output socket 类型与 receiver 的 input socket 类型是否兼容，类型不匹配直接报错。执行引擎用拓扑序+优先级队列调度；若图含环（如 Agent 自反馈、retry）则走 <code>networkx.condensation</code> 处理强连通分量（<code>base.py:1289</code>），故 <strong>Pipeline 支持 loop/branch，不只是纯 DAG</strong>。</li>
+<li><strong>RAG 是头等场景</strong>：<code>components/</code> 下按职责切分目录——<code>retrievers/</code>、<code>embedders/</code>、<code>rankers/</code>、<code>readers/</code>、<code>converters/</code>、<code>preprocessors/</code>、<code>writers/</code>、<code>generators/</code>、<code>builders/</code>（PromptBuilder）、<code>routers/</code>、<code>joiners/</code>、<code>evaluators/</code>。一条标准 RAG = Retriever→PromptBuilder→ChatGenerator→AnswerBuilder 用 <code>connect()</code> 串起来。</li>
+<li><strong>模型/厂商无关</strong>：Generator 与 Retriever 都是协议（Protocol）。<code>ChatGenerator</code>（<code>haystack/components/generators/chat/types/protocol.py:10</code>）只要求 <code>run(messages) -> dict</code>；OpenAI/Azure/HuggingFace 等是核心包内置，其余厂商（Anthropic/Cohere/Bedrock/Mistral…）在 <code>haystack-core-integrations</code> 仓库，换厂商=换一个 component 实例。</li>
+<li><strong>可序列化是一等需求</strong>：component 的 <code>__init__</code> 参数必须 JSON-serializable，<code>Pipeline.to_dict()/from_dict()</code>（<code>base.py:150/177</code>）+ <code>dumps()/loads()</code>（<code>base.py:264/287</code>，默认 YAML marshaller）让整条 pipeline 能存成 YAML 并复原——这也是 Hayhooks 把 pipeline 暴露成 REST/MCP 的基础。</li>
+<li><strong>入口 API</strong>：<code>from haystack import Pipeline, component, Document</code>（<code>haystack/__init__.py</code>）；Agent 在 <code>haystack.components.agents.Agent</code>。</li>
+</ul>
+<p>最小示例（取自 <code>Pipeline.run</code> docstring，<code>haystack/core/pipeline/pipeline.py:127</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Pipeline, Document</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack.components.builders.chat_prompt_builder </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ChatPromptBuilder</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack.components.generators.chat </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> OpenAIChatGenerator</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack.components.retrievers.in_memory </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> InMemoryBM25Retriever</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack.dataclasses </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ChatMessage</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> haystack.document_stores.in_memory </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> InMemoryDocumentStore</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">document_store </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> InMemoryDocumentStore()</span></span>
+<span class="line"><span style="color:#E1E4E8">document_store.write_documents([</span></span>
+<span class="line"><span style="color:#E1E4E8">    Document(</span><span style="color:#FFAB70">content</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"My name is Jean and I live in Paris."</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    Document(</span><span style="color:#FFAB70">content</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"My name is Mark and I live in Berlin."</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">template </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [ChatMessage.from_user(</span></span>
+<span class="line"><span style="color:#9ECBFF">    "Given these documents, answer the question.</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#9ECBFF">    "Documents:</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">{% for doc in documents %}{{ doc.content }}</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">{% endfor %}</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#9ECBFF">    "Question: </span><span style="color:#79B8FF">{{</span><span style="color:#9ECBFF">question</span><span style="color:#79B8FF">}}\n</span><span style="color:#9ECBFF">Answer:"</span></span>
+<span class="line"><span style="color:#E1E4E8">)]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">rag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Pipeline()                                              </span><span style="color:#6A737D"># 声明式 DAG</span></span>
+<span class="line"><span style="color:#E1E4E8">rag.add_component(</span><span style="color:#9ECBFF">"retriever"</span><span style="color:#E1E4E8">, InMemoryBM25Retriever(</span><span style="color:#FFAB70">document_store</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">document_store))</span></span>
+<span class="line"><span style="color:#E1E4E8">rag.add_component(</span><span style="color:#9ECBFF">"prompt_builder"</span><span style="color:#E1E4E8">, ChatPromptBuilder(</span><span style="color:#FFAB70">template</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">template))</span></span>
+<span class="line"><span style="color:#E1E4E8">rag.add_component(</span><span style="color:#9ECBFF">"llm"</span><span style="color:#E1E4E8">, OpenAIChatGenerator())</span></span>
+<span class="line"><span style="color:#E1E4E8">rag.connect(</span><span style="color:#9ECBFF">"retriever"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"prompt_builder.documents"</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D"># 类型化连线（连线即校验）</span></span>
+<span class="line"><span style="color:#E1E4E8">rag.connect(</span><span style="color:#9ECBFF">"prompt_builder"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"llm"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">question </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "Who lives in Paris?"</span></span>
+<span class="line"><span style="color:#E1E4E8">result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> rag.run({</span><span style="color:#9ECBFF">"retriever"</span><span style="color:#E1E4E8">: {</span><span style="color:#9ECBFF">"query"</span><span style="color:#E1E4E8">: question}, </span><span style="color:#9ECBFF">"prompt_builder"</span><span style="color:#E1E4E8">: {</span><span style="color:#9ECBFF">"question"</span><span style="color:#E1E4E8">: question}})</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(result[</span><span style="color:#9ECBFF">"llm"</span><span style="color:#E1E4E8">][</span><span style="color:#9ECBFF">"replies"</span><span style="color:#E1E4E8">][</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].text)                       </span><span style="color:#6A737D"># Jean lives in Paris</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>两层</strong>：①Pipeline 层=声明式 DAG，引擎按拓扑序+优先级队列驱动 component（非 LLM 推理，是数据流编排），支持环/分支；②Agent 层=ReAct 式 <code>while counter &#x3C; max_agent_steps</code> 循环：ChatGenerator→若 replies 含 tool_call 则 ToolInvoker 执行→回灌 messages→重复，直到无 tool_call 或命中 exit_condition</td><td>DAG: <code>core/pipeline/pipeline.py:114</code> (<code>run</code>), <code>core/pipeline/base.py:1289</code> (拓扑/环处理)；Agent: <code>components/agents/agent.py:809</code> (while 循环), <code>agent.py:861</code> (无 tool_call 即停)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无内置 planner/任务分解器；“规划”=开发者<strong>显式画 DAG</strong>（把多步拆成 component 用 connect 串联），或交给 Agent 内 LLM 隐式决定下一步调哪个 tool。声明式图本身即是静态计划</td><td><code>core/pipeline/base.py:441</code> (<code>connect</code> 手工编排)；Agent 动态决策见 <code>agent.py:809</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=Agent <code>State</code>（按 <code>state_schema</code> 定义的 KV，<code>messages</code> 默认用 <code>merge_lists</code> handler 累积多轮）；长期/向量=<strong>DocumentStore + Retriever</strong>（InMemory/外部向量库），即 RAG 充当语义记忆；另有 <code>components/caching</code> 缓存</td><td>State: <code>components/agents/state/state.py:56</code>, <code>agent.py:289</code> (messages handler)；向量记忆: <code>components/retrievers/in_memory/embedding_retriever.py:13</code>, <code>document_stores/types/protocol.py:11</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>Tool</code> dataclass（name+description+JSON-schema parameters+function）；<code>@tool</code>/<code>create_tool_from_function</code> 用 type hints+docstring 自动生成 schema；<code>ComponentTool</code>/<code>PipelineTool</code> 把任意 component/pipeline 包成 tool；<code>ToolInvoker</code> component 解析 LLM 的 ToolCall 并执行，结果可经 <code>outputs_to_state</code> 写回 State；<code>Toolset</code>/<code>SearchableToolset</code>(语义检索工具,支持 MCP)</td><td><code>tools/tool.py:19</code> (<code>Tool</code>), <code>tools/from_function.py:18,215</code> (<code>create_tool_from_function</code>/<code>@tool</code>), <code>tools/component_tool.py:39</code>, <code>tools/pipeline_tool.py:21</code>, <code>components/tools/tool_invoker.py</code>, <code>tools/searchable_toolset.py:21</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>基于 **Protocol（鸭子类型）**而非基类：<code>ChatGenerator</code> 协议仅要求 <code>run(messages)->dict</code>、返回 <code>replies: list[ChatMessage]</code>；OpenAI/Azure/HF 内置，其余厂商在 haystack-core-integrations；<code>ChatMessage</code>/<code>ToolCall</code> 为统一数据格式；<code>FallbackChatGenerator</code> 多模型故障转移</td><td><code>components/generators/chat/types/protocol.py:10</code> (协议), <code>components/generators/chat/openai.py:58,304</code>, <code>components/generators/chat/fallback.py:21</code>, <code>dataclasses/chat_message.py</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>无专门 multi-agent runtime；<strong>复用 DAG</strong>：因 <code>Agent</code> 也是 <code>@component</code>，可把多个 Agent <code>add_component</code> 进同一 Pipeline 并 <code>connect</code> 成图（顺序/分支/路由）；或用 <code>ComponentTool</code> 把一个 Agent 当 tool 交给另一个 Agent（agent-as-tool 实现层级编排）；Router 类做条件分支</td><td>Agent 是 component: <code>components/agents/agent.py:103</code> (<code>@component</code>)；agent-as-tool: <code>tools/component_tool.py:39</code>；路由: <code>components/routers/</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>框架核心卖点：上下文如何被检索/排序/过滤/拼装全部显式可控——PromptBuilder 用 Jinja2 模板拼 prompt，Ranker 重排，Joiner 合并多路文档，Router 条件路由；Agent 的 system/user prompt 支持 Jinja2 模板（ChatPromptBuilder），<code>required_variables</code> 校验</td><td><code>components/builders/</code> (ChatPromptBuilder), <code>components/rankers/</code>, <code>components/joiners/</code>, <code>agent.py:314</code> (prompt builder), <code>agent.py:343</code> (<code>_register_prompt_variables</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无 “skill/plugin” 概念；扩展机制=<strong>写自定义 <code>@component</code></strong>（统一契约，社区共享生态）+ <code>SuperComponent</code> 把一整条 pipeline 封装成单个可复用 component；集成生态在 haystack-core-integrations</td><td><code>core/component/component.py:644</code> (<code>@component</code>), <code>core/super_component/super_component.py:37</code> (<code>SuperComponent</code>/<code>input_mapping</code>/<code>output_mapping</code>)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>Tracing：<code>Tracer</code>/<code>Span</code> 抽象，自动接 OpenTelemetry/Datadog，<code>auto_enable_tracing()</code>（<code>__init__.py</code> 启动时调用），含 <code>LoggingTracer</code>；内容级 trace 由 env 开关；Eval：<code>components/evaluators/</code>（faithfulness/context_relevance/SAS/MRR/NDCG/recall/LLMEvaluator…）+ <code>EvaluationRunResult</code> 出报表</td><td><code>tracing/tracer.py:82</code> (<code>Tracer</code>), <code>tracing/logging_tracer.py:34</code>, <code>components/evaluators/</code> (10+ 评估器), <code>evaluation/eval_run_result.py:18</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯 Python 库；<code>Pipeline.run()</code> 同步顺序执行，<code>AsyncPipeline.run_async()</code> 让无依赖分支并行（asyncio）；<code>warm_up()</code> 钩子做模型/连接的重初始化；本进程执行无沙箱；生产部署经 <strong>Hayhooks</strong>(独立项目) 把 pipeline 包成 REST API / MCP server / OpenAI 兼容端点</td><td><code>core/pipeline/pipeline.py:114</code> (<code>run</code>), <code>core/pipeline/async_pipeline.py:28,468</code> (<code>AsyncPipeline.run_async</code>), <code>core/component/component.py:49</code> (<code>warm_up</code> 契约)</td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>Agent 支持 <code>confirmation_strategies</code>：按 tool 名映射 <code>ConfirmationStrategy</code>，工具执行前可拦截要求用户确认（<code>BlockingConfirmationStrategy</code> 等），含 <code>ConfirmationPolicy</code>/<code>ConfirmationUI</code> 协议，支持 web 场景注入 request-scoped 上下文（WebSocket 等）；<code>ToolExecutionDecision</code> 记录决策</td><td><code>human_in_the_loop/strategies.py:28</code> (<code>BlockingConfirmationStrategy</code>), <code>human_in_the_loop/types/protocol.py:30,57</code> (Policy/Strategy 协议), <code>agent.py:225,878</code> (confirmation 接入)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>①结构持久化：<code>Pipeline.to_dict/from_dict</code> + <code>dumps/loads</code>(YAML) 整图存取；②运行态持久化=<strong>Breakpoint/Snapshot</strong>：在 component/chat_generator/tool_invoker 处设断点，触发即把 inputs+component_visits+state 存成 <code>PipelineSnapshot</code>/<code>AgentSnapshot</code>(JSON)，可从快照 resume；Agent <code>State</code> 序列化 schema</td><td>结构: <code>core/pipeline/base.py:150,264</code>, <code>marshal/yaml.py</code>；运行态: <code>dataclasses/breakpoints.py:13,66,120,197</code> (Breakpoint/AgentBreakpoint/AgentSnapshot/PipelineSnapshot), <code>core/pipeline/breakpoint.py</code>, <code>pipeline.py:340</code> (resume)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“图编排” vs “agent 编排”</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">connectonion</a>/Swarm 等 “agent 是中心、循环是核心” 的框架根本不同——Haystack 把 <strong>DAG 当一等公民</strong>，Agent 只是图里一个会内部循环的节点。好处是<strong>透明可控、可静态校验类型、可序列化成 YAML 部署</strong>；代价是写法更 “工程化”（要手工 add_component+connect），不如两行起一个 agent 那样轻。</li>
+<li><strong>连线即类型检查</strong>：<code>connect()</code> 在装配期就比对 socket 类型（<code>base.py:441</code>），把 “上游输出对不上下游输入” 这类错误从运行时提前到构建时——这是声明式 DAG 相对命令式 agent 循环的硬优势。</li>
+<li><strong>RAG 第一公民</strong>：检索/嵌入/重排/读取/写入/转换/预处理被拆成独立可组合 component，配合 DocumentStore 协议，换向量库/换 embedding 模型/插一个 ranker 都只是改一个节点。Context engineering（检索→排序→过滤→拼装→路由全透明）是其相对 “黑盒 RAG” 框架的核心差异。</li>
+<li><strong>Protocol 而非继承</strong>：Generator/Retriever/DocumentStore 都是 <code>typing.Protocol</code>，模型/厂商/存储无关性靠鸭子类型达成，换厂商=换 component 实例，不改 pipeline 结构。</li>
+<li><strong>支持环与分支</strong>：虽名为 DAG，引擎实际经 <code>networkx.condensation</code> 支持带环图（<code>base.py:1289</code>），故 retry、self-correction、Agent 反馈回路都能在 pipeline 层表达；<code>AsyncPipeline</code> 还能并行无依赖分支。</li>
+<li><strong>生产化外置</strong>：核心库不含 server；REST/MCP 暴露交给独立的 <strong>Hayhooks</strong>，企业版（Enterprise Platform）补 observability/治理/协作——核心库保持精简。</li>
+<li><strong>multi-agent 是 “涌现” 而非 “内建”</strong>：没有专门的 multi-agent 调度器，多 agent 协作靠 “Agent 也是 component” 复用 DAG 或 agent-as-tool，灵活但需自己设计编排拓扑。</li>
+<li><strong>待确认/注意</strong>：①版本为 <code>2.31.0-rc0</code>(VERSION.txt) 的 release candidate，部分 API 可能仍在演进；②绝大多数第三方厂商集成不在本仓库（在 haystack-core-integrations），本笔记仅覆盖核心包内置的 OpenAI/Azure/HF；③Tool 的 <code>function</code> 必须是同步函数（<code>tool.py:105</code> 显式拒绝 async）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/context-engineering/">context-engineering</a> · <a class="wikilink" href="/components/tool-use/">tool-use</a> · <a class="wikilink" href="/components/state-persistence/">state-persistence</a></li>
+<li>同范式(RAG/声明式 pipeline)：<a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · 对比 single-agent：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a></li>
+<li>源码：<code>agents-example/haystack/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

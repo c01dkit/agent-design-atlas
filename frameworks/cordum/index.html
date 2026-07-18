@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cordum · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Cordum</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>go</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>BUSL-1.1（2029-01-01 转 Apache-2.0）</span><a class="badge" href="https://github.com/cordum-io/cordum" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/cordum/</span></div><div class="cov-strip" aria-label="组件覆盖 9/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class style="--h:285" title="推理循环: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:150" title="工具: N/A" data-astro-cid-fwpw2zac></i><i class style="--h:230" title="模型: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>9/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="cordum">Cordum</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个进程外的 AI Agent 治理控制面（Go 编写，CAP v2 协议）：在任意框架/模型的 agent 执行动作之前 拦截每一次工作请求，做声明式策略 enforcement（ALLOW/DENY/REQUIRE_APPROVAL/THROTTLE）、人工审批门、以及 HMAC 签名的防篡改审计哈希链——它本身不写 agent，而是治理别人的 agent。口号即 “Know What Your AI Agents Are Doing. Before They Do It.”</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Cordum 不是一个 agent 框架，而是一个<strong>治理基础设施 / 控制平面</strong>——所以本笔记里绝大多数”agent 组件”（推理循环、规划、记忆、工具调用、模型抽象）都是 <strong>N/A</strong>：这些发生在被治理的 worker 内部，Cordum 看不见也不关心。它把”治理（policy/approval/constraint）“与”执行（worker）“彻底分离，用一条持久总线（NATS + 可选 JetStream）和稳定的线协议 <strong>CAP v2</strong>（<code>github.com/cordum-io/cap/v2</code>，由 <code>go.mod:8</code> 钉死）连接。设计取舍：</p>
+<ul>
+<li><strong>多服务微内核</strong>：拆成独立部署的二进制（<code>cmd/</code> 下）：API Gateway（HTTP/WS/gRPC 入口）、Scheduler（路由 + 调度 + 治理 enforcement）、Safety Kernel（gRPC 纯策略服务）、Workflow Engine、Context Engine（可选记忆服务）、<code>cordumctl</code> CLI、MCP Server。架构见 <code>README.md:402</code>、<code>DESIGN.md:21</code>。</li>
+<li><strong>Before / During / Across 治理框架</strong>：BEFORE=执行前策略评估+安全门+人审；DURING=实时监控+熔断+在途审批；ACROSS=车队健康+审计轨迹（<code>README.md:163</code>）。</li>
+<li><strong>指针优先的总线</strong>：总线只传 pointer（<code>context_ptr</code>/<code>result_ptr</code>/<code>artifact_ptrs</code>），大负载（输入/输出/工件）存 Redis，审计时再解引用（<code>DESIGN.md:112</code>）。</li>
+<li><strong>契约即预算</strong>：每个工作单元是带 budget + policy 约束的 <code>JobRequest</code>（<code>DESIGN.md:60</code>）；worker 靠 <code>Heartbeat</code> 持续广播算力，Scheduler 用内存 TTL 注册表（默认 30s）做无持久化 DB 的容量感知路由（<code>DESIGN.md:46</code>）。</li>
+<li><strong>fail-closed 默认</strong>：Safety Kernel 没加载策略时一律 DENY（<code>core/controlplane/safetykernel/kernel.go:706</code>）；不支持非 <code>job.</code> topic 也 DENY（<code>kernel.go:724</code>）。</li>
+<li><strong>Cordum Edge</strong>：把控制面下沉到本地——<code>cordumctl edge claude</code> 给 Claude Code 装命令 hook，本地起 <code>cordum-agentd</code>，危险动作执行前先过 Gateway evaluate（合规防火墙）。</li>
+</ul>
+<p>最小示例（取自 README — 这是”写一个被治理的 worker”，不是写 agent 逻辑）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#9ECBFF">    "</span><span style="color:#B392F0">log</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#9ECBFF">    "</span><span style="color:#B392F0">github.com/cordum/cordum/sdk/runtime</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Input</span><span style="color:#F97583"> struct</span><span style="color:#E1E4E8">{ Prompt </span><span style="color:#F97583">string</span><span style="color:#9ECBFF"> `json:"prompt"`</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Output</span><span style="color:#F97583"> struct</span><span style="color:#E1E4E8">{ Summary </span><span style="color:#F97583">string</span><span style="color:#9ECBFF"> `json:"summary"`</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">func</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    agent </span><span style="color:#F97583">:=</span><span style="color:#F97583"> &#x26;</span><span style="color:#B392F0">runtime</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Agent</span><span style="color:#E1E4E8">{Retries: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">    // 注册一个 CAP worker：订阅 job.summarize，执行业务逻辑</span></span>
+<span class="line"><span style="color:#E1E4E8">    runtime.</span><span style="color:#B392F0">Register</span><span style="color:#E1E4E8">(agent, </span><span style="color:#9ECBFF">"job.summarize"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">func</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">ctx</span><span style="color:#B392F0"> runtime</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">in</span><span style="color:#B392F0"> Input</span><span style="color:#E1E4E8">) (</span><span style="color:#B392F0">Output</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> Output</span><span style="color:#E1E4E8">{Summary: in.Prompt}, </span><span style="color:#79B8FF">nil</span><span style="color:#6A737D"> // 真正的 agent/LLM 逻辑由你实现</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> agent.</span><span style="color:#B392F0">Start</span><span style="color:#E1E4E8">(); err </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8"> { log.</span><span style="color:#B392F0">Fatal</span><span style="color:#E1E4E8">(err) }</span></span>
+<span class="line"><span style="color:#F97583">    select</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>提交一个受治理的 job（治理在此发生，而非在 worker 内）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -X</span><span style="color:#9ECBFF"> POST</span><span style="color:#9ECBFF"> https://localhost:8081/api/v1/jobs</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -H</span><span style="color:#9ECBFF"> "X-API-Key: </span><span style="color:#E1E4E8">$CORDUM_API_KEY</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF"> -H</span><span style="color:#9ECBFF"> "X-Tenant-ID: default"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -d</span><span style="color:#9ECBFF"> '{"topic":"job.default","prompt":"hello"}'</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td><strong>N/A</strong>——治理控制面本身不推理。推理发生在被治理的 worker 内部，Cordum 仅在 <code>JobRequest</code>→<code>JobResult</code> 边界上做治理。控制面自身的”循环”是 Scheduler 订阅总线→查策略→路由的调度循环</td><td>（N/A）调度循环见 <code>core/controlplane/scheduler/engine.go</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>仅有 <strong>Workflow Engine</strong> 把声明式工作流拆成多个 <code>JobRequest</code> 步骤并推进（loop/parallel/subworkflow），非 LLM 规划</td><td><code>core/workflow/engine.go</code>, <code>engine_steps_loop.go</code>, <code>engine_steps_parallel.go</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>非 agent 记忆。<strong>Context Engine</strong>（可选 gRPC 服务）做指针化上下文/记忆存储，写入时强制治理校验（policy/trust/directive 类写入必须带审批引用）；向量检索 N/A</td><td><code>core/contextwindow/engine/service.go</code>, <code>core/contextwindow/engine/governance_write.go:54</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><strong>N/A</strong>（控制面不调工具）。但通过 <strong>MCP Bridge / Gateway</strong> 治理 <em>worker 的</em> MCP 工具调用：<code>McpGate</code> 在 action-gate 流水线里按策略放行/拦截工具</td><td><code>core/policy/actiongates/mcp_gate.go</code>；MCP 见 <code>docs/mcp-server.md</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><strong>N/A</strong>——Cordum 框架/模型无关（framework-agnostic via CAP），不内置任何 LLM provider。模型由被治理的 worker 自己持有</td><td>（N/A）<code>README.md:564</code> “Framework agnostic ✅ Any via CAP”</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>这是核心：Scheduler 按 <code>Heartbeat</code>（算力/能力/pool/labels）做容量感知路由到 worker 池或直连 worker，靠内存 TTL 注册表（无持久 DB）；策略可做 pool segmentation（敏感数据只进可信池）</td><td><code>DESIGN.md:124</code>, <code>core/controlplane/scheduler/registry_memory.go</code>, <code>scheduler/routing.go</code>, <code>scheduler/strategy_least_loaded.go</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>指针化：Gateway 把输入 context JSON 写 Redis 设 <code>context_ptr</code>，总线只带指针；Safety Kernel 评估时按需解引用做内容级扫描（如 PII/payload 字段提取）</td><td><code>DESIGN.md:112</code>, <code>core/controlplane/scheduler/safety_client.go:185</code> (<code>loadInputContent</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><strong>Integration Packs</strong>：30+ CAP-native worker 包（Slack/GitHub/AWS/K8s/Terraform…），每个是带策略门工作流的 worker；<code>cordumctl pack install</code> 安装</td><td><code>README.md:504</code>, <code>core/controlplane/gateway/packs/</code>, <code>docs/pack.md</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><strong>重点</strong>。① 防篡改审计：HMAC-SHA256 签名的 per-tenant 哈希链（Redis Stream + CAS Lua）<code>core/audit/chain.go:265</code>，链校验 <code>chain_verify.go</code>；② SIEM 导出（webhook/syslog/Datadog/CloudWatch/SOC2）<code>core/audit/exporter.go:283</code>；③ DecisionLog 记录每次策略裁决 <code>scheduler/decision_log_adapter.go</code>；④ OTel metrics/trace <code>core/infra/otel/</code>；⑤ Policy Simulator 拿历史数据预演规则（<code>kernel.go:623</code> <code>Simulate</code>）+ shadow eval <code>safetykernel/shadow_eval.go</code></td><td><code>core/audit/chain.go:265</code>, <code>core/audit/exporter.go</code>, <code>core/controlplane/safetykernel/shadow_eval.go</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>多服务部署：Docker Compose / Helm chart（<code>cordum-helm/</code>）/ K8s（<code>deploy/k8s/</code>）；镜像 cosign keyless 签名（<code>README.md:251</code>）；TLS mTLS 默认；端口 8081 Gateway / 8082 Dashboard / 50051 Safety Kernel gRPC（<code>README.md:312</code>）。一键起栈 <code>tools/scripts/quickstart.sh</code></td><td><code>cmd/</code>（各服务 main）, <code>docker-compose.yml</code>, <code>cordum-helm/</code>, <code>README.md:402</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><strong>核心重点</strong>。① Safety Kernel 返回 5 类裁决 ALLOW/DENY/REQUIRE_HUMAN/THROTTLE/ALLOW_WITH_CONSTRAINTS（<code>safety_client.go:235</code>），Scheduler 在 dispatch 前据此分流：REQUIRE_APPROVAL→置 <code>JobStateApproval</code> 阻塞等待人审（<code>engine.go:1596</code>）、DENY→入 DLQ（<code>engine.go:1608</code>）、THROTTLE→延迟重排（<code>engine.go:1549</code>）；② DENY-uncrossable 优先级（Global 不可被 Workflow 放宽）<code>safetykernel/global_policy_tiers.go:92</code>；③ 服务端 risk-tag 派生防客户端伪造低危标签（<code>kernel.go:741</code>）；④ Edge 审批生命周期 pending/approved/rejected/expired/invalidated（<code>core/edge/approval.go</code>）；⑤ <strong>ProvenanceGate</strong>：销毁性动作/<code>requires_provenance</code> 标签必须有已解析的审批记录+匹配审计事件，“approved by CFO” 之类纯文本声明一律 DENY（<code>core/policy/actiongates/provenance_gate.go:68</code>）；⑥ Velocity/速率治理 <code>safetykernel/velocity.go</code>；⑦ fail-open 旁路会发专门审计事件 <code>engine.go:1580</code></td><td><code>engine.go:1596,1608,1549</code>, <code>safetykernel/kernel.go:706</code>, <code>actiongates/provenance_gate.go:68</code>, <code>core/edge/approval.go</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>Redis 存工作流状态、job 元数据、指针负载；job 生命周期状态机（Succeeded/Approval/Denied… 见 <code>engine.go</code> setJobState）；审批存储 Redis（<code>core/edge/approval_store_redis.go</code>）；安全裁决落 jobStore（<code>engine.go:2213</code> <code>SetSafetyDecision</code>，带 JobHash 防过期请求重放）；审计哈希链 head 指针 CAS 持久于 Redis</td><td><code>DESIGN.md:31</code>, <code>core/edge/approval_store_redis.go</code>, <code>scheduler/engine.go:2210</code>, <code>core/audit/chain.go:245</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“治理 vs 执行”彻底解耦</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> / <a class="wikilink" href="/frameworks/swarm/">Swarm</a> 这类”在进程内写 agent”的框架是正交的——Cordum 是<strong>进程外、网络层</strong>的治理面，README 明确对比 MCP（agent <em>内</em> 调工具）vs CAP（agent <em>上</em> 的治理）：“you need both”。所以它能治理任何框架/模型的 agent，代价是要部署一整套基础设施（Gateway+Scheduler+Safety Kernel+NATS+Redis）。</li>
+<li><strong>确定性治理叠加概率性心智</strong>：核心卖点是给”概率性的 AI 大脑”加一层”确定性治理层”——执行前 enforcement，而非事后过滤（对比表里嘲讽 Guardrails AI 是 post-generation、NeMo 只做 dialog rails，<code>README.md:558</code>）。</li>
+<li><strong>防篡改审计是一等公民</strong>：HMAC-SHA256 哈希链（含 PrevHash 前向级联，任何前驱被改/重排都让后续全部失效），HMAC key 短于 32 字节直接 panic（<code>chain.go:125</code> 拒绝静默降级），常量时间比较防时序侧信道（<code>chain.go:467</code>）。ProvenanceGate 甚至不信任审批存储本身，要求审计链里有匹配的已解析审批事件。</li>
+<li><strong>fail-closed 为默认，fail-open 需显式且留痕</strong>：无策略=DENY；Safety Kernel 不可达时默认 fail-closed 重排，仅在显式配置 per-tenant/全局 fail-open 时放行，且必发专门审计事件供 SIEM 检测旁路（<code>engine.go:1566-1588</code>）。</li>
+<li><strong>无持久 worker DB 的容量路由</strong>：靠 30s TTL 的内存 <code>Heartbeat</code> 注册表做分布式路由决策，避免 worker 状态库——但意味着控制面重启/网络抖动时容量视图会短暂失真（DispatchGate 用 session-token 信任态部分缓解，见 <code>scheduler/dispatch.go</code>）。</li>
+<li><strong>企业能力在核心、按 license 解锁</strong>：SSO/SAML/OIDC、SCIM、高级 RBAC、SIEM 导出、legal hold、velocity、agent identity 都在 core，靠 entitlement 解锁（<code>README.md:528</code>）；former <code>cordum-enterprise</code> 仓库已于 2026-04-23 退役并合入。</li>
+<li><strong>许可证坑</strong>：<strong>BUSL-1.1</strong>（非 OSI 开源）——可自托管/内部使用/改并回馈，但<strong>不可作为竞争性托管服务</strong>；Change Date 2029-01-01 自动转 Apache-2.0（<code>LICENSE:1</code>, <code>README.md:574</code>）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/human-in-the-loop-governance/">human-in-the-loop-governance</a> · <a class="wikilink" href="/components/observability-eval/">observability-eval</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(platform/治理基础设施)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a>（单体内置治理插件，对比 Cordum 的进程外控制面） · 协议：CAP v2 / MCP</li>
+<li>源码：<code>agents-example/cordum/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Semantic Kernel · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Semantic Kernel</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>csharp</span><span class="badge paradigm" data-astro-cid-fwpw2zac>model-stack</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/microsoft/semantic-kernel" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/semantic-kernel/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="semantic-kernel">Semantic Kernel</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">微软出品的 model-agnostic 企业级 Agent SDK：核心是一个充当依赖注入容器的 Kernel，把 LLM 服务（connector）、工具（plugin/function）、过滤器、记忆/向量库统一挂在上面；在此之上提供 ChatCompletionAgent 单 agent 与多种多 agent 编排（Concurrent/Sequential/GroupChat/Handoff/Magentic）。一套抽象多语言落地（dotnet/C# 为主，python 镜像），强调可观测、稳定 API。注：README 已声明 SK 的继任者为 Microsoft Agent Framework。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Semantic Kernel 的核心范式是 “Kernel 即 DI 容器 + KernelFunction 即统一可调用单元”。它不是单一 ReAct 循环框架，而是一套分层抽象，agent 只是建在内核上的一层薄壳。设计取舍：</p>
+<ul>
+<li><strong>Kernel 是中枢状态对象</strong>：<code>Kernel</code>（<code>dotnet/src/SemanticKernel.Abstractions/Kernel.cs:26</code>）本身只持有一个 <code>IServiceProvider</code>（模型服务、logger、selector 全走 DI）、一个 <code>KernelPluginCollection</code>（插件/工具）、三类过滤器集合（function / prompt / auto-function-invocation）和一个 ambient <code>Data</code> 字典。它会被传入每一次 function 调用，是“贯穿全流程的共享状态”。<code>Kernel.Clone()</code>（<code>Kernel.cs:111</code>）做浅拷贝以支持 agent 级隔离。</li>
+<li><strong>一切皆 KernelFunction</strong>：原生 C# 方法、prompt 模板、OpenAPI 操作、gRPC、其它 agent 都被归一成 <code>KernelFunction</code>（<code>dotnet/src/SemanticKernel.Abstractions/Functions/KernelFunction.cs:30</code>，继承 <code>Microsoft.Extensions.AI</code> 的 <code>AIFunction</code>）。多个 function 组成一个 <code>KernelPlugin</code>。</li>
+<li><strong>Connector = 模型抽象</strong>：所有 LLM 厂商被收敛到 <code>IChatCompletionService</code>（<code>dotnet/src/SemanticKernel.Abstractions/AI/ChatCompletion/IChatCompletionService.cs:14</code>）等接口，OpenAI/AzureOpenAI/Google/Mistral/Ollama/HuggingFace/Onnx/Amazon 各为独立 <code>Connectors.*</code> 包，并逐步向 <code>Microsoft.Extensions.AI.IChatClient</code> 收敛。</li>
+<li><strong>过滤器取代旧 events</strong>：横切关注点（鉴权、审批、改写、日志、HITL 终止）通过 <code>IFunctionInvocationFilter</code> / <code>IPromptRenderFilter</code> / <code>IAutoFunctionInvocationFilter</code> 注入，旧的 <code>FunctionInvoking/Invoked</code> 事件已 <code>[Obsolete]</code>（<code>Kernel.cs:617</code>）。</li>
+<li><strong>Planner 已被淘汰</strong>：旧的 Stepwise/Handlebars planner 从 <code>dotnet/src</code> 主源码移除（仅剩 <code>InternalUtilities/planning/</code> 的工具类与 samples 里的迁移示例），“规划”现在交给 LLM 的 native function calling 自动循环（<code>FunctionCallsProcessor</code>）。</li>
+<li><strong>入口 API</strong>：<code>Kernel.CreateBuilder()</code> → fluent 配置 connector/plugin → <code>Build()</code>；agent 侧 <code>new ChatCompletionAgent { Kernel = kernel, Instructions = ... }</code>，<code>agent.InvokeAsync(...)</code> 返回 <code>IAsyncEnumerable&#x3C;AgentResponseItem&#x3C;...>></code>。</li>
+</ul>
+<p>最小示例（取自 README，.NET）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SemanticKernel</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SemanticKernel</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Agents</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> builder</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Kernel.</span><span style="color:#B392F0">CreateBuilder</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">builder.</span><span style="color:#B392F0">AddAzureOpenAIChatCompletion</span><span style="color:#E1E4E8">(deployment, endpoint, apiKey); </span><span style="color:#6A737D">// 注册一个 connector 到 DI</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> kernel</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> builder.</span><span style="color:#B392F0">Build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">kernel.Plugins.</span><span style="color:#B392F0">Add</span><span style="color:#E1E4E8">(KernelPluginFactory.</span><span style="color:#B392F0">CreateFromType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">MenuPlugin</span><span style="color:#E1E4E8">>()); </span><span style="color:#6A737D">// 类的 [KernelFunction] 方法 -> 工具</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">ChatCompletionAgent</span><span style="color:#B392F0"> agent</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    Name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "SK-Assistant"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    Instructions </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "You are a helpful assistant."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    Kernel </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> kernel,</span></span>
+<span class="line"><span style="color:#6A737D">    // 开启 FunctionChoiceBehavior.Auto() 后，模型可自动选择并调用插件函数</span></span>
+<span class="line"><span style="color:#E1E4E8">    Arguments </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> KernelArguments</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> PromptExecutionSettings</span><span style="color:#E1E4E8"> { FunctionChoiceBehavior </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> FunctionChoiceBehavior.</span><span style="color:#B392F0">Auto</span><span style="color:#E1E4E8">() })</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#F97583"> foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">AgentResponseItem</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ChatMessageContent</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">response</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> agent.</span><span style="color:#B392F0">InvokeAsync</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"What is the price of the soup special?"</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">    Console.</span><span style="color:#B392F0">WriteLine</span><span style="color:#E1E4E8">(response.Message);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">sealed</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> MenuPlugin</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#B392F0">KernelFunction</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ComponentModel</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Description</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Provides the price of the requested menu item."</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> string</span><span style="color:#B392F0"> GetItemPrice</span><span style="color:#E1E4E8">([</span><span style="color:#B392F0">System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ComponentModel</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Description</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"The name of the menu item."</span><span style="color:#E1E4E8">)] </span><span style="color:#F97583">string</span><span style="color:#B392F0"> menuItem</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> "$9.99"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>非显式 ReAct；核心是 native function-calling 自动循环：模型返回 <code>FunctionCallContent</code>→<code>FunctionCallsProcessor</code> 查表执行→结果回灌 ChatHistory→再次请求模型，直到无工具调用或达上限。Agent 层把每轮新增的 tool/assistant 消息回写线程</td><td><code>dotnet/src/InternalUtilities/connectors/AI/FunctionCalling/FunctionCallsProcessor.cs:25</code>, <code>dotnet/src/Agents/Core/ChatCompletionAgent.cs:331</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无独立 planner（旧 Stepwise/Handlebars planner 已从主源码移除，仅余 <code>InternalUtilities/planning/</code> 与 samples 迁移示例）。规划=模型自身多步 function calling；多步业务流程交给 Process 框架；Magentic manager 内含动态计划账本</td><td><code>dotnet/src/InternalUtilities/planning/PlannerInstrumentation.cs</code>, <code>dotnet/src/Agents/Magentic/MagenticProgressLedger.cs</code>, <code>dotnet/src/Experimental/Process.Core/ProcessBuilder.cs:517</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>ChatHistory</code>/<code>AgentThread</code>（多轮消息）；上下文压缩=<code>ChatHistorySummarizationReducer</code> / <code>ChatHistoryTruncationReducer</code>；向量长期记忆=独立 <code>VectorData.*</code> 连接器（AzureAISearch/Chroma/Qdrant/Redis/PgVector/Pinecone/Milvus/Weaviate…）+ 旧 <code>ISemanticTextMemory</code>(已弱化)</td><td><code>dotnet/src/SemanticKernel.Core/AI/ChatCompletion/ChatHistorySummarizationReducer.cs:20</code>, <code>dotnet/src/SemanticKernel.Abstractions/Memory/</code>, <code>dotnet/src/VectorData/</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>三种来源统一为 <code>KernelFunction</code>：① C# 方法+<code>[KernelFunction]</code> 经 <code>KernelFunctionFromMethod</code> 反射生成 schema；② prompt 模板 <code>KernelFunctionFromPrompt</code>；③ OpenAPI/gRPC 导入。<code>FunctionChoiceBehavior.Auto/Required/None</code> 控制模型选择；工具可经 <code>[FromKernelServices]</code> 注入 DI 服务</td><td><code>dotnet/src/SemanticKernel.Core/Functions/KernelFunctionFromMethod.cs:62</code>, <code>dotnet/src/SemanticKernel.Abstractions/AI/FunctionChoiceBehaviors/FunctionChoiceBehavior.cs:62</code>, <code>dotnet/src/Functions/Functions.OpenApi/Extensions/OpenApiKernelExtensions.cs:30</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>IChatCompletionService</code>（及 <code>ITextGeneration</code>/<code>IEmbeddingGenerator</code>/<code>ITextToImage</code> 等）为统一接口，每厂商一个 <code>Connectors.*</code> 包；<code>IAIServiceSelector</code>(默认 <code>OrderedAIServiceSelector</code>) 按 serviceId/modelId 选服务；正向 <code>Microsoft.Extensions.AI.IChatClient</code> 收敛（<code>AsChatCompletionService()</code> 桥接）</td><td><code>dotnet/src/SemanticKernel.Abstractions/AI/ChatCompletion/IChatCompletionService.cs:14</code>, <code>dotnet/src/Connectors/Connectors.OpenAI/</code>, <code>dotnet/src/Agents/Core/ChatCompletionAgent.cs:261</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>两代并存：① 旧 <code>AgentGroupChat</code>/<code>AgentChat</code>（轮转+终止策略）；② 新 <code>AgentOrchestration&#x3C;TIn,TOut></code> 基类下的 Concurrent / Sequential / GroupChat / Handoff / Magentic 五种模式，跑在 actor <code>Runtime</code> 上；GroupChat 由 <code>GroupChatManager</code>(SelectNextAgent/ShouldTerminate/ShouldRequestUserInput) 编排；agent 亦可作为另一 agent 的 plugin</td><td><code>dotnet/src/Agents/Orchestration/AgentOrchestration.cs:39</code>, <code>dotnet/src/Agents/Orchestration/GroupChat/GroupChatManager.cs:30</code>, <code>dotnet/src/Agents/Orchestration/Handoff/HandoffOrchestration.cs:17</code>, <code>dotnet/src/Agents/Magentic/MagenticOrchestration.cs</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system prompt 经 <code>IPromptTemplate</code>(Handlebars/Liquid/SK 语法)渲染并注入变量；<code>AggregateAIContextProvider</code> 在每轮调用前聚合多个 <code>AIContextProvider</code> 的额外指令/函数注入到 kernel(<code>AddFromAIContext</code>)；ChatHistory reducer 控制 token 预算</td><td><code>dotnet/src/SemanticKernel.Abstractions/Memory/AggregateAIContextProvider.cs:76</code>, <code>dotnet/src/Agents/Core/ChatCompletionAgent.cs:84</code>, <code>dotnet/src/Extensions/PromptTemplates.Handlebars/</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>“Plugin” = 一组 <code>KernelFunction</code> 的命名集合(<code>KernelPlugin</code>/<code>KernelPluginCollection</code>)。<code>KernelPluginFactory.CreateFromType&#x3C;T>()</code>/<code>AddFromObject</code> 把类方法变插件；另支持从 prompt 目录、OpenAPI、gRPC、Prompty、Markdown、Yaml 加载</td><td><code>dotnet/src/SemanticKernel.Abstractions/Functions/KernelPlugin.cs</code>, <code>dotnet/src/SemanticKernel.Core/Functions/KernelPluginFactory.cs</code>, <code>dotnet/src/SemanticKernel.Core/KernelExtensions.cs:511</code>, <code>dotnet/src/Functions/Functions.Prompty/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>内建 OpenTelemetry：<code>KernelFunction</code> 自带 <code>ActivitySource("Microsoft.SemanticKernel")</code> + <code>Meter</code>(invocation/streaming duration histogram)；agent 调用经 <code>ModelDiagnostics.StartAgentInvocationActivity</code>；过滤器+结构化日志(<code>LoggerMessage</code>)。评估无内建框架，依赖外部</td><td><code>dotnet/src/SemanticKernel.Abstractions/Functions/KernelFunction.cs:41</code>, <code>dotnet/src/Agents/Core/ChatCompletionAgent.cs:352</code>, <code>dotnet/src/SemanticKernel.Abstractions/Filters/</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯 SDK/库，宿主自管(async/IAsyncEnumerable 流式)。多 agent 编排跑在 <code>Agents/Runtime</code>(InProcess actor runtime)；Process 框架可 InProcess 或 Dapr 分布式运行(<code>Process.Runtime.Dapr</code>)；无内建沙箱，工具在宿主进程执行</td><td><code>dotnet/src/Agents/Runtime/InProcess/</code>, <code>dotnet/src/Experimental/Process.LocalRuntime/</code>, <code>dotnet/src/Experimental/Process.Runtime.Dapr/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>① <code>IAutoFunctionInvocationFilter</code> 在工具自动调用前后拦截，可设 <code>context.Terminate=true</code> 中止循环、把结果交还用户审批(<code>FunctionCallsProcessor.cs:205/225/366</code> 消费)；② 编排层 <code>OrchestrationInteractiveCallback</code> / GroupChatManager <code>ShouldRequestUserInput</code> 请求人工输入；③ <code>FunctionChoiceBehavior.None</code> 让模型只建议不执行</td><td><code>dotnet/src/SemanticKernel.Abstractions/Filters/AutoFunctionInvocation/IAutoFunctionInvocationFilter.cs</code>, <code>dotnet/src/SemanticKernel.Abstractions/Filters/AutoFunctionInvocation/AutoFunctionInvocationContext.cs:16</code>, <code>dotnet/src/Agents/Orchestration/GroupChat/GroupChatManager.cs:77</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>会话状态在 <code>AgentThread</code>(如 <code>ChatHistoryAgentThread</code>，含 <code>OnSuspendAsync/OnResumeAsync</code> 生命周期)；旧式 <code>AgentChat</code> 用 <code>AgentChatSerializer</code> 序列化/恢复整个多 agent 对话；<code>ChatCompletionAgent.RestoreChannelAsync</code> 从 JSON 恢复 channel；Process 框架有 <code>KernelProcessStateMetadata</code> 检查点</td><td><code>dotnet/src/Agents/Abstractions/AgentThread.cs:18</code>, <code>dotnet/src/Agents/Abstractions/AgentChatSerializer.cs:16</code>, <code>dotnet/src/Agents/Core/ChatCompletionAgent.cs:253</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>DI 容器式内核 vs 极简函数式</strong>：与 ConnectOnion/Swarm 把 agent 做成一个轻量对象不同，SK 把 <code>Kernel</code> 设计成 <code>Microsoft.Extensions.DependencyInjection</code> 之上的服务容器——模型、selector、logger、filter 全经 DI 解析。优点是与 ASP.NET/企业栈无缝融合、可测试、可替换；代价是上手心智负担重、样板较多、抽象层数深。</li>
+<li><strong>归一化抽象的力量</strong>：把 prompt、原生方法、OpenAPI、gRPC、甚至“另一个 agent”全部塞进 <code>KernelFunction</code> 这一个类型，使工具调用、规划、组合高度统一；正持续向 <code>Microsoft.Extensions.AI</code> 的 <code>IChatClient</code>/<code>AIFunction</code> 标准收敛，未来与整个 .NET AI 生态互通。</li>
+<li><strong>Planner 之死</strong>：早期 SK 以 Stepwise/Handlebars planner 闻名，现已判定“模型 native function calling 足以替代显式 planner”，主源码删除 planner，仅保留迁移示例。这是该框架一次明显的范式转向。</li>
+<li><strong>编排模式齐全</strong>：Concurrent/Sequential/GroupChat/Handoff/Magentic 五种 + 旧 AgentGroupChat 覆盖了从扇出聚合到动态 manager 主导(Magentic，借鉴 AutoGen Magentic-One)的主流多 agent 拓扑，且统一跑在可换 InProcess/Dapr 的 actor runtime 上。</li>
+<li><strong>过滤器 = 治理面</strong>：HITL、审批、改写、限流都收敛到三类 filter 上，<code>Terminate</code> 标志让“工具调用前人工拍板”成为一等公民，比事件模型更可组合。</li>
+<li><strong>多语言一致性</strong>：dotnet 与 python 镜像同一套概念(<code>kernel.py</code>/<code>agents/</code>/<code>connectors/</code>/<code>processes/</code>/<code>filters/</code>/<code>memory/</code>)，java 单独仓库。本笔记以 dotnet/C# 为准，python 命名几乎一一对应。</li>
+<li><strong>待确认/注意</strong>：① 大量 agent/orchestration/process API 标 <code>[Experimental("SKEXP...")]</code>，签名可能变；② README 顶部明确 SK 的继任者是 Microsoft Agent Framework(MAF 1.0)，新项目需权衡选型；③ Process / Dapr 运行时与 VectorData 连接器多为预览/实验包。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/components/model-abstraction/">model-abstraction</a></li>
+<li>同范式(model-stack/multi/企业 SDK)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/semantic-kernel/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

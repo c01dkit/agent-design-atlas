@@ -1,0 +1,1 @@
+var e={project:`agent-design-atlas`,tier:`member`,cdnBase:`https://cdn.c01dkit.com`};export{e as t};

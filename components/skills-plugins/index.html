@@ -1,0 +1,605 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>技能与插件 · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/" aria-current="page">组件</a><a href="/frameworks/">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note comp" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/components/" data-astro-cid-fwpw2zac>组件</a></nav><div class="note-meta" data-astro-cid-fwpw2zac></div><aside class="course-anchor" data-astro-cid-fwpw2zac><span data-astro-cid-fwpw2zac>📖 在专栏中动手学习本组件：</span><a href="/course/ch02-tools/" data-astro-cid-fwpw2zac>工具系统 →</a><a href="/course/ch12-full-picture/" data-astro-cid-fwpw2zac>玩具与真实框架 →</a></aside><div class="prose" data-astro-cid-fwpw2zac><h1 id="技能与插件">技能与插件</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话总结</div>
+                </div>
+                <div class="callout-content">把能力打包成可复用、可分发、可热插拔的单元（skill / plugin / extension），让 agent 的能力像装 App 一样扩展。介于裸工具和完整 agent 之间的封装粒度。</div>
+              
+</blockquote>
+<h2 id="它解决什么问题">它解决什么问题</h2>
+<p>单个 <a class="wikilink" href="/components/tool-use/">工具</a>太细，整个 agent 太重。技能/插件提供中等粒度的复用单元——一组相关工具 + prompt + 配置，可在项目/社区间共享。</p>
+<h2 id="设计维度--实现谱系">设计维度 / 实现谱系</h2>
+<ul>
+<li><strong>粒度</strong>：单工具 ↔ 技能包（工具+prompt+状态）↔ 子 agent</li>
+<li><strong>分发</strong>：内置 ↔ 本地目录约定 ↔ 注册表/市场</li>
+<li><strong>加载</strong>：静态导入 ↔ 运行时动态加载 ↔ 自生成技能（<a class="wikilink" href="/frameworks/aeon/">Aeon</a>、<a class="wikilink" href="/frameworks/hive/">Hive</a>）</li>
+<li><strong>生命周期钩子</strong>：是否提供 hooks（<a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 的 12 个生命周期钩子）</li>
+<li><strong>隔离</strong>：插件沙箱与权限</li>
+</ul>
+<h2 id="关键要点">关键要点</h2>
+<ul>
+<li>skill 一词在不同框架含义差异大（从单文件到完整能力包）。</li>
+<li>自生成/自修复技能是自治 agent 的前沿方向。</li>
+<li>与 <a class="wikilink" href="/components/tool-use/">tool-use</a> 和子 agent 边界模糊。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/components/tool-use/">tool-use</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/components/runtime-execution/">runtime-execution</a> · <a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a></li>
+</ul>
+<h2 id="各框架实现对比">各框架实现对比</h2>
+<blockquote>
+<p>下表汇总 <strong>30</strong> 个实现了「技能 / 插件」的框架（源码级阅读结论）。网站上以可展开 + 源码节选呈现。</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>框架</th><th>实现方式</th></tr></thead><tbody><tr><td><a class="wikilink" href="/frameworks/aeon/">Aeon</a></td><td>182+ 个 SKILL.md，分 6 大类；./add-skill <repo> 从任意 GitHub 仓库导入（带 skill-security-scan 安全扫描）；./install-skill-pack 装社区技能包（skill-packs.json 注册表）；./new-from-template 从 6 个模板脚手架；create-skill 技能自建技能</repo></td></tr><tr><td><a class="wikilink" href="/frameworks/ag2/">AG2</a></td><td>两条路：①AgentCapability 子类经 add_to_agent() 给 Agent 加能力（teachability/vision/generate_images/transform_messages）；②interop/ 把 LangChain/CrewAI/PydanticAI 工具桥接为 AG2 Tool；mcp/ 作为 MCP client 接入外部工具</td></tr><tr><td><a class="wikilink" href="/frameworks/agent-llm/">Agent-LLM (AGiXT)</a></td><td>extension 即插件体系：97+ 内置（agixt/extensions/），可自定义并经 Extensions Hub 从外部 git 仓库/本地路径热加载（EXTENSIONS_HUB 环境变量，ExtensionsHub.py）；extension 可带 SQLAlchemy 模型、FastAPI 路由、WebSocket、webhook、Desktop UI 包</td></tr><tr><td><a class="wikilink" href="/frameworks/agentdock/">AgentDock</a></td><td>通过 node 扩展实现：自定义能力=继承 BaseNode/BaseTool 的节点，经 NodeRegistry/ToolRegistry 注册（register-core-nodes.ts）；agent 在 nodes:[] 中按名启用。无独立 “skill/plugin” 概念，统一收敛到 node 系统</td></tr><tr><td><a class="wikilink" href="/frameworks/agentfield/">AgentField</a></td><td>@app.skill() = 确定性代码端点（与 reasoner 对称）；MCP 集成（af add —mcp —url，控制平面 internal/mcp/）；harness 4 providers(Claude Code/Codex/Gemini CLI/OpenCode) 作为可插拔”超能力”经 factory 装配</td></tr><tr><td><a class="wikilink" href="/frameworks/agentic-context-engine/">Agentic Context Engine (ACE)</a></td><td>”Skill”=Skillbook 条目(策略)，非可执行插件；可插拔性体现在：Step 协议(requires/provides)、Runner 经 extra_steps 扩展、learning_tail() 复用、optional extras(browser-use/langchain/mcp/dedup)。另含 Claude Code .claude/skills/kayba-pipeline/ 七阶段分析技能</td></tr><tr><td><a class="wikilink" href="/frameworks/agentscope/">AgentScope</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md 目录，LocalSkillLoader 扫描加载，注入提示告知”skill 不是 tool，需用 SkillViewer 读取再照做”(兼容 Claude Code 技能形态)；插件机制=middleware(钩子链)而非传统插件；工具组(ToolGroup)可动态激活</td></tr><tr><td><a class="wikilink" href="/frameworks/ailoy/">Ailoy</a></td><td>扩展点=自定义工具(new_function/new_custom LM/new_custom knowledge) 与 MCP；MCP 客户端原生支持 stdio/streamable-HTTP 子进程传输（src/tool/mcp/native.rs，wasm 走 wasm32.rs），MCPClient::get_tools() 把远端工具批量转 Tool（src/agent/base.rs:911 测试演示）。无独立”skill/plugin 注册中心”</td></tr><tr><td><a class="wikilink" href="/frameworks/astron/">Astron Agent</a></td><td>插件工厂多态：LinkPluginFactory（讯飞开放平台工具）/McpPluginFactory（MCP server 列表→工具，远程 HTTP 调用）/WorkflowPluginFactory/SkillPluginFactory；Skill 兼容 Claude Code 风格：生成 read_skill_（读 SKILL.md + 相对路径资源）与 run_skill_（在 e2b 沙箱执行命令）两个工具</td></tr><tr><td><a class="wikilink" href="/frameworks/botpress/">Botpress</a></td><td>两个层面：①平台层 packages/sdk 的 Plugin/Integration 体系（bp init 模板，integration.definition.ts+src/index.ts，readme.md:46）；②LLMz 层 ObjectInstance 把相关工具+变量打包成命名空间（db.queryUsers()）、hooks 注入自定义逻辑</td></tr><tr><td><a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a></td><td>plugin=事件处理函数列表；12 钩子(events.py)；Skills=带 YAML frontmatter 的 SKILL.md，三级自动发现(project→user→builtin)，/command 触发并临时授予工具权限(turn 结束清除)，兼容 Claude Code .claude/skills/</td></tr><tr><td><a class="wikilink" href="/frameworks/cordum/">Cordum</a></td><td>Integration Packs：30+ CAP-native worker 包（Slack/GitHub/AWS/K8s/Terraform…），每个是带策略门工作流的 worker；cordumctl pack install 安装</td></tr><tr><td><a class="wikilink" href="/frameworks/crewai/">CrewAI</a></td><td>skills/ 模块：发现并激活 Skill（discover_skills/activate_skill，YAML 元数据）；crewai_tools 独立包提供数百个工具；MCP 客户端把外部 MCP server 工具接入</td></tr><tr><td><a class="wikilink" href="/frameworks/dust/">Dust</a></td><td>Skills=可复用的能力包（指令+数据源+工具集），挂到 agent 上；运行时 getSkillServers 把 skill 暴露为 MCP server（如 skill_knowledge_file_system），并把”已装备 skills”渲染进用户消息</td></tr><tr><td><a class="wikilink" href="/frameworks/hcom/">hcom</a></td><td>随仓库带 Claude Code skill hcom-agent-messaging（SKILL.md + references/scripts）与 plugin 清单（.claude-plugin/plugin.json）；用户脚本投到 ~/.hcom/scripts/ 自动发现、可覆盖内置（README:366）</td></tr><tr><td><a class="wikilink" href="/frameworks/hermes-agent/">Hermes Agent</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，progressive disclosure(list 看元数据→view 加载全文→按需读 references)，兼容 agentskills.io 开放标准；/<skill-name> 触发；agent 可自创/自改 skill 并由 curator 维护；插件体系覆盖 model-provider/gateway 平台/context-engine/MCP</skill-name></td></tr><tr><td><a class="wikilink" href="/frameworks/hive/">Hive</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(default/preset/community)+ trust gating + tool_gating（激活临时授权）；SkillsManager 统一加载并渲染 prompt；内建 6 个 default skill（error-recovery、context-preservation 等）+ preset（browser/linkedin/terminal/x 等）</td></tr><tr><td><a class="wikilink" href="/frameworks/lagent/">Lagent</a></td><td>扩展点=Hook(4 钩子:before/after × agent/action) 与 actions(工具) 注册表；MCPClientAdapter 把外部 MCP server(stdio/sse/http) 暴露的工具接入为 BaseAction（待确认成熟度）。无独立”skill”概念</td></tr><tr><td><a class="wikilink" href="/frameworks/loongflow/">LoongFlow</a></td><td>复用 Claude Code 的 Skill 体系：ClaudeCodeAgent 默认放行 Skill/Task 工具并 setting_sources=[“project”]，从仓库 .claude/skills/、.agents/skills/（如 skill-creator、code-analysis）加载技能；自定义工具经 create_sdk_mcp_server 包成 MCP server 注入；通用扩展点是 AgentBase 的 pre_/post_ 钩子</td></tr><tr><td><a class="wikilink" href="/frameworks/mastra/">Mastra</a></td><td>Skills=SKILL.md（gray-matter frontmatter）文件，经 workspace/skills/ 发现（local/versioned/composite source + glob），由 SkillsProcessor 注入（eager 或 on-demand 发现），并暴露为 skill 工具；兼容 Claude Code ~/.claude/skills/（workspace/filesystem/local-filesystem.ts:83）。插件式扩展主要靠 processors + tools + storage domains，而非继承</td></tr><tr><td><a class="wikilink" href="/frameworks/nanobot/">nanobot</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，三级发现（workspace→builtin，workspace 覆盖同名），requires.bins/env 决定可用性，always=true 强制注入，渐进式加载（先摘要后 read_file）；内置 skill 含 cron/long-goal/github/memory/skill-creator 等。工具插件经 entry_points(“nanobot.tools”) 扩展</td></tr><tr><td><a class="wikilink" href="/frameworks/openclaw/">OpenClaw</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，递归发现、按 description 由模型自主选用、disable-model-invocation 可隐藏，兼容 Claude-Code 风格；Plugins/Extensions=extensions/ 包，经 manifest(openclaw 字段声明 extensions/skills/prompts/themes) 装卸；Hooks=生命周期钩子（bundled: session-memory、compaction-notifier、boot-md…）</td></tr><tr><td><a class="wikilink" href="/frameworks/pilotprotocol/">Pilot Protocol</a></td><td>两层含义：①daemon 插件=L11 能力插件经 runtime.ServiceRegistry 注册（trustedagents/handshake/dataexchange/eventstream/policy/webhook/skillinject），内核只依赖 L10 pkg/coreapi 接口；②agent skill=skillinject 插件自动给检测到的 AI 编码工具写入 SKILL.md（KindMarker/Helper/PluginFile/PluginAllowList），周期性 reconcile，教 agent 怎么用 Pilot</td></tr><tr><td><a class="wikilink" href="/frameworks/praisonai/">PraisonAI</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(project→user→builtin)，激活时按 allowed_tools 临时授权；兼容 Claude Code .claude/skills/（也认 .praisonai/skills/，向上递归祖先目录）；另有 hooks / middleware / 插件式扩展</td></tr><tr><td><a class="wikilink" href="/frameworks/semantic-kernel/">Semantic Kernel</a></td><td>“Plugin” = 一组 KernelFunction 的命名集合(KernelPlugin/KernelPluginCollection)。KernelPluginFactory.CreateFromType<t>()/AddFromObject 把类方法变插件；另支持从 prompt 目录、OpenAPI、gRPC、Prompty、Markdown、Yaml 加载</t></td></tr><tr><td><a class="wikilink" href="/frameworks/strands/">Strands Agents</a></td><td>两层：Plugin(注册 hooks/装配 agent，plugins/) + typed hook 事件；AgentSkills vended plugin 把带 frontmatter 的 SKILL.md 注入 system prompt 并提供 skills 激活工具，按需加载；MCP=即插即用工具源</td></tr><tr><td><a class="wikilink" href="/frameworks/swarmclaw/">SwarmClaw</a></td><td>Skills：YAML frontmatter 的 SKILL.md，三级发现（runtime-skill-resolver）+ prompt 预算（skill-prompt-budget）+ 资格过滤（skill-eligibility）；conversation→skill 学习：从成功回合提炼 learned skill 走审查上线；Extensions（前身 plugins）= 带 hooks 的能力单元；ClawHub 分发（openclaw skills install swarmclaw）</td></tr><tr><td><a class="wikilink" href="/frameworks/transformers-agents/">Transformers Agents</a></td><td>自定义 Tool / Hub 上分享工具</td></tr><tr><td><a class="wikilink" href="/frameworks/upsonic/">Upsonic</a></td><td>Skills 系统：带 SKILL.md(YAML frontmatter) 的技能，内建 builtins(code-review/data-analysis/summarization)，含 loader/validator/dependency/cache/metrics；prebuilt 自治 agent 也以 skills 形式打包</td></tr><tr><td><a class="wikilink" href="/frameworks/voltagent/">VoltAgent</a></td><td>扩展点为 hooks(onStart/onEnd/onToolStart…)、middleware(input/output 可重试)、guardrails、Toolkit、MCP/A2A 接入；Workspace 下有 SKILL（workspace/skills/，gray-matter 解析 SKILL.md frontmatter）；外部能力主要靠 MCP server</td></tr></tbody></table></div><section class="ig-section" data-astro-cid-fwpw2zac><h2 class="ig-h" data-astro-cid-fwpw2zac>各框架实现对比 · 源码级</h2><section class="ig" style="--h:62" data-astro-cid-nscl5cf7><p class="ig-meta" data-astro-cid-nscl5cf7><b data-astro-cid-nscl5cf7>30</b> 个框架实现该组件 · <b data-astro-cid-nscl5cf7>22</b> 个附源码节选 · 点击任意框架展开看实现要点与代码</p><div class="ig-list" data-astro-cid-nscl5cf7><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Aeon</span><span class="badge lang" data-astro-cid-nscl5cf7>yaml</span><span class="ig-sum" data-astro-cid-nscl5cf7>182+ 个 SKILL.md，分 6 大类；./add-skill &lt;repo&gt; 从任意 GitHub 仓库导入（带 skill-security-scan 安全扫描）；./install-skill-pack 装社区技能包（skill-packs.json 注册表）；./new-from-template 从 6 个模板脚手架；create-skill 技能自建技能</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>182+ 个 SKILL.md，分 6 大类；./add-skill &lt;repo&gt; 从任意 GitHub 仓库导入（带 skill-security-scan 安全扫描）；./install-skill-pack 装社区技能包（skill-packs.json 注册表）；./new-from-template 从 6 个模板脚手架；create-skill 技能自建技能</p><a class="ig-link" href="/frameworks/aeon/" data-astro-cid-nscl5cf7>查看 Aeon 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AG2</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>两条路：①AgentCapability 子类经 add_to_agent() 给 Agent 加能力（teachability/vision/generate_images/transform_messages）；②interop/ 把 LangChain/CrewAI/PydanticAI 工具桥接为 AG2 Tool；mcp/ 作为 MCP client 接入外部工具</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>两条路：①AgentCapability 子类经 add_to_agent() 给 Agent 加能力（teachability/vision/generate_images/transform_messages）；②interop/ 把 LangChain/CrewAI/PydanticAI 工具桥接为 AG2 Tool；mcp/ 作为 MCP client 接入外部工具</p><a class="ig-link" href="/frameworks/ag2/" data-astro-cid-nscl5cf7>查看 AG2 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Agent-LLM (AGiXT)</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>extension 即插件体系：97+ 内置（agixt/extensions/），可自定义并经 Extensions Hub 从外部 git 仓库/本地路径热加载（EXTENSIONS_HUB 环境变量，ExtensionsHub.py）；extension 可带 SQLAlchemy 模型、FastAPI 路由、WebSocket、webhook、Desktop UI 包</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>extension 即插件体系：97+ 内置（agixt/extensions/），可自定义并经 Extensions Hub 从外部 git 仓库/本地路径热加载（EXTENSIONS_HUB 环境变量，ExtensionsHub.py）；extension 可带 SQLAlchemy 模型、FastAPI 路由、WebSocket、webhook、Desktop UI 包</p><a class="ig-link" href="/frameworks/agent-llm/" data-astro-cid-nscl5cf7>查看 Agent-LLM (AGiXT) 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AgentDock</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>通过 node 扩展实现：自定义能力=继承 BaseNode/BaseTool 的节点，经 NodeRegistry/ToolRegistry 注册（register-core-nodes.ts）；agent 在 nodes:[] 中按名启用。无独立 &quot;skill/plugin&quot; 概念，统一收敛到 node 系统</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>通过 node 扩展实现：自定义能力=继承 BaseNode/BaseTool 的节点，经 NodeRegistry/ToolRegistry 注册（register-core-nodes.ts）；agent 在 nodes:[] 中按名启用。无独立 &quot;skill/plugin&quot; 概念，统一收敛到 node 系统</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>nodes/base-node.ts:55</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>agentdock-core/src/nodes/base-node.ts:55</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> Base node </span><span style="color:#F97583">class</span><span style="color:#B392F0"> that</span><span style="color:#B392F0"> all</span><span style="color:#B392F0"> nodes</span><span style="color:#B392F0"> must</span><span style="color:#B392F0"> extend</span><span style="color:#E1E4E8">.</span></span>
+<span class="line"><span style="color:#E1E4E8"> * </span><span style="color:#B392F0">Provides</span><span style="color:#B392F0"> core</span><span style="color:#B392F0"> functionality</span><span style="color:#B392F0"> and</span><span style="color:#B392F0"> type</span><span style="color:#B392F0"> safety</span><span style="color:#E1E4E8">.</span></span>
+<span class="line"><span style="color:#E1E4E8"> */</span></span>
+<span class="line"><span style="color:#B392F0">export</span><span style="color:#B392F0"> abstract</span><span style="color:#B392F0"> class</span><span style="color:#B392F0"> BaseNode</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">TConfig</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> unknown</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#6A737D">  /** Unique identifier for the node */</span></span>
+<span class="line"><span style="color:#F97583">  readonly</span><span style="color:#FFAB70"> id</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /** Unique type identifier for the node */</span></span>
+<span class="line"><span style="color:#F97583">  abstract</span><span style="color:#F97583"> readonly</span><span style="color:#FFAB70"> type</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /** Node configuration (immutable after construction) */</span></span>
+<span class="line"><span style="color:#F97583">  protected</span><span style="color:#FFAB70"> config</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TConfig</span><span style="color:#E1E4E8">;</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentdock/" data-astro-cid-nscl5cf7>查看 AgentDock 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AgentField</span><span class="badge lang" data-astro-cid-nscl5cf7>go</span><span class="ig-sum" data-astro-cid-nscl5cf7>@app.skill() = 确定性代码端点（与 reasoner 对称）；MCP 集成（af add --mcp --url，控制平面 internal/mcp/）；harness 4 providers(Claude Code/Codex/Gemini CLI/OpenCode) 作为可插拔&quot;超能力&quot;经 factory 装配</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>@app.skill() = 确定性代码端点（与 reasoner 对称）；MCP 集成（af add --mcp --url，控制平面 internal/mcp/）；harness 4 providers(Claude Code/Codex/Gemini CLI/OpenCode) 作为可插拔&quot;超能力&quot;经 factory 装配</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent.py:2573</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>sdk/python/agentfield/agent.py:2573</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> decorator</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> skill</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        self,</span></span>
+<span class="line"><span style="color:#E1E4E8">        tags: Optional[List[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">]] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        path: Optional[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        name: Optional[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        *</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        vc_enabled: Optional[</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        require_realtime_validation: </span><span style="color:#79B8FF">bool</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> False</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    ):</span></span>
+<span class="line"><span style="color:#9ECBFF">        """</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentfield/" data-astro-cid-nscl5cf7>查看 AgentField 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Agentic Context Engine (ACE)</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>&quot;Skill&quot;=Skillbook 条目(策略)，非可执行插件；可插拔性体现在：Step 协议(requires/provides)、Runner 经 extra_steps 扩展、learning_tail() 复用、optional extras(browser-use/langchain/mcp/dedup)。另含 Claude Code .claude/skills/kayba-pipeline/ 七阶段分析技能</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>&quot;Skill&quot;=Skillbook 条目(策略)，非可执行插件；可插拔性体现在：Step 协议(requires/provides)、Runner 经 extra_steps 扩展、learning_tail() 复用、optional extras(browser-use/langchain/mcp/dedup)。另含 Claude Code .claude/skills/kayba-pipeline/ 七阶段分析技能</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>ace/steps/__init__.py:50</code><code class="ref" data-astro-cid-nscl5cf7>ace/core/skillbook.py:302</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>ace/steps/__init__.py:50</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> ReflectStep(reflector)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> learning_tail</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    reflector: ReflectorLike,</span></span>
+<span class="line"><span style="color:#E1E4E8">    skill_manager: SkillManagerLike,</span></span>
+<span class="line"><span style="color:#E1E4E8">    skillbook: Skillbook,</span></span>
+<span class="line"><span style="color:#F97583">    *</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    dedup_manager: DeduplicationManagerLike </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    dedup_interval: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    checkpoint_dir: </span><span style="color:#79B8FF">str</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> Path </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    checkpoint_interval: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">) -> list[StepProtocol[ACEStepContext]]:</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentic-context-engine/" data-astro-cid-nscl5cf7>查看 Agentic Context Engine (ACE) 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AgentScope</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md 目录，LocalSkillLoader 扫描加载，注入提示告知&quot;skill 不是 tool，需用 SkillViewer 读取再照做&quot;(兼容 Claude Code 技能形态)；插件机制=middleware(钩子链)而非传统插件；工具组(ToolGroup)可动态激活</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md 目录，LocalSkillLoader 扫描加载，注入提示告知&quot;skill 不是 tool，需用 SkillViewer 读取再照做&quot;(兼容 Claude Code 技能形态)；插件机制=middleware(钩子链)而非传统插件；工具组(ToolGroup)可动态激活</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>skill/_base.py:23</code><code class="ref" data-astro-cid-nscl5cf7>skill/_local_loader.py:14</code><code class="ref" data-astro-cid-nscl5cf7>tool/_toolkit.py:51</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/agentscope/skill/_base.py:23</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#9ECBFF">    """The last updated time of the skill."""</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SkillLoaderBase</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">ABC</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """The base class for skill loader."""</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    @abstractmethod</span></span>
+<span class="line"><span style="color:#F97583">    async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> list_skills</span><span style="color:#E1E4E8">(self) -> list[Skill]:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """List all the skills that can be loaded by this loader."""</span></span>
+<span class="line"><span style="color:#F97583">        raise</span><span style="color:#79B8FF"> NotImplementedError</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentscope/" data-astro-cid-nscl5cf7>查看 AgentScope 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Ailoy</span><span class="badge lang" data-astro-cid-nscl5cf7>rust</span><span class="ig-sum" data-astro-cid-nscl5cf7>扩展点=自定义工具(new_function/new_custom LM/new_custom knowledge) 与 MCP；MCP 客户端原生支持 stdio/streamable-HTTP 子进程传输（src/tool/mcp/native.rs，wasm 走 wasm32.rs），MCPClient::get_tools() 把远端工具批量转 Tool（src/agent/base.rs:911 测试演示）。无独立&quot;skill/plugin 注册中心&quot;</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>扩展点=自定义工具(new_function/new_custom LM/new_custom knowledge) 与 MCP；MCP 客户端原生支持 stdio/streamable-HTTP 子进程传输（src/tool/mcp/native.rs，wasm 走 wasm32.rs），MCPClient::get_tools() 把远端工具批量转 Tool（src/agent/base.rs:911 测试演示）。无独立&quot;skill/plugin 注册中心&quot;</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>src/tool/base.rs:59</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/tool/base.rs:59</span><span class="cb-lang" data-astro-cid-nscl5cf7>rust</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="rust"><code><span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    pub</span><span style="color:#F97583"> fn</span><span style="color:#B392F0"> new_mcp</span><span style="color:#E1E4E8">(tool</span><span style="color:#F97583">:</span><span style="color:#B392F0"> MCPTool</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-></span><span style="color:#79B8FF"> Self</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        Self</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">            inner</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ToolInner</span><span style="color:#F97583">::</span><span style="color:#79B8FF">MCP</span><span style="color:#E1E4E8">(tool),</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    pub</span><span style="color:#F97583"> fn</span><span style="color:#B392F0"> new_knowledge</span><span style="color:#E1E4E8">(tool</span><span style="color:#F97583">:</span><span style="color:#B392F0"> KnowledgeTool</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-></span><span style="color:#79B8FF"> Self</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        Self</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">            inner</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ToolInner</span><span style="color:#F97583">::</span><span style="color:#B392F0">Knowledge</span><span style="color:#E1E4E8">(tool),</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span></code></pre></figure><a class="ig-link" href="/frameworks/ailoy/" data-astro-cid-nscl5cf7>查看 Ailoy 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Astron Agent</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>插件工厂多态：LinkPluginFactory（讯飞开放平台工具）/McpPluginFactory（MCP server 列表→工具，远程 HTTP 调用）/WorkflowPluginFactory/SkillPluginFactory；Skill 兼容 Claude Code 风格：生成 read_skill_（读 SKILL.md + 相对路径资源）与 run_skill_（在 e2b 沙箱执行命令）两个工具</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>插件工厂多态：LinkPluginFactory（讯飞开放平台工具）/McpPluginFactory（MCP server 列表→工具，远程 HTTP 调用）/WorkflowPluginFactory/SkillPluginFactory；Skill 兼容 Claude Code 风格：生成 read_skill_（读 SKILL.md + 相对路径资源）与 run_skill_（在 e2b 沙箱执行命令）两个工具</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>service/builder/base_builder.py:81</code><code class="ref" data-astro-cid-nscl5cf7>service/plugin/mcp.py:90</code><code class="ref" data-astro-cid-nscl5cf7>service/plugin/skill.py:26</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>core/agent/service/builder/base_builder.py:81</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">            limits</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">httpx.Limits(</span><span style="color:#FFAB70">max_connections</span><span style="color:#F97583">=</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">max_keepalive_connections</span><span style="color:#F97583">=</span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> build_plugins</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        self,</span></span>
+<span class="line"><span style="color:#E1E4E8">        tool_ids: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        mcp_server_ids: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        mcp_server_urls: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        workflow_ids: </span><span style="color:#79B8FF">list</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        skills: </span><span style="color:#79B8FF">list</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) -> list[Union[LinkPlugin, McpPlugin, WorkflowPlugin, SkillPlugin]]:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.span.start(</span><span style="color:#9ECBFF">"BuildPlugins"</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> sp:</span></span></code></pre></figure><a class="ig-link" href="/frameworks/astron/" data-astro-cid-nscl5cf7>查看 Astron Agent 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Botpress</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>两个层面：①平台层 packages/sdk 的 Plugin/Integration 体系（bp init 模板，integration.definition.ts+src/index.ts，readme.md:46）；②LLMz 层 ObjectInstance 把相关工具+变量打包成命名空间（db.queryUsers()）、hooks 注入自定义逻辑</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>两个层面：①平台层 packages/sdk 的 Plugin/Integration 体系（bp init 模板，integration.definition.ts+src/index.ts，readme.md:46）；②LLMz 层 ObjectInstance 把相关工具+变量打包成命名空间（db.queryUsers()）、hooks 注入自定义逻辑</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>packages/llmz/src/objects.ts:48</code><code class="ref" data-astro-cid-nscl5cf7>packages/llmz/README.md:233</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/llmz/src/objects.ts:48</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">  export</span><span style="color:#F97583"> type</span><span style="color:#B392F0"> JSON</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">    name</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span></span>
+<span class="line"><span style="color:#FFAB70">    description</span><span style="color:#F97583">?:</span><span style="color:#79B8FF"> string</span></span>
+<span class="line"><span style="color:#FFAB70">    properties</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> ObjectProperty</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#FFAB70">    tools</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> Tool</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">JSON</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#FFAB70">    metadata</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> Record</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * ObjectInstance creates stateful, namespace-scoped objects for LLMz agents.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Objects combine properties (stateful variables) and tools (functions) into a</span></span></code></pre></figure><a class="ig-link" href="/frameworks/botpress/" data-astro-cid-nscl5cf7>查看 Botpress 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>ConnectOnion</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>plugin=事件处理函数列表；12 钩子(events.py)；Skills=带 YAML frontmatter 的 SKILL.md，三级自动发现(project→user→builtin)，/command 触发并临时授予工具权限(turn 结束清除)，兼容 Claude Code .claude/skills/</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>plugin=事件处理函数列表；12 钩子(events.py)；Skills=带 YAML frontmatter 的 SKILL.md，三级自动发现(project→user→builtin)，/command 触发并临时授予工具权限(turn 结束清除)，兼容 Claude Code .claude/skills/</p><a class="ig-link" href="/frameworks/connectonion/" data-astro-cid-nscl5cf7>查看 ConnectOnion 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Cordum</span><span class="badge lang" data-astro-cid-nscl5cf7>go</span><span class="ig-sum" data-astro-cid-nscl5cf7>Integration Packs：30+ CAP-native worker 包（Slack/GitHub/AWS/K8s/Terraform…），每个是带策略门工作流的 worker；cordumctl pack install 安装</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Integration Packs：30+ CAP-native worker 包（Slack/GitHub/AWS/K8s/Terraform…），每个是带策略门工作流的 worker；cordumctl pack install 安装</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>README.md:504</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>README.md:504</span><span class="cb-lang" data-astro-cid-nscl5cf7>markdown</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="markdown"><code><span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">SDKs: </span><span style="color:#E1E4E8;font-weight:bold">**Go**</span><span style="color:#E1E4E8"> (stable) | [</span><span style="color:#E1E4E8;font-weight:bold">**Python**</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://github.com/cordum-io/cap</span><span style="color:#E1E4E8">) | [</span><span style="color:#E1E4E8;font-weight:bold">**Node**</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://github.com/cordum-io/cap</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Integration Packs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Extend Cordum with [</span><span style="color:#DBEDFF;text-decoration:underline">30+ integration packs</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://github.com/cordum-io/cordum-packs</span><span style="color:#E1E4E8">) for Slack, GitHub, AWS, Jira, Terraform, Datadog, PagerDuty, and more. Each pack is a CAP-native worker with policy-gated workflows.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">| Pack | Category | Description |</span></span>
+<span class="line"><span style="color:#E1E4E8">|------|----------|-------------|</span></span>
+<span class="line"><span style="color:#E1E4E8">| Slack | Communication | Approval notifications and agent alerts |</span></span>
+<span class="line"><span style="color:#E1E4E8">| GitHub | DevOps | Govern agent actions on repositories |</span></span>
+<span class="line"><span style="color:#E1E4E8">| AWS | Cloud | Policy-gated cloud operations |</span></span>
+<span class="line"><span style="color:#E1E4E8">| Kubernetes | DevOps | Governed incident remediation |</span></span></code></pre></figure><a class="ig-link" href="/frameworks/cordum/" data-astro-cid-nscl5cf7>查看 Cordum 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>CrewAI</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>skills/ 模块：发现并激活 Skill（discover_skills/activate_skill，YAML 元数据）；crewai_tools 独立包提供数百个工具；MCP 客户端把外部 MCP server 工具接入</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>skills/ 模块：发现并激活 Skill（discover_skills/activate_skill，YAML 元数据）；crewai_tools 独立包提供数百个工具；MCP 客户端把外部 MCP server 工具接入</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>crewai/mcp/client.py:54</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>lib/crewai/src/crewai/mcp/client.py:54</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">_cache_ttl </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 300</span><span style="color:#6A737D">  # 5 minutes</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MCPClient</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """MCP client with session management.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    This client manages connections to MCP servers and provides a high-level</span></span>
+<span class="line"><span style="color:#9ECBFF">    interface for interacting with MCP tools, prompts, and resources.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Example:</span></span>
+<span class="line"><span style="color:#9ECBFF">        ```python</span></span>
+<span class="line"><span style="color:#9ECBFF">        transport = StdioTransport(command="python", args=["server.py"])</span></span>
+<span class="line"><span style="color:#9ECBFF">        client = MCPClient(transport)</span></span></code></pre></figure><a class="ig-link" href="/frameworks/crewai/" data-astro-cid-nscl5cf7>查看 CrewAI 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Dust</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=可复用的能力包（指令+数据源+工具集），挂到 agent 上；运行时 getSkillServers 把 skill 暴露为 MCP server（如 skill_knowledge_file_system），并把&quot;已装备 skills&quot;渲染进用户消息</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=可复用的能力包（指令+数据源+工具集），挂到 agent 上；运行时 getSkillServers 把 skill 暴露为 MCP server（如 skill_knowledge_file_system），并把&quot;已装备 skills&quot;渲染进用户消息</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>front/lib/api/assistant/skill_actions.ts:22</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>front/lib/api/assistant/skill_actions.ts:22</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> SKILL_KNOWLEDGE_DATA_WAREHOUSE_SERVER_NAME</span><span style="color:#F97583"> =</span></span>
+<span class="line"><span style="color:#9ECBFF">  "skill_knowledge_data_warehouse"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getSkillServers</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  auth</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Authenticator</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#FFAB70">    agentConfiguration</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    skills</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">    agentConfiguration</span><span style="color:#F97583">:</span><span style="color:#B392F0"> LightAgentConfigurationType</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">    skills</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">SkillResource</span><span style="color:#F97583"> &#x26;</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">extendedSkill</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> SkillResource</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8"> })[];</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">MCPServerConfigurationType</span><span style="color:#E1E4E8">[]> {</span></span></code></pre></figure><a class="ig-link" href="/frameworks/dust/" data-astro-cid-nscl5cf7>查看 Dust 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>hcom</span><span class="badge lang" data-astro-cid-nscl5cf7>rust</span><span class="ig-sum" data-astro-cid-nscl5cf7>随仓库带 Claude Code skill hcom-agent-messaging（SKILL.md + references/scripts）与 plugin 清单（.claude-plugin/plugin.json）；用户脚本投到 ~/.hcom/scripts/ 自动发现、可覆盖内置（README:366）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>随仓库带 Claude Code skill hcom-agent-messaging（SKILL.md + references/scripts）与 plugin 清单（.claude-plugin/plugin.json）；用户脚本投到 ~/.hcom/scripts/ 自动发现、可覆盖内置（README:366）</p><a class="ig-link" href="/frameworks/hcom/" data-astro-cid-nscl5cf7>查看 hcom 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Hermes Agent</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，progressive disclosure(list 看元数据→view 加载全文→按需读 references)，兼容 agentskills.io 开放标准；/&lt;skill-name&gt; 触发；agent 可自创/自改 skill 并由 curator 维护；插件体系覆盖 model-provider/gateway 平台/context-engine/MCP</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，progressive disclosure(list 看元数据→view 加载全文→按需读 references)，兼容 agentskills.io 开放标准；/&lt;skill-name&gt; 触发；agent 可自创/自改 skill 并由 curator 维护；插件体系覆盖 model-provider/gateway 平台/context-engine/MCP</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>tools/skills_tool.py:1</code><code class="ref" data-astro-cid-nscl5cf7>agent/curator.py:1</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>tools/skills_tool.py:1</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#6A737D">#!/usr/bin/env python3</span></span>
+<span class="line"><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#9ECBFF">Skills Tool Module</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">This module provides tools for listing and viewing skill documents.</span></span>
+<span class="line"><span style="color:#9ECBFF">Skills are organized as directories containing a SKILL.md file (the main instructions)</span></span>
+<span class="line"><span style="color:#9ECBFF">and optional supporting files like references, templates, and examples.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Inspired by Anthropic's Claude Skills system with progressive disclosure architecture:</span></span>
+<span class="line"><span style="color:#9ECBFF">- Metadata (name ≤64 chars, description ≤1024 chars) - shown in skills_list</span></span></code></pre></figure><a class="ig-link" href="/frameworks/hermes-agent/" data-astro-cid-nscl5cf7>查看 Hermes Agent 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Hive</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(default/preset/community)+ trust gating + tool_gating（激活临时授权）；SkillsManager 统一加载并渲染 prompt；内建 6 个 default skill（error-recovery、context-preservation 等）+ preset（browser/linkedin/terminal/x 等）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(default/preset/community)+ trust gating + tool_gating（激活临时授权）；SkillsManager 统一加载并渲染 prompt；内建 6 个 default skill（error-recovery、context-preservation 等）+ preset（browser/linkedin/terminal/x 等）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>skills/manager.py:1</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>core/framework/skills/manager.py:1</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#9ECBFF">"""Unified skill lifecycle manager.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">``SkillsManager`` is the single facade that owns skill discovery, loading,</span></span>
+<span class="line"><span style="color:#9ECBFF">and prompt renderation.  The runtime creates one at startup and downstream</span></span>
+<span class="line"><span style="color:#9ECBFF">layers read the cached prompt strings.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Typical usage — **config-driven** (runner passes configuration)::</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    config = SkillsManagerConfig(</span></span>
+<span class="line"><span style="color:#9ECBFF">        skills_config=SkillsConfig.from_agent_vars(...),</span></span></code></pre></figure><a class="ig-link" href="/frameworks/hive/" data-astro-cid-nscl5cf7>查看 Hive 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Lagent</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>扩展点=Hook(4 钩子:before/after × agent/action) 与 actions(工具) 注册表；MCPClientAdapter 把外部 MCP server(stdio/sse/http) 暴露的工具接入为 BaseAction（待确认成熟度）。无独立&quot;skill&quot;概念</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>扩展点=Hook(4 钩子:before/after × agent/action) 与 actions(工具) 注册表；MCPClientAdapter 把外部 MCP server(stdio/sse/http) 暴露的工具接入为 BaseAction（待确认成熟度）。无独立&quot;skill&quot;概念</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>hooks/hook.py:7</code><code class="ref" data-astro-cid-nscl5cf7>actions/mcp_client.py:14</code><code class="ref" data-astro-cid-nscl5cf7>agents/agent.py:158</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>lagent/hooks/hook.py:7</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> lagent.schema </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> AgentMessage</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Hook</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> before_agent</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        self,</span></span>
+<span class="line"><span style="color:#E1E4E8">        agent,</span></span>
+<span class="line"><span style="color:#E1E4E8">        message: Tuple[AgentMessage],</span></span>
+<span class="line"><span style="color:#E1E4E8">        session_id: </span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    ):</span></span>
+<span class="line"><span style="color:#F97583">        pass</span></span></code></pre></figure><a class="ig-link" href="/frameworks/lagent/" data-astro-cid-nscl5cf7>查看 Lagent 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>LoongFlow</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>复用 Claude Code 的 Skill 体系：ClaudeCodeAgent 默认放行 Skill/Task 工具并 setting_sources=[&quot;project&quot;]，从仓库 .claude/skills/、.agents/skills/（如 skill-creator、code-analysis）加载技能；自定义工具经 create_sdk_mcp_server 包成 MCP server 注入；通用扩展点是 AgentBase 的 pre_/post_ 钩子</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>复用 Claude Code 的 Skill 体系：ClaudeCodeAgent 默认放行 Skill/Task 工具并 setting_sources=[&quot;project&quot;]，从仓库 .claude/skills/、.agents/skills/（如 skill-creator、code-analysis）加载技能；自定义工具经 create_sdk_mcp_server 包成 MCP server 注入；通用扩展点是 AgentBase 的 pre_/post_ 钩子</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>framework/claude_code/claude_code_agent.py:60</code><code class="ref" data-astro-cid-nscl5cf7>agents/general_agent/executor.py:290</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/loongflow/framework/claude_code/claude_code_agent.py:60</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">        os.environ[</span><span style="color:#9ECBFF">"CLAUDE_CODE_MAX_OUTPUT_TOKENS"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> str</span><span style="color:#E1E4E8">(max_output_tokens)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ClaudeCodeAgent</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">AgentBase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#9ECBFF">    Wraps the Claude Agent SDK as a generic Agent node in LoongFlow.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    This agent provides Claude with full terminal/file system permissions.</span></span>
+<span class="line"><span style="color:#9ECBFF">    Claude SDK internally handles Planning -> Execution (Coding/Bash) -> Solving.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Supports both built-in tools and custom user-defined tools.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Usage:</span></span></code></pre></figure><a class="ig-link" href="/frameworks/loongflow/" data-astro-cid-nscl5cf7>查看 LoongFlow 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Mastra</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=SKILL.md（gray-matter frontmatter）文件，经 workspace/skills/ 发现（local/versioned/composite source + glob），由 SkillsProcessor 注入（eager 或 on-demand 发现），并暴露为 skill 工具；兼容 Claude Code ~/.claude/skills/（workspace/filesystem/local-filesystem.ts:83）。插件式扩展主要靠 processors + tools + storage domains，而非继承</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=SKILL.md（gray-matter frontmatter）文件，经 workspace/skills/ 发现（local/versioned/composite source + glob），由 SkillsProcessor 注入（eager 或 on-demand 发现），并暴露为 skill 工具；兼容 Claude Code ~/.claude/skills/（workspace/filesystem/local-filesystem.ts:83）。插件式扩展主要靠 processors + tools + storage domains，而非继承</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent/agent.ts:828</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/core/src/agent/agent.ts:828</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * Gets the skills processors to add to input processors when workspace has skills.</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@internal</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#E1E4E8">  private async </span><span style="color:#B392F0">getSkillsProcessors</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    configuredProcessors: InputProcessorOrWorkflow[],</span></span>
+<span class="line"><span style="color:#E1E4E8">    requestContext</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> RequestContext,</span></span>
+<span class="line"><span style="color:#E1E4E8">  ): </span><span style="color:#79B8FF">Promise</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">InputProcessorOrWorkflow[]</span><span style="color:#F97583">></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // Check if workspace has skills configured</span></span>
+<span class="line"><span style="color:#E1E4E8">    const workspace </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">getWorkspace</span><span style="color:#E1E4E8">({ requestContext: requestContext </span><span style="color:#F97583">||</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> RequestContext</span><span style="color:#E1E4E8">() });</span></span>
+<span class="line"><span style="color:#B392F0">    if</span><span style="color:#E1E4E8"> (!</span><span style="color:#FFAB70">workspace</span><span style="color:#F97583">?</span><span style="color:#E1E4E8">.skills) {</span></span></code></pre></figure><a class="ig-link" href="/frameworks/mastra/" data-astro-cid-nscl5cf7>查看 Mastra 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>nanobot</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现（workspace→builtin，workspace 覆盖同名），requires.bins/env 决定可用性，always=true 强制注入，渐进式加载（先摘要后 read_file）；内置 skill 含 cron/long-goal/github/memory/skill-creator 等。工具插件经 entry_points(&quot;nanobot.tools&quot;) 扩展</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现（workspace→builtin，workspace 覆盖同名），requires.bins/env 决定可用性，always=true 强制注入，渐进式加载（先摘要后 read_file）；内置 skill 含 cron/long-goal/github/memory/skill-creator 等。工具插件经 entry_points(&quot;nanobot.tools&quot;) 扩展</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent/skills.py:21</code><code class="ref" data-astro-cid-nscl5cf7>agent/skills.py:203</code><code class="ref" data-astro-cid-nscl5cf7>agent/tools/loader.py:62</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>nanobot/agent/skills.py:21</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SkillsLoader</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#9ECBFF">    Loader for agent skills.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Skills are markdown files (SKILL.md) that teach the agent how to use</span></span>
+<span class="line"><span style="color:#9ECBFF">    specific tools or perform certain tasks.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, workspace: Path, builtin_skills_dir: Path </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">, disabled_skills: set[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.workspace </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> workspace</span></span></code></pre></figure><a class="ig-link" href="/frameworks/nanobot/" data-astro-cid-nscl5cf7>查看 nanobot 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>OpenClaw</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，递归发现、按 description 由模型自主选用、disable-model-invocation 可隐藏，兼容 Claude-Code 风格；Plugins/Extensions=extensions/ 包，经 manifest(openclaw 字段声明 extensions/skills/prompts/themes) 装卸；Hooks=生命周期钩子（bundled: session-memory、compaction-notifier、boot-md…）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，递归发现、按 description 由模型自主选用、disable-model-invocation 可隐藏，兼容 Claude-Code 风格；Plugins/Extensions=extensions/ 包，经 manifest(openclaw 字段声明 extensions/skills/prompts/themes) 装卸；Hooks=生命周期钩子（bundled: session-memory、compaction-notifier、boot-md…）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>packages/agent-core/src/harness/skills.ts:57</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/agent-core/src/harness/skills.ts:57</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> Traverses directories recursively, loads </span><span style="color:#9ECBFF">`SKILL.md`</span><span style="color:#E1E4E8"> files, loads direct root </span><span style="color:#9ECBFF">`.md`</span><span style="color:#E1E4E8"> files </span><span style="color:#F97583">as</span><span style="color:#B392F0"> skills</span><span style="color:#E1E4E8">, honors ignore files,</span></span>
+<span class="line"><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> and returns diagnostics for invalid skill files. Missing input directories are skipped.</span></span>
+<span class="line"><span style="color:#F97583"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> loadSkills</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  env</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ExecutionEnv</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">  dirs</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">[],</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;{ </span><span style="color:#FFAB70">skills</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Skill</span><span style="color:#E1E4E8">[]; </span><span style="color:#FFAB70">diagnostics</span><span style="color:#F97583">:</span><span style="color:#B392F0"> SkillDiagnostic</span><span style="color:#E1E4E8">[] }> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> skills</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Skill</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> diagnostics</span><span style="color:#F97583">:</span><span style="color:#B392F0"> SkillDiagnostic</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> dir</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(dirs) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> dirs </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> [dirs]) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> rootInfoResult</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> env.</span><span style="color:#B392F0">fileInfo</span><span style="color:#E1E4E8">(dir);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">rootInfoResult.ok) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (rootInfoResult.error.code </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> "not_found"</span><span style="color:#E1E4E8">) {</span></span></code></pre></figure><a class="ig-link" href="/frameworks/openclaw/" data-astro-cid-nscl5cf7>查看 OpenClaw 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Pilot Protocol</span><span class="badge lang" data-astro-cid-nscl5cf7>go</span><span class="ig-sum" data-astro-cid-nscl5cf7>两层含义：①daemon 插件=L11 能力插件经 runtime.ServiceRegistry 注册（trustedagents/handshake/dataexchange/eventstream/policy/webhook/skillinject），内核只依赖 L10 pkg/coreapi 接口；②agent skill=skillinject 插件自动给检测到的 AI 编码工具写入 SKILL.md（KindMarker/Helper/PluginFile/PluginAllowList），周期性 reconcile，教 agent 怎么用 Pilot</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>两层含义：①daemon 插件=L11 能力插件经 runtime.ServiceRegistry 注册（trustedagents/handshake/dataexchange/eventstream/policy/webhook/skillinject），内核只依赖 L10 pkg/coreapi 接口；②agent skill=skillinject 插件自动给检测到的 AI 编码工具写入 SKILL.md（KindMarker/Helper/PluginFile/PluginAllowList），周期性 reconcile，教 agent 怎么用 Pilot</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>cmd/daemon/main.go:200</code><code class="ref" data-astro-cid-nscl5cf7>cmd/pilotctl/skills.go:17</code><code class="ref" data-astro-cid-nscl5cf7>layers.yaml:71</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>cmd/daemon/main.go:200</span><span class="cb-lang" data-astro-cid-nscl5cf7>go</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="go"><code><span class="line"><span style="color:#6A737D">	// resolve it once via d.DaemonAPI() and thread the shared value</span></span>
+<span class="line"><span style="color:#6A737D">	// everywhere — keeps the type assertion in one place.</span></span>
+<span class="line"><span style="color:#E1E4E8">	dapi </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> d.</span><span style="color:#B392F0">DaemonAPI</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">	rt </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> runtime.</span><span style="color:#B392F0">New</span><span style="color:#E1E4E8">(dapi)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">	ta </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> trustedagents.</span><span style="color:#B392F0">NewService</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">	if</span><span style="color:#E1E4E8"> err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> rt.</span><span style="color:#B392F0">Register</span><span style="color:#E1E4E8">(ta); err </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">		log.</span><span style="color:#B392F0">Fatalf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"register trustedagents: </span><span style="color:#79B8FF">%v</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, err)</span></span>
+<span class="line"><span style="color:#E1E4E8">	}</span></span>
+<span class="line"><span style="color:#E1E4E8">	d.</span><span style="color:#B392F0">RegisterTrustChecker</span><span style="color:#E1E4E8">(ta)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">	if</span><span style="color:#E1E4E8"> err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> rt.</span><span style="color:#B392F0">Register</span><span style="color:#E1E4E8">(skillinject.</span><span style="color:#B392F0">NewService</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">skillinject</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Config</span><span style="color:#E1E4E8">{})); err </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">		log.</span><span style="color:#B392F0">Fatalf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"register skillinject: </span><span style="color:#79B8FF">%v</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, err)</span></span></code></pre></figure><a class="ig-link" href="/frameworks/pilotprotocol/" data-astro-cid-nscl5cf7>查看 Pilot Protocol 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>PraisonAI</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(project→user→builtin)，激活时按 allowed_tools 临时授权；兼容 Claude Code .claude/skills/（也认 .praisonai/skills/，向上递归祖先目录）；另有 hooks / middleware / 插件式扩展</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills=带 YAML frontmatter 的 SKILL.md，三级发现(project→user→builtin)，激活时按 allowed_tools 临时授权；兼容 Claude Code .claude/skills/（也认 .praisonai/skills/，向上递归祖先目录）；另有 hooks / middleware / 插件式扩展</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>skills/manager.py:64</code><code class="ref" data-astro-cid-nscl5cf7>skills/discovery.py:36</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/praisonai-agents/praisonaiagents/skills/manager.py:64</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#9ECBFF">        """Get names of all loaded skills."""</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._skills.keys())</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> discover</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        self,</span></span>
+<span class="line"><span style="color:#E1E4E8">        skill_dirs: Optional[List[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">]] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        include_defaults: </span><span style="color:#79B8FF">bool</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> True</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) -> </span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """Discover skills from directories.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">        Args:</span></span>
+<span class="line"><span style="color:#9ECBFF">            skill_dirs: List of directory paths to scan</span></span>
+<span class="line"><span style="color:#9ECBFF">            include_defaults: Whether to include default skill directories</span></span></code></pre></figure><a class="ig-link" href="/frameworks/praisonai/" data-astro-cid-nscl5cf7>查看 PraisonAI 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Semantic Kernel</span><span class="badge lang" data-astro-cid-nscl5cf7>csharp</span><span class="ig-sum" data-astro-cid-nscl5cf7>“Plugin” = 一组 KernelFunction 的命名集合(KernelPlugin/KernelPluginCollection)。KernelPluginFactory.CreateFromType&lt;T&gt;()/AddFromObject 把类方法变插件；另支持从 prompt 目录、OpenAPI、gRPC、Prompty、Markdown、Yaml 加载</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>“Plugin” = 一组 KernelFunction 的命名集合(KernelPlugin/KernelPluginCollection)。KernelPluginFactory.CreateFromType&lt;T&gt;()/AddFromObject 把类方法变插件；另支持从 prompt 目录、OpenAPI、gRPC、Prompty、Markdown、Yaml 加载</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>dotnet/src/SemanticKernel.Core/KernelExtensions.cs:511</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>dotnet/src/SemanticKernel.Core/KernelExtensions.cs:511</span><span class="cb-lang" data-astro-cid-nscl5cf7>csharp</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="csharp"><code><span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">remarks</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#B392F0">RequiresUnreferencedCode</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Uses reflection to handle various aspects of the function creation and invocation, making it incompatible with AOT scenarios."</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#B392F0">RequiresDynamicCode</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Uses reflection to handle various aspects of the function creation and invocation, making it incompatible with AOT scenarios."</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> KernelPlugin</span><span style="color:#B392F0"> AddFromType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(</span><span style="color:#F97583">this</span><span style="color:#B392F0"> ICollection</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">KernelPlugin</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">plugins</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">string</span><span style="color:#E1E4E8">? </span><span style="color:#B392F0">pluginName</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IServiceProvider</span><span style="color:#E1E4E8">? </span><span style="color:#B392F0">serviceProvider</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Verify.</span><span style="color:#B392F0">NotNull</span><span style="color:#E1E4E8">(plugins);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        KernelPlugin</span><span style="color:#B392F0"> plugin</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> KernelPluginFactory.</span><span style="color:#B392F0">CreateFromType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(pluginName, serviceProvider);</span></span>
+<span class="line"><span style="color:#E1E4E8">        plugins.</span><span style="color:#B392F0">Add</span><span style="color:#E1E4E8">(plugin);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> plugin;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">>Creates a plugin that wraps a new instance of the specified type &#x3C;</span><span style="color:#85E89D">typeparamref</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"T"</span><span style="color:#6A737D">/> and adds it into the plugin collection.&#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span></code></pre></figure><a class="ig-link" href="/frameworks/semantic-kernel/" data-astro-cid-nscl5cf7>查看 Semantic Kernel 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Strands Agents</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>两层：Plugin(注册 hooks/装配 agent，plugins/) + typed hook 事件；AgentSkills vended plugin 把带 frontmatter 的 SKILL.md 注入 system prompt 并提供 skills 激活工具，按需加载；MCP=即插即用工具源</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>两层：Plugin(注册 hooks/装配 agent，plugins/) + typed hook 事件；AgentSkills vended plugin 把带 frontmatter 的 SKILL.md 注入 system prompt 并提供 skills 激活工具，按需加载；MCP=即插即用工具源</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>vended_plugins/skills/agent_skills.py:45</code><code class="ref" data-astro-cid-nscl5cf7>tools/mcp/mcp_client.py:104</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>strands-py/src/strands/vended_plugins/skills/agent_skills.py:45</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> [sources]</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> AgentSkills</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Plugin</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Plugin that integrates Agent Skills into a Strands agent.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    The AgentSkills plugin extends the Plugin base class and provides:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    1. A ``skills`` tool that allows the agent to activate skills on demand</span></span>
+<span class="line"><span style="color:#9ECBFF">    2. System prompt injection of available skill metadata before each invocation</span></span>
+<span class="line"><span style="color:#9ECBFF">    3. Session persistence of active skill state via ``agent.state``</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Skills can be provided as filesystem paths (to individual skill directories or</span></span></code></pre></figure><a class="ig-link" href="/frameworks/strands/" data-astro-cid-nscl5cf7>查看 Strands Agents 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>SwarmClaw</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills：YAML frontmatter 的 SKILL.md，三级发现（runtime-skill-resolver）+ prompt 预算（skill-prompt-budget）+ 资格过滤（skill-eligibility）；conversation→skill 学习：从成功回合提炼 learned skill 走审查上线；Extensions（前身 plugins）= 带 hooks 的能力单元；ClawHub 分发（openclaw skills install swarmclaw）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills：YAML frontmatter 的 SKILL.md，三级发现（runtime-skill-resolver）+ prompt 预算（skill-prompt-budget）+ 资格过滤（skill-eligibility）；conversation→skill 学习：从成功回合提炼 learned skill 走审查上线；Extensions（前身 plugins）= 带 hooks 的能力单元；ClawHub 分发（openclaw skills install swarmclaw）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>skills/learned-skills.ts:1</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/lib/server/skills/learned-skills.ts:1</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> crypto </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'node:crypto'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { HumanMessage } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@langchain/core/messages'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { genId } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/lib/id'</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#F97583"> type</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  LearnedSkill,</span></span>
+<span class="line"><span style="color:#E1E4E8">  LearnedSkillLifecycle,</span></span>
+<span class="line"><span style="color:#E1E4E8">  LearnedSkillRiskLevel,</span></span>
+<span class="line"><span style="color:#E1E4E8">  MessageToolEvent,</span></span></code></pre></figure><a class="ig-link" href="/frameworks/swarmclaw/" data-astro-cid-nscl5cf7>查看 SwarmClaw 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Transformers Agents</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>自定义 Tool / Hub 上分享工具</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>自定义 Tool / Hub 上分享工具</p><a class="ig-link" href="/frameworks/transformers-agents/" data-astro-cid-nscl5cf7>查看 Transformers Agents 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Upsonic</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>Skills 系统：带 SKILL.md(YAML frontmatter) 的技能，内建 builtins(code-review/data-analysis/summarization)，含 loader/validator/dependency/cache/metrics；prebuilt 自治 agent 也以 skills 形式打包</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>Skills 系统：带 SKILL.md(YAML frontmatter) 的技能，内建 builtins(code-review/data-analysis/summarization)，含 loader/validator/dependency/cache/metrics；prebuilt 自治 agent 也以 skills 形式打包</p><a class="ig-link" href="/frameworks/upsonic/" data-astro-cid-nscl5cf7>查看 Upsonic 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>VoltAgent</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>扩展点为 hooks(onStart/onEnd/onToolStart…)、middleware(input/output 可重试)、guardrails、Toolkit、MCP/A2A 接入；Workspace 下有 SKILL（workspace/skills/，gray-matter 解析 SKILL.md frontmatter）；外部能力主要靠 MCP server</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>扩展点为 hooks(onStart/onEnd/onToolStart…)、middleware(input/output 可重试)、guardrails、Toolkit、MCP/A2A 接入；Workspace 下有 SKILL（workspace/skills/，gray-matter 解析 SKILL.md frontmatter）；外部能力主要靠 MCP server</p><a class="ig-link" href="/frameworks/voltagent/" data-astro-cid-nscl5cf7>查看 VoltAgent 完整笔记 →</a></div></details></div></section></section></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

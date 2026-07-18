@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AgentScope · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>AgentScope</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0 (pyproject.toml:10 / LICENSE / README 三处一致)</span><a class="badge" href="https://github.com/modelscope/agentscope" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agentscope/</span></div><div class="cov-strip" aria-label="组件覆盖 10/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class style="--h:30" title="记忆: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>10/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agentscope">AgentScope</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">阿里通义实验室出品的”为越来越 agentic 的 LLM 设计”的生产级 Python agent 框架；2.0 版围绕一个统一的、纯异步、事件流式的 ReAct Agent 重构，强调”靠模型自身的推理/工具能力而非死板 prompt 编排”，内置 Claude-Code 风格的文件工具集、技能(skill)、权限引擎、上下文自动压缩、人在环 steering、MCP/A2A 与全链路 OTel 可观测，并自带 FastAPI 多租户/多会话 agent 服务与可换的本地/Docker/E2B 沙箱运行时。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AgentScope <strong>2.0</strong> 是一次面向”高能力模型”的重写，与 1.0 差异极大。核心设计取舍：</p>
+<ul>
+<li><strong>单一统一 Agent，而非继承体系</strong>：整个框架只有一个 <code>Agent</code> 类(<code>src/agentscope/agent/_agent.py:94</code>)，2484 行把 ReAct loop、压缩、工具批处理、权限、人在环、事件流全部收敛进去。扩展不靠子类化，而靠<strong>中间件(middleware)</strong>——<code>on_reply / on_reasoning / on_acting / on_model_call / on_system_prompt / on_compress_context</code> 等钩子(<code>middleware/_base.py</code>)，洋葱/管道两种模式。</li>
+<li><strong>纯异步 + 事件流为一等公民</strong>：对外主接口是 <code>agent.reply_stream(...)</code>(<code>agent/_agent.py:191</code>) 返回 <code>AsyncGenerator[AgentEvent]</code>，把 reply/model-call/text/thinking/tool-call/tool-result 等拆成 24 种细粒度事件(<code>event/_event.py:14</code>)，UI 直接消费；<code>reply()</code>(<code>agent/_agent.py:216</code>) 只是把事件流消费成最终 <code>Msg</code>。</li>
+<li><strong>“模型即智能”哲学</strong>：README 明确 “leverage models’ reasoning and tool use rather than constrain them”。所以<strong>没有显式 planner</strong>，规划交给模型 + 一组 Task 工具；<strong>也删掉了 1.0 的 <code>msghub</code>/<code>pipeline</code> 多智能体编排模块</strong>(本仓 <code>src/agentscope</code> 下已不存在)，多 agent 改由”agent 即工具/服务”与 message hub 思路在 service 层承载。</li>
+<li><strong>包结构(<code>src/agentscope/</code>)</strong>：<code>agent/</code>(统一 Agent + ReAct/Context/Model 三组 config) · <code>message/</code>(<code>Msg</code> + 8 类 ContentBlock) · <code>model/</code>(8 家 provider chat model) · <code>formatter/</code>(把 <code>Msg</code> 转各家 API 格式) · <code>tool/</code>(<code>Toolkit</code> + Claude-Code 式内建工具 Bash/Read/Write/Edit/Glob/Grep + Task 规划工具) · <code>skill/</code>(SKILL.md 技能) · <code>permission/</code>(规则化权限引擎，5 种 mode) · <code>mcp/</code>(统一 MCP 客户端) · <code>embedding/</code>(向量) · <code>state/</code>(可序列化 <code>AgentState</code>) · <code>middleware/</code>(含 <code>_tracing</code> OTel) · <code>workspace/</code>(Local/Docker/E2B 沙箱) · <code>app/</code>(FastAPI 多租户服务) · <code>event/</code> <code>credential/</code> <code>exception/</code>。</li>
+<li><strong>入口 API</strong>：<code>from agentscope.agent import Agent</code>，配 <code>model=</code> + <code>toolkit=Toolkit(tools=[...])</code>，<code>async for evt in agent.reply_stream(UserMsg(...))</code>。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.agent </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.tool </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Toolkit, Bash, Grep, Glob, Read, Write, Edit</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.credential </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> DashScopeCredential</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.model </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> DashScopeChatModel</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.message </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> UserMsg</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentscope.event </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> EventType</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> os, asyncio</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">() -> </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">        name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Friday"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">        system_prompt</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"You're a helpful assistant named Friday."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">        model</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">DashScopeChatModel(</span></span>
+<span class="line"><span style="color:#FFAB70">            credential</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">DashScopeCredential(</span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">os.environ[</span><span style="color:#9ECBFF">"DASHSCOPE_API_KEY"</span><span style="color:#E1E4E8">]),</span></span>
+<span class="line"><span style="color:#FFAB70">            model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"qwen3.6-plus"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        ),</span></span>
+<span class="line"><span style="color:#FFAB70">        toolkit</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">Toolkit(</span><span style="color:#FFAB70">tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[Bash(), Grep(), Glob(), Read(), Write(), Edit()]),</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#F97583">    async</span><span style="color:#F97583"> for</span><span style="color:#E1E4E8"> evt </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> agent.reply_stream(UserMsg(</span><span style="color:#9ECBFF">"Tony"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Hi, Friday!"</span><span style="color:#E1E4E8">)):</span></span>
+<span class="line"><span style="color:#F97583">        match</span><span style="color:#E1E4E8"> evt.type:                      </span><span style="color:#6A737D"># 消费细粒度事件流驱动 UI</span></span>
+<span class="line"><span style="color:#F97583">            case</span><span style="color:#E1E4E8"> EventType.</span><span style="color:#79B8FF">REPLY_START</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">...</span></span>
+<span class="line"><span style="color:#F97583">            case</span><span style="color:#E1E4E8"> EventType.</span><span style="color:#79B8FF">MODEL_CALL_START</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">...</span></span>
+<span class="line"><span style="color:#F97583">            case</span><span style="color:#E1E4E8"> EventType.</span><span style="color:#79B8FF">TEXT_BLOCK_DELTA</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>纯异步 ReAct：<code>while cur_iter &#x3C; max_iters(默认20)</code> 循环，每轮 <code>_check_next_action</code> 判定 reasoning/acting/exit→<code>_reasoning</code> 调模型生成 text/thinking/tool_call→<code>_batch_tool_calls</code> 把工具分 sequential/concurrent 批执行→结果回灌；无 tool_call 即产出最终 <code>Msg</code> 退出</td><td><code>agent/_agent.py:595</code> (loop), <code>agent/_agent.py:687</code> (<code>_reasoning</code>), <code>agent/_agent.py:628</code> (批执行), <code>agent/_config.py</code> (<code>ReActConfig.max_iters</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无显式 planner（刻意交给模型）。提供一组 <strong>Task 工具</strong> <code>TaskCreate/Update/Get/List</code> 让模型自管 to-do（含 blocks/blocked_by 依赖、pending/in_progress/completed 状态），落在 <code>AgentState.tasks_context</code></td><td><code>tool/_task/_task_tool_base.py:13</code>, <code>tool/_task/_create_task.py</code>, <code>state/_task.py:9</code> (<code>Task</code>), <code>state/_state.py:175</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td><strong>无独立 Memory 模块</strong>。短期=<code>AgentState.context: list[Msg]</code>(整段对话上下文)；长期=超阈值时压成结构化 <code>summary</code> 字符串预置回上下文；向量=独立 <code>embedding/</code> 模块(DashScope/OpenAI/Gemini/Ollama + 文件缓存)，但不与 Agent 自动挂钩(需自接)</td><td><code>state/_state.py:150</code> (<code>context</code>/<code>summary</code>), <code>embedding/_embedding_base.py:36</code>, <code>embedding/__init__.py</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>Toolkit</code> 统一管理函数/MCP/技能；<code>FunctionTool</code> 用 <code>inspect</code>+docstring 自动抽 JSON schema(<code>_extract_input_schema</code>)；工具按 group 分组、可 agentic 激活/停用(meta tool)；执行经 <code>call_tool</code>，支持并发安全标记 <code>is_concurrency_safe</code> 与状态注入 <code>is_state_injected(_agent_state)</code></td><td><code>tool/_toolkit.py:66</code>, <code>tool/_toolkit.py:225</code> (<code>call_tool</code>), <code>tool/_adapters.py:30</code> (<code>FunctionTool</code>), <code>tool/_base.py:35</code> (<code>ToolBase</code>)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>ChatModelBase</code> 抽象 <code>async __call__(messages, tools, tool_choice)</code>，统一 stream/重试/<code>count_tokens</code>/<code>context_size</code>；8 家实现(Anthropic/DashScope/DeepSeek/Gemini/Ollama/OpenAIChat/OpenAIResponse/XAI/Moonshot)；各家配套 <code>formatter/</code> 把 <code>Msg</code>+block 转 provider 报文；<code>credential/</code> 解耦密钥</td><td><code>model/_base.py:35,157</code>, <code>model/__init__.py</code>, <code>formatter/_formatter_base.py:22</code>, <code>credential/_base.py</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><strong>2.0 移除了 1.0 的 <code>msghub</code>/<code>pipeline</code> 模块</strong>(本仓不存在)。当前路径：① <code>Agent.observe()</code> 注入外部消息做松散协作；② FastAPI <strong>agent service</strong> 做多租户多会话承载与编排(<code>examples/agent_service</code>)；③ MCP/A2A 把别的 agent 当工具/服务。README 称 message hub 在 roadmap</td><td><code>agent/_agent.py:254</code> (<code>observe</code>), <code>app/__init__.py</code> (service), <code>mcp/_mcp_client.py:22</code>；msghub=N/A(2.0 已删)</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>每轮 reasoning 前 <code>compress_context()</code>：<code>count_tokens</code> 超 <code>trigger_ratio(0.8)*context_size</code> 即触发，按 <code>reserve_ratio(0.1)</code> 拆分待压/保留，用结构化 <code>SummarySchema</code>(task_overview/current_state/…) 让模型生成摘要回填；工具结果按 <code>tool_result_limit(3000)</code> 截断；system_prompt 可经 middleware <code>on_system_prompt</code> 管道改写</td><td><code>agent/_agent.py:300</code> (<code>_compress_context_impl</code>), <code>agent/_config.py</code> (<code>ContextConfig</code>/<code>SummarySchema</code>), <code>middleware/_base.py:215</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><strong>Skills</strong>=带 YAML frontmatter 的 <code>SKILL.md</code> 目录，<code>LocalSkillLoader</code> 扫描加载，注入提示告知”skill 不是 tool，需用 SkillViewer 读取再照做”(兼容 Claude Code 技能形态)；<strong>插件机制</strong>=middleware(钩子链)而非传统插件；工具组(ToolGroup)可动态激活</td><td><code>skill/_base.py:23</code> (<code>SkillLoaderBase</code>), <code>skill/_local_loader.py:14</code>, <code>tool/_toolkit.py:51</code> (skill 提示), <code>tool/_builtin/_skill.py</code> (SkillViewer)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>一等公民 <strong>OpenTelemetry</strong>：<code>TracingMiddleware</code>(<code>middleware/_tracing/</code>) 为 agent/llm/tool 各层开 span，依赖 opentelemetry-sdk + OTLP exporter(pyproject 强依赖)；事件流本身即细粒度可观测；<code>app/</code> 服务侧带 OTel。README 提 “built-in evaluation”，但本仓 <code>src/agentscope</code> 下未见独立 eval 包(评估在 docs/examples 层)</td><td><code>middleware/_tracing/_trace.py:116</code> (<code>TracingMiddleware</code>), <code>middleware/_tracing/_setup.py</code>, <code>event/_event.py:14</code>；eval 模块=待确认</td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯异步库可直接嵌入；<strong>沙箱化工作区</strong> <code>workspace/</code>：<code>LocalWorkspace</code>/<code>DockerWorkspace</code>/<code>E2BWorkspace</code> + <code>Offloader</code> 把大上下文/工具结果卸载；生产侧 <code>app/</code> 提供 FastAPI <strong>多租户、多会话</strong> agent 服务(<code>create_app</code>)、调度器(apscheduler)、AG-UI 协议、Redis 存储；支持本地/Serverless/K8s + OTel</td><td><code>workspace/__init__.py</code>, <code>workspace/_docker/</code>, <code>workspace/_e2b/</code>, <code>app/_app.py</code> (<code>create_app</code>), <code>app/_manager/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><strong>规则化 <code>PermissionEngine</code></strong>：5 种 mode(DEFAULT/ACCEPT_EDITS/EXPLORE/BYPASS/DONT_ASK) × 4 种 behavior(ALLOW/DENY/ASK/PASSTHROUGH)，工具自报 <code>is_read_only</code> 与 <code>check_permissions</code>，危险路径/命令拦截；ASK→agent 产出 <code>RequireUserConfirmEvent</code> 暂停等外部确认，<code>reply()</code> 可喂回 <code>UserConfirmResultEvent</code> 续跑；外部执行经 <code>RequireExternalExecutionEvent</code></td><td><code>permission/_engine.py:16,76</code> (<code>check_permission</code>), <code>permission/_types.py:18</code> (<code>PermissionMode</code>), <code>agent/_agent.py:882</code> (确认流转), <code>event/_event.py:46</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>全部运行态收敛进单个 pydantic <code>AgentState</code>(session_id/context/summary/reply_id/cur_iter/permission_context/tool_context/tasks_context)，可整体序列化恢复；服务侧 <code>app/storage/</code> 提供 <code>RedisStorage</code> + <code>SessionRecord/AgentRecord/UserRecord</code> 等做多会话持久化；文件读缓存带 mtime 失效与 LRU 淘汰</td><td><code>state/_state.py:140</code> (<code>AgentState</code>), <code>app/storage/_redis_storage.py</code>, <code>app/storage/_model</code>, <code>state/_state.py:23</code> (<code>ToolContext</code> 缓存)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“统一 Agent + 中间件” vs 多类继承</strong>：与多数框架用 “BaseAgent→ReActAgent→…” 继承树不同，AgentScope 2.0 把所有能力塞进<strong>一个</strong> <code>Agent</code>，用 middleware 钩子横切扩展。优点是行为可预测、事件流统一；代价是单文件 2484 行、定制需懂钩子链与内部状态机。</li>
+<li><strong>强 ReAct、弱编排</strong>：刻意”相信模型”——无 planner、无强约束 prompt 编排，规划只给 Task 工具。这押注于高能力模型；若用弱模型，缺少脚手架可能不稳。</li>
+<li><strong>2.0 是断代式重写</strong>：1.0 的 <code>msghub</code>/<code>pipeline</code> 多智能体原语、<code>memory</code> 模块在 2.0 <code>src/agentscope</code> 下<strong>已不存在</strong>。多 agent 与记忆改由 service 层 / <code>observe()</code> / embedding 自接承载——查 1.0 教程会对不上。</li>
+<li><strong>Claude-Code 同款电池</strong>：内建 <code>Bash/Read/Write/Edit/Glob/Grep</code> 文件工具 + SKILL.md 技能 + 5 档权限 mode + 文件读缓存，几乎是把 Claude Code 的 harness 能力开源化；且兼容 SKILL.md 技能格式。</li>
+<li><strong>可观测与生产是卖点</strong>：OTel 为强依赖(非可选)，FastAPI 多租户服务 + Docker/E2B 沙箱 + Redis 会话 + apscheduler 调度，明显面向”上云/上 K8s”而非玩具 demo。</li>
+<li><strong>待确认</strong>：① README 宣称内置 evaluation / multi-agent message hub，但本仓 <code>src/agentscope</code> 下未见独立 eval 包、<code>msghub</code> 已删，二者更像 roadmap/docs 层能力(待确认)；② embedding 模块存在但默认不与 Agent 记忆自动联动，需开发者自接。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/components/context-engineering/">context-engineering</a></li>
+<li>同范式(single+电池/平台)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/agentscope/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

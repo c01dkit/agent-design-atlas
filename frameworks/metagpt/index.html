@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MetaGPT · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>MetaGPT</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/geekan/MetaGPT" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/metagpt/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="metagpt">MetaGPT</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个把”软件公司 SOP 标准作业流程”固化进多智能体协作的 Python 框架，信条是 Code = SOP(Team)：给不同 LLM 角色（产品经理/架构师/项目经理/工程师/数据分析师）分派职责，靠共享 Environment 消息池 + cause_by 订阅路由 + 结构化文档接力（ActionNode），把”一行需求”流水线化为 PRD→设计→任务→代码→测试的产物。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>MetaGPT 的核心范式是 <strong>multi-agent 流水线 + 显式 SOP</strong>，而非自由放养的 agent 群聊。设计取舍：</p>
+<ul>
+<li><strong>Code = SOP(Team)</strong>：把人类软件公司的标准作业流程”物化”为代码——每个 <code>Role</code> 绑定有序的 <code>Action</code> 序列与”关注的上游产物”，角色之间不直接对话，而是把结构化文档（PRD、API 设计、任务清单）丢进环境消息池，下游角色按 <code>cause_by</code> 订阅自动接力。</li>
+<li><strong>三大原语 Role / Action / Team</strong>：<code>Action</code> 是最小工作单元（一次 LLM 调用 + 结构化输出）；<code>Role</code> 是有状态的 agent，内含 <code>_observe → _think → _act</code> 循环和私有记忆；<code>Team</code> 持有 <code>Environment</code> 与预算（<code>investment</code>），驱动多轮 <code>run</code>。</li>
+<li><strong>消息驱动 + 发布订阅</strong>：<code>Environment</code> 是中央消息池（<code>publish_message</code> 按 <code>member_addrs</code> 地址路由），每个 <code>Role</code> 有私有 <code>MessageQueue</code> 缓冲；<code>_observe</code> 用 <code>rc.watch</code>（订阅的 Action 集合）过滤感兴趣的消息——这是”谁干完什么、谁接着干”的解耦机制。</li>
+<li><strong>结构化输出即契约</strong>：<code>ActionNode</code> 用 schema + format 约束把 LLM 输出钉成可解析的结构化文档（含 auto/human review 自修订），让角色间传递的是强类型产物而非散文。</li>
+<li><strong>两代角色并存</strong>：经典 <code>Role</code>（state-machine，三种 <code>react_mode</code>：react/by_order/plan_and_act）+ 新一代 <code>RoleZero</code>（<code>metagpt/roles/di/role_zero.py</code>，工具化 ReAct，LLM 直接输出命令列表，max_react_loop=50），后者由 <code>MGXEnv</code> + <code>TeamLeader</code> 做动态编排。</li>
+<li><strong>入口 API</strong>：<code>from metagpt.software_company import generate_repo</code>，或 <code>Team().hire([...]).run(idea=...)</code>；CLI <code>metagpt "Create a 2048 game"</code>。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> metagpt.software_company </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> generate_repo</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> metagpt.utils.project_repo </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ProjectRepo</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">repo: ProjectRepo </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> generate_repo(</span><span style="color:#9ECBFF">"Create a 2048 game"</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># 一行需求 → 整个软件公司 SOP</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(repo)  </span><span style="color:#6A737D"># 打印生成的 repo 结构与文件（PRD / 设计 / 代码 / 测试）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 等价的库用法（generate_repo 内部）：</span></span>
+<span class="line"><span style="color:#6A737D"># company = Team(context=ctx)</span></span>
+<span class="line"><span style="color:#6A737D"># company.hire([TeamLeader(), ProductManager(), Architect(), Engineer2(), DataAnalyst()])</span></span>
+<span class="line"><span style="color:#6A737D"># company.invest(investment=3.0)               # 设预算，超支抛 NoMoneyException</span></span>
+<span class="line"><span style="color:#6A737D"># asyncio.run(company.run(n_round=5, idea="Create a 2048 game"))</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>经典 <code>Role</code> 是 <code>_observe→_think→_act</code> 状态机循环：<code>react()</code> 按 <code>react_mode</code> 分派；REACT 模式下 <code>_think</code> 用 LLM 选下一个 Action（STATE_TEMPLATE 让 LLM 回答状态编号），<code>_react</code> 在 max_react_loop 内 think-act 交替。新 <code>RoleZero</code> 是工具化 ReAct：LLM 直接输出命令列表→解析→执行→回灌</td><td><code>metagpt/roles/role.py:454</code> (<code>_react</code>), <code>role.py:340</code> (<code>_think</code>), <code>role.py:512</code> (<code>react</code>), <code>metagpt/roles/di/role_zero.py:303</code> (<code>_react</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>两层：①SOP 即”硬编码计划”——角色的 Action 顺序就是流程；②<code>plan_and_act</code> 模式下 <code>Planner</code> 用 <code>WritePlan</code> 让 LLM 生成 <code>Plan</code>（<code>Task</code> 列表 + 依赖，拓扑排序），逐任务执行+review+动态改计划</td><td><code>metagpt/strategy/planner.py:77</code> (<code>update_plan</code>), <code>role.py:472</code> (<code>_plan_and_act</code>), <code>metagpt/schema.py:496</code> (<code>Plan</code>), <code>schema.py:457</code> (<code>Task</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>Memory</code>（list 存储 + <code>index[cause_by]</code> 倒排索引，<code>get_by_actions</code> 按 Action 检索）；长期=<code>LongTermMemory</code>/<code>MemoryStorage</code> 走 FAISS 向量检索（<code>search_similar</code> 余弦阈值过滤）；<code>RoleZeroMemory</code> 用 Chroma RAG + LLMRanker 做超长记忆召回</td><td><code>metagpt/memory/memory.py:20</code>, <code>metagpt/memory/longterm_memory.py:18</code>, <code>metagpt/memory/memory_storage.py:56,61</code>, <code>metagpt/memory/role_zero_memory.py:71</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>经典角色无通用工具调用（Action 即”能力”）；工具体系服务于 <code>RoleZero</code>/DataInterpreter：<code>@register_tool</code> 装饰器把类/函数注册进 <code>ToolRegistry</code>（AST 自动抽 schema），<code>ToolRecommender</code>（TypeMatch / BM25 / Embedding 三种召回）按任务推荐工具子集</td><td><code>metagpt/tools/tool_registry.py:94</code> (<code>register_tool</code>), <code>tool_registry.py:31</code> (<code>ToolRegistry</code>), <code>metagpt/tools/tool_recommend.py:195</code> (<code>BM25ToolRecommender</code>), <code>tool_recommend.py:231</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>BaseLLM</code> 抽象基类（<code>aask</code>/<code>acompletion</code>/<code>acompletion_text</code>）+ <code>@register_provider</code> 按 <code>LLMType</code> 注册，<code>create_llm_instance</code> 工厂按 <code>api_type</code> 路由；内置 OpenAI/Azure/Anthropic/Gemini/Ollama/Bedrock/Qianfan/Zhipu/Spark/Dashscope/Ark 等十余 provider；统一 OpenAI message 格式</td><td><code>metagpt/provider/base_llm.py:35</code> (<code>BaseLLM</code>), <code>provider/llm_provider_registry.py:38</code> (<code>create_llm_instance</code>), <code>llm_provider_registry.py:24</code> (<code>register_provider</code>), <code>provider/openai_api.py:58</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>框架核心：<code>Team.hire(roles)</code> 把角色放进 <code>Environment</code>；<code>Environment.publish_message</code> 按 <code>member_addrs</code> 地址路由到角色私有队列；<code>Environment.run</code> 用 <code>asyncio.gather</code> 并发跑所有非 idle 角色；订阅靠 <code>cause_by ∈ rc.watch</code> 解耦。新一代 <code>MGXEnv</code> + <code>TeamLeader</code>（Mike）做动态 @ 路由与 direct_chat</td><td><code>metagpt/team.py:32</code> (<code>Team</code>), <code>metagpt/environment/base_env.py:175</code> (<code>publish_message</code>), <code>base_env.py:197</code> (<code>run</code>), <code>role.py:399</code> (<code>_observe</code>/订阅), <code>metagpt/environment/mgx/mgx_env.py:24</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><code>Role._get_prefix</code> 用 PREFIX/CONSTRAINT 模板拼 system_prompt（含环境内其他角色名）；<code>_think</code> 用 STATE_TEMPLATE 注入对话历史让 LLM 选状态；<code>Planner.get_useful_memories</code> 用 STRUCTURAL_CONTEXT 裁剪上下文；<code>ActionNode.compile</code> 把 instruction+example+constraint 编译成结构化 prompt</td><td><code>role.py:323</code> (<code>_get_prefix</code>), <code>role.py:54</code> (STATE_TEMPLATE), <code>planner.py:155</code> (<code>get_useful_memories</code>), <code>metagpt/actions/action_node.py:382</code> (<code>compile</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”插件”系统；扩展即”写新 <code>Action</code> 子类 + 组装进 <code>Role</code>”或 <code>@register_tool</code> 注册工具。另有 <code>metagpt/skills/</code> + <code>SkillAction</code> 把 YAML 描述的技能转成可执行 Action（较边缘）；环境层 <code>ext/</code>（android/werewolf/minecraft 等）展示领域扩展</td><td><code>metagpt/actions/action.py:29</code> (<code>Action</code> 基类), <code>metagpt/actions/skill_action.py</code>, <code>metagpt/tools/tool_registry.py:94</code>, <code>metagpt/ext/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><code>CostManager</code> 在每次 LLM 调用后累计 token/成本（<code>_update_costs</code>），<code>Team.invest</code> 设预算超支抛 <code>NoMoneyException</code>；<code>loguru</code> 全局日志（<code>metagpt/logs.py</code>）；<code>exp_pool</code>（经验池）用 <code>@exp_cache</code> 装饰器缓存+打分（<code>SimpleScorer</code>/LLM judge）历史经验供复用</td><td><code>metagpt/provider/base_llm.py:124</code> (<code>_update_costs</code>), <code>metagpt/utils/cost_manager.py</code>, <code>metagpt/team.py:98</code> (<code>_check_balance</code>), <code>metagpt/exp_pool/decorator.py:29</code> (<code>exp_cache</code>)</td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库 + <code>typer</code> CLI（<code>metagpt/software_company.py</code> 的 <code>generate_repo</code>/<code>startup</code>）；全异步（asyncio）；产物落盘到 <code>workspace/</code> 经 <code>ProjectRepo</code>/<code>GitRepository</code>（含 <code>archive</code> git 提交）；代码执行经 <code>RunCode</code> Action / Data Interpreter 在本地执行（无强沙箱）；提供 Dockerfile</td><td><code>metagpt/software_company.py:14</code> (<code>generate_repo</code>), <code>metagpt/team.py:122</code> (<code>run</code>), <code>metagpt/environment/base_env.py:244</code> (<code>archive</code>), <code>metagpt/actions/run_code.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>HumanProvider</code> 把 <code>is_human=True</code> 的角色 LLM 调用替换成 <code>input()</code> 终端交互；<code>Planner.ask_review</code>（非 auto_run 时）让人审核/改计划；<code>ActionNode.human_review</code> 人工评审结构化产物；<code>RoleZero.ask_human</code>/<code>reply_to_human</code> 工具经 <code>env.ask_human</code> 向人提问</td><td><code>metagpt/provider/human_provider.py:14</code>, <code>metagpt/strategy/planner.py:119</code> (<code>ask_review</code>), <code>metagpt/actions/action_node.py:665</code> (<code>human_review</code>), <code>metagpt/roles/di/role_zero.py:456</code> (<code>ask_human</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td><code>SerializationMixin</code> + <code>Team.serialize</code>/<code>deserialize</code> 把整个团队（含 context/角色/记忆）存成 <code>team.json</code> 支持断点恢复（<code>recover_path</code>）；<code>Environment.history</code>（<code>Memory</code>）留存全量消息供调试；<code>LongTermMemory.persist</code> 把向量记忆持久化到磁盘</td><td><code>metagpt/team.py:59</code> (<code>serialize</code>), <code>team.py:67</code> (<code>deserialize</code>), <code>metagpt/environment/base_env.py:134</code> (<code>history</code>), <code>metagpt/memory/longterm_memory.py:69</code> (<code>persist</code>)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>SOP 即护城河 vs 自由编排</strong>：与 AutoGen / CrewAI 的”agent 自由对话/委派”不同，MetaGPT 把流程”焊死”在角色的 Action 序列与 <code>cause_by</code> 订阅里——可复现性、产物质量高（论文核心卖点），代价是流程僵化、加新角色/改流程要动代码。</li>
+<li><strong>消息池 + cause_by 订阅的解耦</strong>：角色互不持有引用，全靠环境广播 + 标签过滤，天然支持并发（<code>asyncio.gather</code>）与可观测（<code>Environment.history</code> 全留痕）。但调试需理解 RFC 116/113 风格的路由（<code>member_addrs</code>/<code>send_to</code>/<code>MESSAGE_ROUTE_*</code>）。</li>
+<li><strong>结构化输出（ActionNode）是关键工程</strong>：把”LLM 写散文”约束成”填表式结构化文档 + 自动/人工 review 重填”，这是多角色能稳定接力的前提，也是 MetaGPT 区别于 prompt-chain 玩具的核心。</li>
+<li><strong>新旧两套并行的张力</strong>：经典 <code>Role</code>（state-machine + by_order SOP）正被 <code>RoleZero</code>/<code>MGXEnv</code>/<code>TeamLeader</code>（工具化 ReAct + 动态路由，对应 MGX 产品）逐步取代——<code>generate_repo</code> 默认已 <code>use_mgx=True</code> 且雇 <code>TeamLeader/Engineer2/DataAnalyst</code>。两套抽象并存，阅读源码时容易混淆哪条路径生效。</li>
+<li><strong>预算治理</strong>：<code>investment</code> + <code>CostManager</code> 把”花多少钱”做成一等公民（超支抛异常停机），在多 agent 易失控烧钱的场景下是务实设计。</li>
+<li><strong>重依赖</strong>：requirements 含 faiss/lancedb/playwright/llama-index(rag extra)/tiktoken 等；RAG/向量记忆、浏览器工具、Data Interpreter 各带一坨可选依赖。</li>
+<li><strong>待确认</strong>：①经典 <code>Role.long_term_memory</code> 在 <code>RoleContext</code> 中被注释禁用（默认只用短期 <code>Memory</code>），长期向量记忆需显式接 <code>LongTermMemory</code>；②<code>stars</code> 为约数（README 未标注精确值）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式（multi-agent 编排）：<a class="wikilink" href="/frameworks/autogen/">autogen</a> · <a class="wikilink" href="/frameworks/crewai/">crewai</a> · 源码：<code>agents-example/metagpt/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hermes Agent · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Hermes Agent</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/hermes-agent/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="hermes-agent">Hermes Agent</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">Nous Research 出品的 “自我进化”个人 agent：单 agent 工具循环为内核，但卖点是一条闭环学习回路——它在复杂任务后自动从经验里创建/改写 skill、用后台 fork 自我审查并把”用户是谁”沉淀进持久记忆、用 FTS5 全文检索翻自己的历史会话；模型完全 provider-agnostic（20+ 家、一条 hermes model 切换），且”不绑在你的笔记本上”——同一 gateway 进程同时接 Telegram/Discord/Slack/WhatsApp/Signal 等，可跑在 $5 VPS、GPU 集群或六种终端后端（local/Docker/SSH/Singularity/Modal/Daytona）上。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Hermes 的核心范式仍是 <strong>single-agent 的 ReAct 式工具循环</strong>（LLM→tool_calls→回灌→重复），但它把重心从”内核优雅”挪到了**“生产个人助理 + 自我改进”**这两件事上，所以同时带强烈的 platform 气质。设计取舍：</p>
+<ul>
+<li><strong>不是库，是一个完整产品</strong>：入口是 CLI（<code>hermes</code> / <code>hermes-cli/main.py</code>）与 messaging gateway，而非”<code>from x import Agent</code>”。<code>pyproject.toml:253</code> 暴露三个 console script：<code>hermes</code>(CLI)、<code>hermes-agent</code>(<code>run_agent:main</code>)、<code>hermes-acp</code>(IDE/ACP 适配)。核心编排类是 <code>AIAgent</code>（<code>run_agent.py:319</code>），单轮驱动逻辑被抽进 <code>agent/conversation_loop.py</code> 的 <code>run_conversation</code>（约 3900 行）。</li>
+<li><strong>闭环学习回路（最独特处）</strong>：每轮结束后 fork 一个受限的 <code>AIAgent</code>（白名单只剩 memory/skill 工具）在后台守护线程里”回看本轮该不该存记忆/建 skill”（<code>agent/background_review.py:34,562</code>）；外加 idle 触发的 <code>curator</code>（<code>agent/curator.py</code>）周期性归档/合并/打补丁 agent 自创的 skill。这把 skill/memory 从”用户手填”变成”agent 自维护”。</li>
+<li><strong>极端工程化的供应链/跨平台纪律</strong>：直接依赖<strong>全部精确 pin 到 <code>==X.Y.Z</code></strong>（<code>pyproject.toml:24</code> 起，因 2026-05 的 Mini Shai-Hulud worm 而收紧）；provider 专属/重依赖走 <code>tools/lazy_deps.py</code> 首用懒装，缩小攻击面；<code>hermes_bootstrap.py</code> 在每个入口顶部做 Windows UTF-8 兜底。原生 Windows 一等公民。</li>
+<li><strong>包结构</strong>：<code>agent/</code>（80+ 模块：conversation_loop、context_engine/compressor、memory_manager、curator、background_review、各家 model adapter）是骨架；<code>tools/</code>（40+ 工具：terminal、delegate、skills、memory、session_search、code_execution…）是电池；<code>providers/</code>（声明式 ProviderProfile）+ <code>model_tools.py</code> 做模型抽象；<code>gateway/</code> 做多平台接入；<code>cron/</code>、<code>acp_adapter/</code>、<code>mcp_serve.py</code> 做调度/IDE/MCP；<code>skills/</code> 内置数十个 SKILL.md，<code>hermes_state.py</code> 是 SQLite+FTS5 会话存储。</li>
+</ul>
+<p>最小示例（取自 README 的 Getting Started）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 安装（Linux/macOS/WSL2/Termux）</span></span>
+<span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -fsSL</span><span style="color:#9ECBFF"> https://hermes-agent.nousresearch.com/install.sh</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> bash</span></span>
+<span class="line"><span style="color:#79B8FF">source</span><span style="color:#9ECBFF"> ~/.bashrc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">hermes</span><span style="color:#6A737D">              # 交互式 CLI，开始对话（带 TUI、多行编辑、斜杠命令补全）</span></span>
+<span class="line"><span style="color:#B392F0">hermes</span><span style="color:#9ECBFF"> model</span><span style="color:#6A737D">        # 选择 provider 与模型（OpenRouter / Nous Portal / OpenAI / 本地端点…无代码改动）</span></span>
+<span class="line"><span style="color:#B392F0">hermes</span><span style="color:#9ECBFF"> tools</span><span style="color:#6A737D">        # 配置启用哪些工具</span></span>
+<span class="line"><span style="color:#B392F0">hermes</span><span style="color:#9ECBFF"> gateway</span><span style="color:#6A737D">      # 启动 messaging gateway，然后从 Telegram/Discord/Slack… 给它发消息</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 会话内斜杠命令（CLI 与 messaging 共享）</span></span>
+<span class="line"><span style="color:#6A737D"># /new /reset 重开 · /model 切模型 · /compress 压上下文 · /&#x3C;skill-name> 触发技能 · /usage 看用量</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>ReAct 式 <code>while</code> 循环：调模型→若有 tool_calls 则执行(可并发)→回灌结果→重复，直到无 tool_call 或耗尽 <code>max_iterations</code>(默认 90) / <code>IterationBudget</code>；逐 provider 处理 <code>finish_reason</code>(stop/length/incomplete)、失败 failover、partial-stream 续写</td><td><code>agent/conversation_loop.py:801</code> (主循环), <code>agent/conversation_loop.py:351</code> (<code>run_conversation</code>), <code>run_agent.py:319,353</code> (<code>AIAgent</code>/<code>max_iterations</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无独立 planner，规划交给 LLM 自身。提供 <code>todo</code> 工具(内存任务表，压缩后会重注入)做显式分解；并内置 <code>plan</code>/<code>spike</code> 等软件开发 skill 引导规划</td><td><code>tools/todo_tool.py:25</code> (<code>TodoStore</code>), <code>skills/software-development/plan/SKILL.md</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=SQLite 会话消息(多轮持久)；长期=<code>memory</code> 工具写 <code>MEMORY.md</code>(agent 自记) + <code>USER.md</code>(对用户的画像)，§ 分隔、字符上限、<strong>session 启动时冻结快照注入 system prompt 保护 prefix cache</strong>；可插拔后端(内置/Honcho/Mem0)；向量检索 N/A(走 FTS5 而非 embedding)</td><td><code>tools/memory_tool.py:1</code>, <code>agent/memory_manager.py:1</code>, <code>agent/memory_provider.py</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>中央 <code>ToolRegistry</code>：每个工具文件 import 时 <code>registry.register(name, toolset, schema, handler, check_fn…)</code> 自注册，AST 扫描自动发现(<code>discover_builtin_tools</code>)；原生 function calling；执行支持并发/顺序两路；危险命令经 approval 拦截</td><td><code>tools/registry.py:234</code> (<code>register</code>), <code>tools/registry.py:57</code> (发现), <code>agent/tool_executor.py:180,690</code> (并发/顺序执行)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>声明式 <code>ProviderProfile</code> dataclass(auth/endpoint/api_mode/quirks)，插件式注册(<code>plugins/model-providers/&#x3C;name>/</code>，用户插件 last-writer-wins 可覆盖内置)；底座是 OpenAI SDK，另带 anthropic/bedrock/gemini-native/codex-responses 等专属 adapter；<code>hermes model</code> 一条切换、credential pool 多 key 轮换、无代码改动</td><td><code>providers/base.py:38</code> (<code>ProviderProfile</code>), <code>providers/__init__.py:1</code> (注册/发现), <code>agent/anthropic_adapter.py</code>·<code>agent/bedrock_adapter.py</code>·<code>agent/gemini_native_adapter.py</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td><code>delegate_task</code> 工具派生隔离子 <code>AIAgent</code>：全新对话(无父史)、独立 task_id/终端、受限 toolset(强制剥离 delegate/clarify/memory/send_message/execute_code)、单/批并行(<code>ThreadPoolExecutor</code>)，父进程阻塞至子完成、只回看 summary</td><td><code>tools/delegate_tool.py:1,45</code> (<code>DELEGATE_BLOCKED_TOOLS</code>), <code>tools/mixture_of_agents_tool.py</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>可插拔 <code>ContextEngine</code> 抽象基类(config <code>context.engine</code> 选，默认 <code>compressor</code>)；<code>ContextCompressor</code> 用辅助小模型摘要中段、保护首尾(token 预算)、结构化模板(Resolved/Pending/Remaining Work)、迭代式更新；记忆/skill 注入用 <code>&#x3C;memory-context></code> 围栏 + 去注入清洗</td><td><code>agent/context_engine.py:32</code> (ABC), <code>agent/context_compressor.py:1</code>, <code>agent/memory_manager.py:54</code> (<code>sanitize_context</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>Skills=带 YAML frontmatter 的 SKILL.md，progressive disclosure(list 看元数据→view 加载全文→按需读 references)，<strong>兼容 agentskills.io 开放标准</strong>；<code>/&#x3C;skill-name></code> 触发；<strong>agent 可自创/自改 skill</strong> 并由 curator 维护；插件体系覆盖 model-provider/gateway 平台/context-engine/MCP</td><td><code>tools/skills_tool.py:1,9</code>, <code>tools/skill_manager_tool.py</code>, <code>agent/curator.py:1</code>, <code>skills/**/SKILL.md</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><code>session_search</code> 工具对 SQLite <strong>FTS5</strong> 全文索引做跨会话召回(discovery/scroll/browse 三模式，零 LLM 成本)；<code>hermes logs --session &#x3C;id></code> 按 session 过滤(<code>set_session_context</code>)；<code>/usage</code>·<code>/insights</code> 看 token/成本；<code>batch_runner.py</code>+<code>trajectory_compressor.py</code> 产训练轨迹</td><td><code>tools/session_search_tool.py:1</code>, <code>hermes_state.py:321</code> (<code>messages_fts</code>), <code>agent/insights.py</code>, <code>batch_runner.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>六种终端后端：local/Docker/SSH/Singularity/Modal/Daytona(<code>TERMINAL_ENV</code> 选；Modal/Daytona 提供 idle 休眠的 serverless 持久化)；<code>code_execution</code> 工具让脚本经 <strong>UDS/文件 RPC</strong> 回调 Hermes 工具，把多步流水线压成零上下文成本一轮；可 $5 VPS 长驻</td><td><code>tools/terminal_tool.py:5-15</code> (后端), <code>tools/code_execution_tool.py:5-17</code> (RPC), <code>cron/scheduler.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>危险命令审批：<code>DANGEROUS_PATTERNS</code> 检测→CLI 交互/gateway 异步提示→可选辅助 LLM 智能自动批低风险→永久 allowlist 落 config.yaml；<code>HERMES_YOLO_MODE</code> 导入期冻结防 prompt-injection 提权；<code>clarify</code> 工具向用户提问；gateway DM 配对/容器隔离</td><td><code>tools/approval.py:1,29</code> (<code>_YOLO_MODE_FROZEN</code>), <code>tools/clarify_tool.py</code>, <code>acp_adapter/permissions.py</code>·<code>acp_adapter/edit_approval.py</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td><code>hermes_state.py</code> = SQLite 会话库(消息 + FTS5/trigram 全文索引 + checkpoint)，跨会话/跨平台连续；<code>MEMORY.md</code>/<code>USER.md</code> 文件落盘；profiles 多实例隔离配置/会话/skill/记忆；<code>tools/checkpoint_manager.py</code> 文件快照可回滚</td><td><code>hermes_state.py:321,350</code> (FTS5/trigram), <code>tools/checkpoint_manager.py</code>, <code>tools/memory_tool.py:1</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“自我进化”是真正的差异点</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 的 auto_compact/subagents/skills 这类”对标 Claude Code 的能力下放”相比，Hermes 多了一条<strong>后台自审 + curator 维护</strong>的闭环——skill/memory 不只是用户写的，agent 会在每轮后主动 fork 自评是否该沉淀、idle 时归并旧 skill（<code>agent/background_review.py:562</code>、<code>agent/curator.py</code>）。这是它区别于绝大多数 single-agent 框架的核心卖点，也是 Nous Research “与你共同成长” 定位的落地。</li>
+<li><strong>个人助理 / “不绑笔记本” 形态</strong>：一个 gateway 进程接十几个 messaging 平台、六种终端后端、Modal/Daytona serverless 休眠——把 agent 当成跑在云上随时可聊的常驻服务，而非一次性脚本。代价是配置面巨大（<code>pyproject.toml</code> 几十个 optional-dependencies extra）。</li>
+<li><strong>供应链与跨平台的偏执工程</strong>：直接依赖全部精确 pin、provider 专属依赖懒装、Windows UTF-8 bootstrap、FTS5 不可用时的降级探测——可见其面向”真实终端用户长期运行”而非”demo”打磨。<code>pyproject.toml</code> 注释本身就是一份事故复盘史（CVE、worm、Windows 编码回归）。</li>
+<li><strong>provider-agnostic 做到极致</strong>：声明式 <code>ProviderProfile</code> + 插件覆盖 + credential pool 轮换 + 20+ 家(含 Nous Portal 统一订阅 model/搜索/图像/TTS/cloud browser)，主打 “no lock-in”。底座是 OpenAI 消息格式，专属 adapter 兜各家差异。</li>
+<li><strong>记忆的 “frozen snapshot” 取舍</strong>：长期记忆 session 启动时冻结注入 system prompt、mid-session 写盘但不改 prompt——刻意牺牲”当轮即时生效”换取整个 session 的 prefix cache 命中（<code>tools/memory_tool.py:1</code> 注释）。这是性能/成本导向的明确设计决定。</li>
+<li><strong>待确认/坑</strong>：① skill/memory 自审是 LLM 驱动的后台 fork，质量与触发频率依赖 nudge interval 与模型能力，可能产生噪声 skill（curator 用归档而非删除来兜底，<code>agent/curator.py</code> 注明”never auto-deletes”）；② 终端 <code>local</code> 后端直接在宿主执行，隔离靠 approval/容器后端而非默认沙箱；③ 仓库体量极大（<code>cli.py</code>/<code>run_agent.py</code>/<code>hermes_state.py</code> 均数千~数十万行），单文件远超常规规模，阅读成本高。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(single + 电池/平台 + 自我进化)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/hermes-agent/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

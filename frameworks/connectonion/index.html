@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ConnectOnion · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>ConnectOnion</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT (pyproject/README 声明) / 仓库 LICENSE 文件实为 Apache-2.0（待确认，二者不一致）</span><a class="badge" href="https://github.com/openonion/connectonion" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/connectonion/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="connectonion">ConnectOnion</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个”开箱即生产”的 Python single-agent 框架，信条是 “Keep simple things simple, make complicated things possible”：两行起一个 agent，普通 Python 函数即工具；同时把 Claude Code 级别的能力（auto_compact、subagents、skills、approval、auto_debug）下放给任意 agent，并自带多 LLM provider、HTTP/P2P 托管与 multi-agent 信任系统。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>ConnectOnion 的核心范式是 <strong>single-agent 的 ReAct 式工具循环</strong>，但围绕这个内核堆了一整套”生产平台”——所以它同时带有 platform 气质。设计取舍：</p>
+<ul>
+<li><strong>函数即原语</strong>：agent、tool、event handler、plugin、trust 全部是普通函数/函数列表。工具无需写 schema，<code>create_tool_from_function()</code>（<code>connectonion/core/tool_factory.py:61</code>）用 <code>inspect.signature</code> + type hints 自动生成 OpenAI function schema，docstring 首行成为描述。</li>
+<li><strong>薄内核 + 事件/插件外挂</strong>：<code>Agent</code> 不靠继承扩展，而靠 <strong>12 个生命周期事件</strong>（<code>connectonion/core/events.py</code>）。plugin 只是”事件处理函数的列表”，可组合、可 <code>co copy</code>。</li>
+<li><strong>包结构</strong>：<code>core/</code>（agent / llm / tool_executor / tool_factory / tool_registry / events / usage / exceptions）是骨架；<code>useful_tools/</code>（bash、file_tools、browser、Gmail/Outlook、Memory、TodoList…）与 <code>useful_plugins/</code>（re_act、auto_compact、subagents、skills、tool_approval、ulw…）是电池；<code>network/</code>（host / connect / relay / trust / asgi）做 multi-agent 托管与发现；<code>cli/</code>（含 <code>co ai</code> 这个用框架自身写的编码助手）与 <code>debug/</code>（<code>@xray</code> + auto_debug）做开发体验。</li>
+<li><strong>入口 API</strong>：<code>from connectonion import Agent</code>，<code>agent.input(prompt)</code> 返回字符串（<code>connectonion/core/agent.py:226</code>）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> connectonion </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> search</span><span style="color:#E1E4E8">(query: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Search for information."""</span><span style="color:#6A737D">        # docstring 首行 = 工具描述</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"Results for </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">query</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"assistant"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[search],                       </span><span style="color:#6A737D"># 普通函数直接当工具，无需写 schema</span></span>
+<span class="line"><span style="color:#FFAB70">    model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"co/gemini-2.5-pro"</span><span style="color:#E1E4E8">,            </span><span style="color:#6A737D"># 默认走 OpenOnion 托管 key</span></span>
+<span class="line"><span style="color:#FFAB70">    max_iterations</span><span style="color:#F97583">=</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(agent.input(</span><span style="color:#9ECBFF">"Search for Python tutorials"</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(agent.history.summary() </span><span style="color:#F97583">if</span><span style="color:#79B8FF"> hasattr</span><span style="color:#E1E4E8">(agent, </span><span style="color:#9ECBFF">"history"</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">else</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># 行为自动落盘 .co/logs/</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>ReAct 式 while 循环：LLM→若有 tool_calls 则执行→把结果回灌→重复，直到无 tool_call 或达 max_iterations(默认 100)；可经 stop_signal 中途让位用户</td><td><code>core/agent.py:416</code> (<code>_run_iteration_loop</code>), <code>core/agent.py:446</code> (<code>_get_llm_decision</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无显式 planner；规划交给 LLM 自身。可选 <code>subagents</code> 插件附带内建 <code>plan</code>/<code>explore</code> 子 agent（AGENT.md）；ReAct 插件只做意图识别+反思，不做计划</td><td><code>useful_plugins/subagents.py</code>, <code>useful_plugins/builtin_agents/plan/AGENT.md</code>, <code>useful_plugins/re_act.py:17</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>current_session['messages']</code>（多轮持久）；长期=<code>Memory</code> 工具，markdown 文件 KV，超阈值自动拆目录（<strong>非向量检索</strong>，regex 搜索）；向量记忆 N/A</td><td><code>core/agent.py:259</code>, <code>useful_tools/memory.py:44</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>普通函数→<code>create_tool_from_function</code> 自动转 schema；class 实例自动抽方法为工具；原生 function calling；声明 <code>agent</code> 形参的工具运行时注入且对 LLM 隐藏(<code>_needs_agent</code>)</td><td><code>core/tool_factory.py:61,130</code>, <code>core/tool_executor.py:23</code>, <code>core/tool_registry.py</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>LLM</code> 抽象基类 + <code>create_llm()</code> 工厂按模型名前缀路由；OpenAI/Anthropic/Gemini/Groq/Grok/Mistral/OpenRouter/OpenOnion(co/)；OpenAI message 格式为 lingua franca，统一 <code>ToolCall</code> dataclass</td><td><code>core/llm.py:1130</code> (<code>create_llm</code>), <code>core/llm.py</code> (provider 类)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>两条路：①进程内 <code>subagents</code> 插件经 <code>task()</code> 工具派生隔离子 agent；②跨网络 <code>host()</code> 把 agent 暴露为 HTTP+WebSocket，经 relay 做 P2P 发现，<code>connect()</code>/<code>RemoteAgent</code> 远程调用</td><td><code>network/host/server.py:280</code> (<code>host</code>), <code>network/connect.py:565</code> (<code>connect</code>), <code>useful_plugins/subagents.py</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system_prompt 支持 str/文件/Path；<code>auto_compact</code> 插件在 context≥90% 时用 gemini-flash 摘要旧消息(保留 system+摘要+最近5条)；<code>system_reminder</code>/<code>ulw</code> 等插件注入上下文</td><td><code>prompts.py</code> (<code>load_system_prompt</code>), <code>useful_plugins/auto_compact.py:30</code>, <code>useful_plugins/system_reminder.py</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>plugin=事件处理函数列表；12 钩子(<code>events.py</code>)；Skills=带 YAML frontmatter 的 SKILL.md，三级自动发现(project→user→builtin)，<code>/command</code> 触发并临时授予工具权限(turn 结束清除)，<strong>兼容 Claude Code <code>.claude/skills/</code></strong></td><td><code>core/events.py</code>, <code>useful_plugins/skills.py</code>, <code>useful_plugins/__init__.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>每步写 <code>current_session['trace']</code>；<code>Logger</code> 三路输出(终端 Rich + <code>.co/logs/{name}.log</code> 纯文本 + <code>.co/evals/*.yaml</code> 会话)，含 token/cost；<code>eval</code> 插件做评估；<code>@xray</code>+<code>auto_debug()</code> 交互式断点调试</td><td><code>logger.py</code>, <code>core/agent.py:167</code> (<code>_record_trace</code>), <code>debug/xray.py</code>, <code>useful_plugins/eval.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库；同步执行，工具在本进程顺序执行(无沙箱)；<code>host()</code> 起 uvicorn ASGI(HTTP+WS) 服务，配置在 <code>.co/host.yaml</code>；<code>co create/init/deploy</code> CLI 脚手架</td><td><code>network/host/server.py:280</code>, <code>network/asgi/__init__.py:24</code> (<code>create_app</code>), <code>cli/main.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>tool_approval</code>/<code>shell_approval</code> 插件在 <code>before_each_tool</code> 拦截危险操作请求审批(bashlex 解析命令)；<code>ask_user</code> 工具+<code>agent.io</code> 与前端交互；plan_mode 工具</td><td><code>useful_plugins/tool_approval/approval.py</code>, <code>useful_plugins/tool_approval/bash_parser.py</code>, <code>useful_tools/ask_user.py</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>本地 <code>current_session</code>(runtime-only) + <code>.co/</code> 落盘(logs/evals/uploads)；<code>input(session=...)</code> 可恢复无状态会话；<code>host()</code> 经 <code>session/storage.py</code> 做服务端会话持久化与合并</td><td><code>core/agent.py:247</code>, <code>network/host/session/storage.py</code>, <code>network/host/session/merge.py</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“电池全包” vs Swarm 极简</strong>：与 <a class="wikilink" href="/frameworks/swarm/">Swarm</a> 的去框架化极小内核相反，ConnectOnion 把工具生态、审批、skills、压缩、托管、信任、调试器全部内置——目标是”只写 prompt 和 tools 就能上生产”。代价是依赖很重（playwright、textual、google-api、PyNaCl、uvicorn 等十几个）。</li>
+<li><strong>函数即原语 + 事件/插件</strong>：明确反对用继承扩展 Agent（CLAUDE.md 写明”Events/plugins over subclassing”），可读性与 <code>co copy</code> 可改性是卖点。</li>
+<li><strong>对标 Claude Code</strong>：<code>auto_compact</code>/<code>subagents</code>/<code>ulw</code>/skills 直接对应 Claude Code 的上下文压缩、子 agent、自治模式，且兼容 <code>.claude/skills/</code>——把闭源 harness 的能力开放给任意 agent。</li>
+<li><strong>信任系统的 fast rules</strong>：agent 互调时先跑零 token 的 YAML 规则(allow/deny/onboard)，仅 unknown 才问 LLM（<code>network/trust/fast_rules.py:5</code>），是较少见的”行为换信任”治理设计；三档预设 open/careful/strict。</li>
+<li><strong>默认模型走托管代理</strong>：默认 <code>co/gemini-2.5-pro</code> 经 OpenOnion 代理与计费（<code>InsufficientCreditsError</code> 把 402 转成可读错误），降低上手门槛但引入对其托管服务的耦合。</li>
+<li><strong>待确认/坑</strong>：①LICENSE 文件是 <strong>Apache-2.0</strong>，而 pyproject.toml + README 声明 <strong>MIT</strong>，二者不一致；②CLAUDE.md 内多处路径/版本号(0.4.1)已过时（实际 0.9.5，源码在 <code>core/</code> 子包下）；③工具同步顺序执行、无沙箱，危险操作靠 approval 插件而非强隔离。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(single+电池/平台)：<a class="wikilink" href="/frameworks/swarm/">swarm</a> · 源码：<code>agents-example/connectonion/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

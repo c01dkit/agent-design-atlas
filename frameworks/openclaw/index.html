@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OpenClaw · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>OpenClaw</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>typescript</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/openclaw/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="openclaw">OpenClaw</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个”跑在你自己设备上的个人自治 AI 助手”——以 本地 Gateway 作为控制平面，把同一个 agent 接入你已经在用的 20+ 消息渠道（WhatsApp/Telegram/Slack/Discord/Signal/iMessage…），并用 cron 调度、心跳唤醒、standing orders 让它在你不在场时自治运行；内核是一个 provider 无关的 ReAct 式工具循环，外挂记忆、MCP、技能、子 agent 派生、浏览器自动化与沙箱治理。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>OpenClaw 的核心范式是 <strong>single-agent 的 ReAct 工具循环</strong>，但它的真正卖点是把这个内核包装成一个 <strong>always-on 的个人助手平台</strong>——所以它本质上是 platform 气质压过 single。设计取舍：</p>
+<ul>
+<li><strong>Gateway 是控制平面，agent 才是产品</strong>：README 反复强调 “The Gateway is just the control plane — the product is the assistant”。Gateway 是一个常驻 daemon（launchd/systemd），统一管理会话、渠道、工具、事件与调度；模型只在被唤醒时跑一轮。</li>
+<li><strong>薄 agent-core + 厚 host</strong>：可复用内核在 <code>packages/agent-core/</code>（agent loop、harness、compaction、session、messages、tools/session 契约），是纯粹与宿主解耦的层；OpenClaw 自己的内置运行时（embedded runtime）在 <code>src/agents/embedded-agent-runner/</code> 里把 provider 流适配、compaction、模型选择、会话接线、沙箱缝合起来。docs/agent-runtime-architecture.md 明确划了这条边界：core 只经 <code>openclaw/plugin-sdk/*</code> barrel 调运行时，插件不许 import <code>src/**</code>。</li>
+<li><strong>provider 无关 + 渠道无关的双层抽象</strong>：模型侧 <code>packages/llm-core</code>（<code>Model</code> 接口 + <code>StreamFn</code>）+ <code>packages/llm-runtime</code>（按 <code>model.api</code> 路由的 provider registry）覆盖 OpenAI/Anthropic/Google/Mistral/Bedrock/Vertex/Copilot 等，<code>src/llm/providers/</code> 是具体实现；渠道侧每个 IM 平台是 <code>extensions/&#x3C;channel>/</code> 下的一个插件 extension。</li>
+<li><strong>monorepo + extension 化一切</strong>：<code>packages/</code>（约 20 个可复用包）+ <code>extensions/</code>（渠道、记忆、浏览器、provider、媒体生成…全部是可装卸 extension）+ <code>src/</code>（gateway/cron/sessions/channels/auto-reply 等宿主逻辑）。npm 包名 <code>openclaw</code>，CLI 入口 <code>openclaw.mjs</code> → <code>src/entry.ts</code>。</li>
+<li><strong>入口形态</strong>：用户不写代码，而是 <code>openclaw onboard</code> 起 Gateway，然后从任意渠道发消息即对话；也可 <code>openclaw agent --message "..."</code> 一次性跑。</li>
+</ul>
+<p>最小示例（取自 README 的 Quick start）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1) 安装并以守护进程方式起 Gateway（控制平面常驻）</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> -g</span><span style="color:#9ECBFF"> openclaw@latest</span></span>
+<span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> onboard</span><span style="color:#79B8FF"> --install-daemon</span></span>
+<span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> gateway</span><span style="color:#9ECBFF"> status</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2) 从命令行直接和助手对话，可把结果投递回任意已连接渠道</span></span>
+<span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> agent</span><span style="color:#79B8FF"> --message</span><span style="color:#9ECBFF"> "Ship checklist"</span><span style="color:#79B8FF"> --thinking</span><span style="color:#9ECBFF"> high</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3) 或向某个渠道目标发消息（助手在该渠道里应答）</span></span>
+<span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> message</span><span style="color:#9ECBFF"> send</span><span style="color:#79B8FF"> --target</span><span style="color:#9ECBFF"> +1234567890</span><span style="color:#79B8FF"> --message</span><span style="color:#9ECBFF"> "Hello from OpenClaw"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4) 设一个定时唤醒（Gateway 内的 cron，到点把 agent 叫醒并投递回 chat）</span></span>
+<span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> cron</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> "2026-02-01T16:00:00Z"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> "Reminder"</span><span style="color:#79B8FF"> --session</span><span style="color:#9ECBFF"> main</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --system-event</span><span style="color:#9ECBFF"> "Reminder: check the cron docs draft"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --wake</span><span style="color:#9ECBFF"> now</span><span style="color:#79B8FF"> --delete-after-run</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>ReAct 式双层 while 循环：内层 LLM→若有 toolCall 则执行(顺序/并行)→结果回灌→重复；外层处理 steering（运行中插话）与 follow-up 消息；<code>stopReason</code>/<code>shouldStopAfterTurn</code>/<code>terminate</code> 决定终止</td><td><code>packages/agent-core/src/agent-loop.ts:213</code> (<code>runLoop</code>), <code>:251</code> (<code>streamAssistantResponse</code>), <code>:447</code> (<code>executeToolCalls</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无显式 planner，规划交给 LLM 自身；提供 <code>thinking</code> 级别（<code>--thinking high</code>、<code>/think &#x3C;level></code>）与 reasoning 透传；自治侧靠 standing orders（写在 AGENTS.md 里的”程序”边界）而非结构化计划</td><td><code>docs/automation/standing-orders.md</code>, 思考级别透传见 <code>agent-loop.ts:300</code> (<code>prepareNextTurn</code> 改 <code>reasoning</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=session JSONL transcript（<code>harness/session/jsonl-storage.ts</code>）；中期=会话压缩摘要（compaction）；长期=<code>/new</code>·<code>/reset</code> 时把会话存为带日期 slug 的 markdown 记忆文件（session-memory hook）+ 工作区根 memory 文件；向量记忆=可选 <code>memory-lancedb</code> 插件（<code>memory_store</code>/<code>memory_recall</code>/<code>memory_forget</code>，LanceDB 向量+自动召回）</td><td><code>src/hooks/bundled/session-memory/handler.ts:1</code>, <code>src/memory/root-memory-files.ts</code>, <code>extensions/memory-lancedb/README.md:16</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>原生 function calling；<code>AgentTool</code> 契约带 <code>execute(id,args,signal,onPartial)</code>，支持 <code>executionMode: "sequential"</code> 与 <code>prepareArguments</code>；内置编码工具 bash/read/write/edit/process + web_search/web_fetch + browser/canvas/cron/nodes/sessions_* 等；参数经 <code>validateToolArguments</code> 校验，<code>beforeToolCall</code>/<code>afterToolCall</code> 钩子可拦截/改写</td><td><code>agent-loop.ts:665</code> (<code>prepareToolCall</code>), <code>:731</code> (<code>executePreparedToolCall</code>), <code>src/agents/agent-tools*.ts</code>, <code>src/tools/descriptors.ts</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>两层：<code>packages/llm-core</code> 定义统一 <code>Model</code> 接口(api/provider/cost/contextWindow/thinkingLevelMap) 与 <code>StreamFn</code>；<code>packages/llm-runtime/api-registry.ts</code> 按 <code>model.api</code> 注册/路由 provider 适配器；<code>src/llm/providers/</code> 实现 OpenAI(completions/responses/chatgpt)/Anthropic/Google(+Vertex)/Mistral/Azure/Copilot 等；OAuth 订阅(ChatGPT/Codex)走 <code>src/llm/oauth.ts</code>，支持 auth profile 轮换与 failover</td><td><code>packages/llm-core/src/types.ts:574</code> (<code>Model</code>), <code>:633</code> (<code>StreamFn</code>), <code>packages/llm-runtime/src/api-registry.ts:50</code>, <code>src/llm/model-registry.ts:5</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>两条路：①<strong>多 agent 路由</strong>——按渠道/账号/peer 把入站消息路由到隔离 agent（独立 workspace + per-agent session）；②<strong>子 agent 派生</strong>——<code>sessions_spawn</code> 工具派生 subagent / ACP 外部 CLI agent，受 <code>maxSpawnDepth</code>、<code>maxChildren</code>、<code>requireAgentId</code> 策略约束；<code>sessions_list</code>/<code>sessions_history</code>/<code>sessions_send</code> 做跨会话协作</td><td><code>src/agents/acp-spawn.ts:1</code> (spawn/binding/limits), <code>src/agents/agent-tools.policy.ts:70</code>, <code>src/routing/session-key.ts</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system prompt 由 harness 组装（注入 AGENTS.md/工作区文件 + 可见 skills 元数据 XML 块）；<code>transformContext</code>/<code>convertToLlm</code> 在每轮把 AgentMessage[] 转 LLM Message[]；超窗自动 compaction（摘要旧消息、保留 file-ops 清单 readFiles/modifiedFiles），并有 compaction-safeguard / context-pruning 运行时 hook</td><td><code>packages/agent-core/src/harness/system-prompt.ts:5</code>, <code>harness/compaction/compaction.ts:1</code>, <code>src/agents/agent-hooks/</code>, <code>agent-loop.ts:355</code> (<code>transformContext</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><strong>Skills</strong>=带 YAML frontmatter 的 <code>SKILL.md</code>，递归发现、按 description 由模型自主选用、<code>disable-model-invocation</code> 可隐藏，<strong>兼容 Claude-Code 风格</strong>；<strong>Plugins/Extensions</strong>=<code>extensions/*</code> 包，经 manifest(<code>openclaw</code> 字段声明 extensions/skills/prompts/themes) 装卸；<strong>Hooks</strong>=生命周期钩子（bundled: session-memory、compaction-notifier、boot-md…）</td><td><code>packages/agent-core/src/harness/skills.ts:57</code> (<code>loadSkills</code>), <code>:46</code> (<code>formatSkillInvocation</code>), <code>src/plugins/</code>, <code>src/hooks/bundled/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>agent loop 发射结构化事件流（agent_start/turn_start/message_<em>/tool_execution_</em>/turn_end/agent_end）供 UI/日志消费；每条消息带 <code>usage</code>(token+cost)；<code>/usage</code>、<code>/trace on</code>、<code>/verbose</code> chat 命令；cron run-log（JSONL）记录每次定时运行；trajectory/transcripts 子系统留存轨迹；qa/ 下有 e2e 与 QA lab extension</td><td><code>agent-loop.ts:25</code> (<code>AgentEventSink</code>)+各 <code>emit({type:...})</code>, <code>src/cron/run-log-jsonl.ts</code>, <code>src/trajectory/</code>, <code>src/transcripts/</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>常驻 <strong>Gateway daemon</strong>（launchd/systemd user service）作为单一控制平面；CLI <code>openclaw onboard/gateway/agent/message/cron/...</code>；Node 24(推荐)/22.19+；Docker / docker-compose / fly.toml / render.yaml 多种部署；companion apps（Windows Hub、macOS menu bar、iOS/Android node）；built-in runtime id=<code>openclaw</code>，<code>auto</code> 可切换到插件 harness</td><td><code>openclaw.mjs</code>, <code>src/entry.ts</code>, <code>src/gateway/</code>, <code>src/daemon/</code>, <code>Dockerfile</code>, <code>docs/agent-runtime-architecture.md:42</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><strong>DM pairing</strong>：未知发信人默认收到配对码、消息不被处理，<code>openclaw pairing approve</code> 后加入 allowlist（<code>dmPolicy</code>/<code>allowFrom</code>）；<strong>沙箱</strong>：<code>agents.defaults.sandbox.mode:"non-main"</code> 让非 main 会话跑在 Docker/SSH/OpenShell 沙箱，默认 deny browser/canvas/nodes/cron/discord/gateway；<code>beforeToolCall</code> 钩子+ACP approval-classifier 对危险工具审批；<code>openclaw doctor</code> 体检风险配置</td><td><code>README.md:145</code> (DM access), <code>src/acp/approval-classifier.ts:27</code>, <code>src/security/</code>（audit-*），<code>agent-loop.ts:684</code> (<code>beforeToolCall</code> block)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>会话 transcript 持久化为 JSONL（<code>harness/session/jsonl-storage.ts</code>，另有 memory-storage 内存实现）；cron 作业/状态/run 历史持久化进 <strong>共享 SQLite state DB</strong>（旧 jobs.json 经 <code>doctor --fix</code> 迁移）；会话/绑定/记忆文件落在 state dir(<code>~/.openclaw/</code>)；session binding service 维护渠道↔会话映射</td><td><code>packages/agent-core/src/harness/session/jsonl-storage.ts</code>, <code>docs/automation/cron-jobs.md:43</code> (SQLite), <code>src/config/sessions/store.ts</code>, <code>src/infra/outbound/session-binding-service.ts</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“渠道即接口” 是核心差异</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a>/Swarm 这类”库里写 agent”框架不同，OpenClaw 把交互面整体外移到真实 IM 渠道——你不打开终端，而是在 Telegram/微信里和它说话。代价是巨大的渠道矩阵（20+ extension）与对各平台协议/反垃圾策略的长期维护负担。</li>
+<li><strong>自治三件套：cron + heartbeat + standing orders</strong>：cron 在 Gateway 内调度并能把输出投递回 chat 或 webhook（<code>cron-vs-heartbeat.md</code> 区分定时 vs 心跳唤醒）；standing orders 把”永久操作授权”写进 AGENTS.md 让 agent 在边界内无需逐次 prompt 即自治。这是它”个人自治 agent”定位的落点，而非临时一问一答。</li>
+<li><strong>薄 core / 厚 host 的清晰边界</strong>：<code>packages/agent-core</code> 可被任意宿主复用且不依赖 OpenClaw 具体设施，宿主能力（渠道、沙箱、调度）全在 <code>src/</code> 与 <code>extensions/</code>，插件只经 plugin-sdk barrel 交互——可维护性强，但 monorepo 体量与抽象层级也很重。</li>
+<li><strong>provider/渠道双 registry</strong>：模型按 <code>model.api</code> 路由、渠道按 extension 装卸，二者都是开放注册表，便于第三方接入新模型或新 IM，且支持 auth profile 轮换 + model failover。</li>
+<li><strong>安全默认偏保守</strong>：把入站 DM 当作不可信输入（pairing 默认、non-main 会话沙箱、危险工具默认 deny + 审批 + <code>openclaw doctor</code> 体检），这是直面”真实消息面”必须付的代价；但 main 会话默认全权在宿主上跑工具——单用户便利与暴露风险的权衡需用户自己把控。</li>
+<li><strong>MCP 作为客户端一等公民</strong>：经 stdio / http / OAuth 三种 transport 接入远端 MCP server，并把其工具 materialize 进 agent 工具集（<code>agent-bundle-mcp-*</code>），同时也能把 OpenClaw 自身工具/渠道 serve 成 MCP（<code>src/mcp/</code>）。</li>
+<li><strong>待确认/坑</strong>：①stars 为粗估（README 未标注，需以仓库实际为准）；②内置 <code>main</code> 会话默认无沙箱、工具全权，群组/公开场景务必开 <code>sandbox.mode:"non-main"</code>；③渠道矩阵庞大，单个渠道的可用性/稳定性差异较大，需看各 <code>extensions/&#x3C;channel></code> 与 docs/channels。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式(platform+电池/常驻服务)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/openclaw/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

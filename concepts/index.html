@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>理念 · Agent Design Atlas</title><meta name="description" content="跨框架的设计原理与心智模型——先有这些，再看具体框架。"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><style>.archmap[data-astro-cid-zsyvyqrx]{border:1px solid var(--line);border-radius:var(--radius);background:color-mix(in oklch, var(--paper-2) 65%, transparent);margin:1.6rem 0 0;padding:1.5rem 1.4rem}.archmap[data-astro-cid-zsyvyqrx] figcaption[data-astro-cid-zsyvyqrx]{font-size:var(--text-sm);color:var(--ink-soft);text-wrap:pretty;margin-bottom:1.4rem;line-height:1.6}.fc-k[data-astro-cid-zsyvyqrx]{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.08em;color:var(--accent);border:1px solid var(--accent-soft);white-space:nowrap;border-radius:999px;margin-right:.6rem;padding:.12rem .5rem}.layers[data-astro-cid-zsyvyqrx]{gap:0;display:grid}.lyr[data-astro-cid-zsyvyqrx]{grid-template-columns:6.5rem 1.6rem 1fr;align-items:center;min-height:3.4rem;display:grid}.lyr-meta[data-astro-cid-zsyvyqrx]{text-align:right;padding-right:.2rem}.lyr-label[data-astro-cid-zsyvyqrx]{font-family:var(--display);font-size:.92rem;font-weight:700;line-height:1.1;display:block}.lyr-note[data-astro-cid-zsyvyqrx]{font-family:var(--mono);color:var(--ink-faint);font-size:.64rem}.rail[data-astro-cid-zsyvyqrx]{align-self:stretch;position:relative}.rail[data-astro-cid-zsyvyqrx]:before{content:"";background:var(--line-strong);width:2px;position:absolute;top:0;bottom:0;left:50%;transform:translate(-50%)}.lyr[data-astro-cid-zsyvyqrx]:first-child .rail[data-astro-cid-zsyvyqrx]:before{top:50%}.lyr[data-astro-cid-zsyvyqrx]:last-child .rail[data-astro-cid-zsyvyqrx]:before{bottom:50%}.rail-dot[data-astro-cid-zsyvyqrx]{background:oklch(64% .16 var(--h,40));width:11px;height:11px;box-shadow:0 0 0 4px var(--paper-2);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.nodes[data-astro-cid-zsyvyqrx]{flex-wrap:wrap;gap:.55rem;padding:.55rem 0;display:flex}.node[data-astro-cid-zsyvyqrx]{color:var(--ink);font-weight:600;font-size:var(--text-sm);background:var(--paper);border:1px solid var(--line);border-left:3px solid oklch(62% .16 var(--h,40));transition:transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);border-radius:10px;align-items:center;gap:.5rem;padding:.55rem .95rem;text-decoration:none;display:inline-flex}.node[data-astro-cid-zsyvyqrx] .nd[data-astro-cid-zsyvyqrx]{background:oklch(63% .17 var(--h,40));border-radius:50%;flex:none;width:.55rem;height:.55rem}.node[data-astro-cid-zsyvyqrx]:hover{background:oklch(63% .16 var(--h,40) / .12);box-shadow:var(--shadow-1);transform:translateY(-2px)}.node[data-astro-cid-zsyvyqrx].key{box-shadow:inset 0 0 0 1.5px oklch(62% .16 var(--h,285) / .45);border-left-width:4px}@media (width<=600px){.lyr[data-astro-cid-zsyvyqrx]{grid-template-columns:1fr;gap:.3rem;min-height:0;padding-bottom:.6rem}.lyr-meta[data-astro-cid-zsyvyqrx]{text-align:left}.rail[data-astro-cid-zsyvyqrx]{display:none}}@media (prefers-reduced-motion:reduce){.node[data-astro-cid-zsyvyqrx]:hover{transform:none}}
+.page-h1[data-astro-cid-qm4gxnxv]{font-size:var(--text-2xl);letter-spacing:-.03em;margin-top:.2rem}.page-sub[data-astro-cid-qm4gxnxv]{color:var(--ink-soft);font-size:var(--text-lg);max-width:46rem;margin-bottom:1.5rem}.moc[data-astro-cid-qm4gxnxv]{max-width:none;margin:1.8rem 0 2.5rem}.all-h[data-astro-cid-qm4gxnxv]{font-size:var(--text-xl);border-top:1px solid var(--line);padding-top:1.5rem}.groups[data-astro-cid-qm4gxnxv]{gap:2.2rem;margin-top:1.5rem;display:grid}.grp-h[data-astro-cid-qm4gxnxv]{font-size:var(--text-lg);border-bottom:1px solid var(--line);align-items:baseline;gap:.6rem;padding-bottom:.5rem;display:flex}.grp-n[data-astro-cid-qm4gxnxv]{font-family:var(--mono);font-size:var(--text-xs);color:var(--ink-faint)}.cards[data-astro-cid-qm4gxnxv]{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.9rem;margin-top:1rem;display:grid}.cards[data-astro-cid-qm4gxnxv] .card[data-astro-cid-qm4gxnxv]{min-width:0}.card[data-astro-cid-qm4gxnxv] h3[data-astro-cid-qm4gxnxv]{overflow-wrap:anywhere}.card-abs[data-astro-cid-qm4gxnxv]{overflow-wrap:anywhere;word-break:break-word}.card-abs[data-astro-cid-qm4gxnxv] code[data-astro-cid-qm4gxnxv]{font-family:var(--mono);background:var(--paper-3);overflow-wrap:anywhere;border-radius:4px;padding:.05em .35em;font-size:.85em}.card-abs[data-astro-cid-qm4gxnxv] strong[data-astro-cid-qm4gxnxv]{color:var(--ink);font-weight:700}.meta[data-astro-cid-qm4gxnxv]{flex-wrap:wrap;gap:.35rem;margin-top:.7rem;display:flex}
+</style></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/" aria-current="page">理念</a><a href="/components/">组件</a><a href="/frameworks/">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><p class="eyebrow" data-astro-cid-qm4gxnxv>concepts</p><h1 class="page-h1" data-astro-cid-qm4gxnxv>理念</h1><p class="page-sub" data-astro-cid-qm4gxnxv>跨框架的设计原理与心智模型——先有这些，再看具体框架。</p><div class="prose moc" data-astro-cid-qm4gxnxv><h1 id="顶层思考--concepts">顶层思考 · Concepts</h1>
+<p>跨框架的通用设计原理与心智模型——先有这些，再看具体框架才不会迷失在 API 细节里。</p>
+<h2 id="基础">基础</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/what-is-an-agent/">what-is-an-agent</a> — 什么是 agent？与 workflow / chatbot / RAG 的边界</li>
+<li><a class="wikilink" href="/concepts/agent-loop-paradigms/">agent-loop-paradigms</a> — 五种核心范式：ReAct / Plan-Execute / Reflection / Graph / Model-driven</li>
+<li><a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> — 单 agent 与多 agent：角色、通信、handoff、编排拓扑</li>
+</ul>
+<h2 id="横向骨架">横向骨架</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> — <strong>组件总览</strong>：一个 agent 的零件清单（全库导航核心）</li>
+</ul>
+<h2 id="回到顶层">回到顶层</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/design-tradeoffs/">design-tradeoffs</a> — 核心设计权衡：轻量 vs 全家桶、命令式 vs 声明式、抽象层级、模型驱动 vs 框架驱动</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li>横向落地见 <a class="wikilink" href="/components/">组件维度</a>，纵向落地见 <a class="wikilink" href="/frameworks/">框架维度</a></li>
+</ul></div><h2 class="all-h" data-astro-cid-qm4gxnxv>全部 · 5</h2><div class="cards" data-astro-cid-qm4gxnxv><a class="card" href="/concepts/single-vs-multi-agent/" data-astro-cid-qm4gxnxv><h3 data-astro-cid-qm4gxnxv>单 Agent 与多 Agent</h3><p class="card-abs" data-astro-cid-qm4gxnxv>当单个循环难以兼顾"既要规划、又要执行、还要审查"时，把职责拆给多个各有角色的 agent，通过<strong>编排拓扑</strong>（主从/网状/流水线/群聊）与<strong>通信机制</strong>（handoff/消息/共享状态）协作。多 agent 不总是更优——它用协调成本换分工与专注。</p><div class="meta" data-astro-cid-qm4gxnxv></div></a><a class="card" href="/concepts/design-tradeoffs/" data-astro-cid-qm4gxnxv><h3 data-astro-cid-qm4gxnxv>核心设计权衡</h3><p class="card-abs" data-astro-cid-qm4gxnxv>不同框架之所以"长得不一样"，是因为它们在几条核心轴上做了不同取舍：<strong>轻量 vs 全家桶、命令式 vs 声明式、低抽象 vs 高抽象、模型驱动 vs 框架驱动、通用 vs 垂直、可控 vs 自由</strong>。看懂这些轴，就能预测一个框架的脾气，也能为自己的场景选型。</p><div class="meta" data-astro-cid-qm4gxnxv></div></a><a class="card" href="/concepts/what-is-an-agent/" data-astro-cid-qm4gxnxv><h3 data-astro-cid-qm4gxnxv>什么是 Agent</h3><p class="card-abs" data-astro-cid-qm4gxnxv>一个 LLM Agent = <strong>模型 + 循环 + 工具/记忆</strong>：由大模型在一个循环里自主决定"下一步做什么"，调用工具观察结果、更新状态，直到达成目标或触发停止条件。区别于固定流程的 workflow，agent 的控制流是模型动态决定的。</p><div class="meta" data-astro-cid-qm4gxnxv></div></a><a class="card" href="/concepts/agent-loop-paradigms/" data-astro-cid-qm4gxnxv><h3 data-astro-cid-qm4gxnxv>Agent 循环范式</h3><p class="card-abs" data-astro-cid-qm4gxnxv>Agent 的"主循环"有几种典型组织方式：<strong>ReAct</strong>（边想边做）、<strong>Plan-and-Execute</strong>（先规划再执行）、<strong>Reflection</strong>（做完自我批判再改）、<strong>Graph/状态机</strong>（把控制流显式画成图）、<strong>Model-driven/CodeAct</strong>（</p><div class="meta" data-astro-cid-qm4gxnxv></div></a><a class="card" href="/concepts/component-taxonomy/" data-astro-cid-qm4gxnxv><h3 data-astro-cid-qm4gxnxv>Agent 组件总览</h3><p class="card-abs" data-astro-cid-qm4gxnxv>把任意 agent 框架"解剖"成一份通用的零件清单：<strong>推理循环、规划、上下文工程、工具、记忆、模型抽象、技能/插件、多智能体编排、状态/持久化、可观测/评估、运行时、人在环/治理</strong>。这份清单是横向比较所有框架的统一坐标系——纵向看每个零件的不同实现，见 component-ma</p><div class="meta" data-astro-cid-qm4gxnxv></div></a></div></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

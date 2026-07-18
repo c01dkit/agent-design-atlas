@@ -1,0 +1,682 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>规划与任务分解 · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/" aria-current="page">组件</a><a href="/frameworks/">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note comp" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/components/" data-astro-cid-fwpw2zac>组件</a></nav><div class="note-meta" data-astro-cid-fwpw2zac></div><aside class="course-anchor" data-astro-cid-fwpw2zac><span data-astro-cid-fwpw2zac>📖 在专栏中动手学习本组件：</span><a href="/course/ch06-planning/" data-astro-cid-fwpw2zac>规划与自我修正 →</a><a href="/course/ch12-full-picture/" data-astro-cid-fwpw2zac>玩具与真实框架 →</a></aside><div class="prose" data-astro-cid-fwpw2zac><h1 id="规划与任务分解">规划与任务分解</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话总结</div>
+                </div>
+                <div class="callout-content">把一个大目标拆成可执行的子步骤/子任务，并在执行中按需重规划。从”无显式规划的 ReAct”到”先产出完整任务 DAG 再执行”，是 agent 处理复杂、多步、需分工任务的关键。</div>
+              
+</blockquote>
+<h2 id="它解决什么问题">它解决什么问题</h2>
+<p>纯 ReAct 走一步看一步，面对长程任务容易迷失、重复、漏步。显式规划提供<strong>全局视野</strong>、可追踪的进度、以及把子任务分给不同 agent/工具的基础。</p>
+<h2 id="设计维度--实现谱系">设计维度 / 实现谱系</h2>
+<ul>
+<li><strong>有无显式规划</strong>：隐式（边做边想）↔ 显式（先 plan 后 execute）</li>
+<li><strong>计划结构</strong>：线性任务列表 ↔ 有依赖的 DAG ↔ 层级（目标→子目标）</li>
+<li><strong>重规划</strong>：一次性计划 ↔ 执行中根据观察动态 replan</li>
+<li><strong>谁来规划</strong>：同一 agent ↔ 专职 planner agent（见 <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a>）</li>
+<li><strong>驱动方式</strong>：自由生成 ↔ SOP/模板约束（如 <a class="wikilink" href="/frameworks/metagpt/">MetaGPT</a> 的标准化流程）</li>
+</ul>
+<h2 id="关键要点">关键要点</h2>
+<ul>
+<li>规划 vs 不规划是 <a class="wikilink" href="/concepts/agent-loop-paradigms/">范式</a>的核心分水岭之一。</li>
+<li>计划越显式越可控可并行，但越可能”脱离现实”——replan 是必要兜底。</li>
+<li>多 agent 系统里，规划常上移为 orchestrator 的职责。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/agent-loop-paradigms/">agent-loop-paradigms</a> · <a class="wikilink" href="/components/reasoning-loop/">reasoning-loop</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a></li>
+</ul>
+<h2 id="各框架实现对比">各框架实现对比</h2>
+<blockquote>
+<p>下表汇总 <strong>32</strong> 个实现了「规划」的框架（源码级阅读结论）。网站上以可展开 + 源码节选呈现。</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>框架</th><th>实现方式</th></tr></thead><tbody><tr><td><a class="wikilink" href="/frameworks/aeon/">Aeon</a></td><td>单技能内无显式 planner（交给 LLM）；跨技能用 chains（chains: 配置 DAG，parallel: 并发组 + consume: 注入上游输出）和 frontmatter depends_on（调度器据此排序，依赖在前 sleep 5 再派发依赖方）</td></tr><tr><td><a class="wikilink" href="/frameworks/ag2/">AG2</a></td><td>内核无显式 planner，规划交给 LLM/对话模式。contrib/captainagent 可动态组建专家团队；society_of_mind_agent 把子群当一个”内省”Agent；agent_optimizer 离线优化函数集</td></tr><tr><td><a class="wikilink" href="/frameworks/agent-llm/">Agent-LLM (AGiXT)</a></td><td>①隐式：靠 “Think About It” 提示让 LLM 自己 thinking/reflection；②显式：用 JSON Chain 预编排多步工作流（如 chains/Smart Instruct.json、Generate Task Chain.json）；命令选择阶段先让 LLM 挑出相关命令及其前置命令</td></tr><tr><td><a class="wikilink" href="/frameworks/agentdock/">AgentDock</a></td><td>内核无独立 planner；规划=人写的 orchestration steps（声明式状态机）+ LLM 自身推理。step 可设 sequence(强制工具顺序) 与 conditions(tool_used/sequence_match) 实现确定性多阶段流程；另有 agent-planner 模板做”设计其他 agent”</td></tr><tr><td><a class="wikilink" href="/frameworks/agentset/">Agentset</a></td><td>deepResearch 模式做查询规划：generateInitialQueries→performSearch→conductIterativeResearch(budget 轮，evaluateResearchCompleteness 产出补充 query)→filter→generateResearchAnswer 生成多页报告</td></tr><tr><td><a class="wikilink" href="/frameworks/agentverse/">AgentVerse</a></td><td>task-solving 的”规划”= DecisionMaker 规则产出 List[SolverMessage] plan，支持多种拓扑：horizontal/vertical/central/concurrent/brainstorming/dynamic（rules/decision_maker/）；memory_manipulator 中另有 plan 变体辅助生成计划；simulation 无显式 planner</td></tr><tr><td><a class="wikilink" href="/frameworks/astron/">Astron Agent</a></td><td>单体 agent 无显式 planner，规划隐式交给 LLM 的 CoT；显式编排在 workflow 层：decision 节点用 router prompt 做意图分流/分支，iteration/loop 节点做循环分解，整个 DAG 由 DSL 描述</td></tr><tr><td><a class="wikilink" href="/frameworks/autogen/">AutoGen</a></td><td>内核无通用 planner；规划由 LLM 隐式完成。显式规划见 Magentic-One orchestrator：先建 task ledger（facts + plan 两段 prompt 推理），再用 progress ledger 驱动外/内双层循环</td></tr><tr><td><a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a></td><td>内核无显式 planner；规划交给 LLM 自身。可选 subagents 插件附带内建 plan/explore 子 agent（AGENT.md）；ReAct 插件只做意图识别+反思，不做计划</td></tr><tr><td><a class="wikilink" href="/frameworks/cordum/">Cordum</a></td><td>仅有 Workflow Engine 把声明式工作流拆成多个 JobRequest 步骤并推进（loop/parallel/subworkflow），非 LLM 规划</td></tr><tr><td><a class="wikilink" href="/frameworks/crewai/">CrewAI</a></td><td>①Crew 级 planning=True：跑前用 planning agent 为每个 task 生成 step-by-step plan 注入描述；②hierarchical 经理动态分解派活；任务编排本身是声明式 Task 列表</td></tr><tr><td><a class="wikilink" href="/frameworks/hive/">Hive</a></td><td>不预设固定 planner：①Queen（编码 agent）把 NL 目标拆成 graph 结构（节点/边）＝离线规划；②Queen 自身用 task_create_batch/task_update 做多步任务清单（framework/tasks/）；③图内 llm_decide 边做运行时路由</td></tr><tr><td><a class="wikilink" href="/frameworks/langchain/">LangChain</a></td><td>内核无显式 planner；规划交给 LLM。可选 TodoListMiddleware 注入 write_todos 工具+todos 状态字段做轻量任务清单（对标 Claude Code TodoWrite）；更重的 planning 在上层 Deep Agents 包</td></tr><tr><td><a class="wikilink" href="/frameworks/llamaindex/">LlamaIndex</a></td><td>内核无显式 planner；规划隐式交给 LLM(ReAct 的 Thought 链 / function-calling 多轮)。另有 CodeActAgent 让 LLM 写 Python 代码作为”计划+执行”；tools/query_plan 提供查询级子问题分解。无独立 plan-then-execute 编排器</td></tr><tr><td><a class="wikilink" href="/frameworks/loongflow/">LoongFlow</a></td><td>PES 的 Planner Worker 是显式独立阶段：理解任务+从进化记忆检索父代经验+产出执行蓝图（best_plan.txt）；Planner 仅是 get_worker 的薄封装，具体策略由场景 Agent 实现（如 general_agent/planner.py）；ReAct 侧用 Todo 工具做轻量任务清单</td></tr><tr><td><a class="wikilink" href="/frameworks/maestro/">Maestro</a></td><td>由 orchestrator LLM 隐式规划：每轮只产出”下一个子任务”的 prompt（增量式拆解，非一次性全计划），并自评目标是否达成</td></tr><tr><td><a class="wikilink" href="/frameworks/mastra/">Mastra</a></td><td>内核无显式 planner；自主规划交给 LLM。显式规划走声明式 workflow：开发者用 .then/.branch/.parallel/.dowhile/.foreach/.map 手工编排为 DAG；多 agent 场景由 routing agent 动态决定下一个 primitive（见多智能体编排）</td></tr><tr><td><a class="wikilink" href="/frameworks/metagpt/">MetaGPT</a></td><td>两层：①SOP 即”硬编码计划”——角色的 Action 顺序就是流程；②plan_and_act 模式下 Planner 用 WritePlan 让 LLM 生成 Plan（Task 列表 + 依赖，拓扑排序），逐任务执行+review+动态改计划</td></tr><tr><td><a class="wikilink" href="/frameworks/nanobot/">nanobot</a></td><td>内核无独立 planner，规划交给 LLM；提供 sustained goal / long_task 机制：/goal 持续目标跨 turn 续跑，goal_continue_message 注入让模型继续推进或 complete_goal；Step Plan 经 skill 引导</td></tr><tr><td><a class="wikilink" href="/frameworks/open-multi-agent/">Open Multi-Agent</a></td><td>goal→任务 DAG 的一次性 LLM 拆解：coordinator 收 goal+roster，输出 json 任务数组；parseTaskSpecs 容错解析（fenced/裸数组），title 形式的 dependsOn 在 loadSpecsIntoQueue 中两遍映射为真实 task id；简单目标走 isSimpleGoal 短路只跑单 agent</td></tr><tr><td><a class="wikilink" href="/frameworks/openclaw/">OpenClaw</a></td><td>内核无显式 planner，规划交给 LLM 自身；提供 thinking 级别（—thinking high、/think <level>）与 reasoning 透传；自治侧靠 standing orders（写在 AGENTS.md 里的”程序”边界）而非结构化计划</level></td></tr><tr><td><a class="wikilink" href="/frameworks/pipecat/">Pipecat</a></td><td>框架内核无显式 planner；任务分解交给 LLM 自身或上层应用。结构化”分解”体现在管道编排（Pipeline/ParallelPipeline）与多 worker job RPC（@job + job_group 扇出），而非自动 plan</td></tr><tr><td><a class="wikilink" href="/frameworks/praisonai/">PraisonAI</a></td><td>可选 planning=True：PlanningAgent 仿 CrewAI AgentPlanner / Claude Code Plan Mode，先以只读工具(READ_ONLY_TOOLS)研究再产出 Plan/PlanStep；Task 级别用 next_tasks/condition 静态声明 DAG，hierarchical process 由 manager LLM 动态分派</td></tr><tr><td><a class="wikilink" href="/frameworks/semantic-kernel/">Semantic Kernel</a></td><td>内核无独立 planner（旧 Stepwise/Handlebars planner 已从主源码移除，仅余 InternalUtilities/planning/ 与 samples 迁移示例）。规划=模型自身多步 function calling；多步业务流程交给 Process 框架；Magentic manager 内含动态计划账本</td></tr><tr><td><a class="wikilink" href="/frameworks/smolagents/">smolagents</a></td><td>可选周期性规划：planning_interval 触发独立 planning step，首步生成 initial_plan、之后 update_plan（summary_mode 重写记忆）；计划存为 PlanningStep 注入记忆，非强制</td></tr><tr><td><a class="wikilink" href="/frameworks/strands/">Strands Agents</a></td><td>内核无显式 planner——这正是 model-driven 的取舍：规划交给模型隐式完成。结构化分解可借 multiagent/graph.py 的依赖图或 swarm.py 的自治移交，但单 agent 层无独立规划组件</td></tr><tr><td><a class="wikilink" href="/frameworks/swarmclaw/">SwarmClaw</a></td><td>main-agent-loop 维护持久 MainLoopState（goal/goalContract/planSteps/completedPlanSteps/currentPlanStep/reviewNote），心跳每次回灌；plan/review 由 LLM 经 meta 标记产出后解析（parseMainLoopPlan/parseMainLoopReview）</td></tr><tr><td><a class="wikilink" href="/frameworks/swarms/">Swarms</a></td><td>可选 plan_enabled/plan(task)：用 planning_prompt+历史让 LLM 先产出 step-by-step 计划写入短期记忆；max_loops=“auto” 走 _run_autonomous_loop 的 plan→execute→reflect 三段式；专门拓扑 PlannerWorkerSwarm/AutoSwarmBuilder</td></tr><tr><td><a class="wikilink" href="/frameworks/transformers-agents/">Transformers Agents</a></td><td>由 LLM 隐式规划工具调用序列；无独立 planner</td></tr><tr><td><a class="wikilink" href="/frameworks/upsonic/">Upsonic</a></td><td>内核无强制 planner，规划交给 LLM；可选 enable_thinking_tool/enable_reasoning_tool（agent.py:263）；deepagent 子包带 planning_toolkit/TodoList(tasks.py:11 引用)；Graph 把多 Task 显式编排成 DAG/链</td></tr><tr><td><a class="wikilink" href="/frameworks/vectara-agentic/">vectara-agentic</a></td><td>内核无显式 planner；规划交给 LLM（base 指令鼓励“拆子问题”，prompts.py:54）。提供可选 内置 workflow 做显式分解：SubQuestionQueryWorkflow（并行子问题，@step(num_workers=8)）与 SequentialSubQuestionsWorkflow（顺序依赖）；旧的 StructuredPlanning 已在 v0.4 废弃</td></tr><tr><td><a class="wikilink" href="/frameworks/voltagent/">VoltAgent</a></td><td>内核无强制 planner；规划交给 LLM。独立的 PlanAgent（Claude-Code 风格）内建 write_todos 规划工具箱 + filesystem + subagent，强制”多步任务先写 todo”</td></tr></tbody></table></div><section class="ig-section" data-astro-cid-fwpw2zac><h2 class="ig-h" data-astro-cid-fwpw2zac>各框架实现对比 · 源码级</h2><section class="ig" style="--h:320" data-astro-cid-nscl5cf7><p class="ig-meta" data-astro-cid-nscl5cf7><b data-astro-cid-nscl5cf7>32</b> 个框架实现该组件 · <b data-astro-cid-nscl5cf7>27</b> 个附源码节选 · 点击任意框架展开看实现要点与代码</p><div class="ig-list" data-astro-cid-nscl5cf7><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Aeon</span><span class="badge lang" data-astro-cid-nscl5cf7>yaml</span><span class="ig-sum" data-astro-cid-nscl5cf7>单技能内无显式 planner（交给 LLM）；跨技能用 chains（chains: 配置 DAG，parallel: 并发组 + consume: 注入上游输出）和 frontmatter depends_on（调度器据此排序，依赖在前 sleep 5 再派发依赖方）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>单技能内无显式 planner（交给 LLM）；跨技能用 chains（chains: 配置 DAG，parallel: 并发组 + consume: 注入上游输出）和 frontmatter depends_on（调度器据此排序，依赖在前 sleep 5 再派发依赖方）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>aeon.yml:276</code><code class="ref" data-astro-cid-nscl5cf7>github/workflows/messages.yml:209</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>aeon.yml:276</span><span class="cb-lang" data-astro-cid-nscl5cf7>yaml</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="yaml"><code><span class="line"><span style="color:#6A737D">#       steps:</span></span>
+<span class="line"><span style="color:#6A737D">#         - parallel: [skill-a, skill-b]</span></span>
+<span class="line"><span style="color:#6A737D">#         - skill: skill-c, consume: [skill-a, skill-b]</span></span>
+<span class="line"><span style="color:#85E89D">chains</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">  # daily-routine:</span></span>
+<span class="line"><span style="color:#6A737D">  #   schedule: "0 7 * * *"</span></span>
+<span class="line"><span style="color:#6A737D">  #   on_error: fail-fast</span></span>
+<span class="line"><span style="color:#6A737D">  #   steps:</span></span>
+<span class="line"><span style="color:#6A737D">  #     - parallel: [token-movers, paper-pick, github-issues, hacker-news-digest]</span></span>
+<span class="line"><span style="color:#6A737D">  #     - skill: daily-routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Default model for all skills. Override per-run via workflow_dispatch.</span></span>
+<span class="line"><span style="color:#6A737D"># Options: claude-opus-4-8, claude-sonnet-4-6, claude-haiku-4-5-20251001</span></span></code></pre></figure><a class="ig-link" href="/frameworks/aeon/" data-astro-cid-nscl5cf7>查看 Aeon 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AG2</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner，规划交给 LLM/对话模式。contrib/captainagent 可动态组建专家团队；society_of_mind_agent 把子群当一个&quot;内省&quot;Agent；agent_optimizer 离线优化函数集</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner，规划交给 LLM/对话模式。contrib/captainagent 可动态组建专家团队；society_of_mind_agent 把子群当一个&quot;内省&quot;Agent；agent_optimizer 离线优化函数集</p><a class="ig-link" href="/frameworks/ag2/" data-astro-cid-nscl5cf7>查看 AG2 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Agent-LLM (AGiXT)</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>①隐式：靠 &quot;Think About It&quot; 提示让 LLM 自己 thinking/reflection；②显式：用 JSON Chain 预编排多步工作流（如 chains/Smart Instruct.json、Generate Task Chain.json）；命令选择阶段先让 LLM 挑出相关命令及其前置命令</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>①隐式：靠 &quot;Think About It&quot; 提示让 LLM 自己 thinking/reflection；②显式：用 JSON Chain 预编排多步工作流（如 chains/Smart Instruct.json、Generate Task Chain.json）；命令选择阶段先让 LLM 挑出相关命令及其前置命令</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>Interactions.py:2831</code><code class="ref" data-astro-cid-nscl5cf7>Chain.py:38</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>agixt/Interactions.py:2831</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#79B8FF">        MAX_BATCH_TOKENS</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 100000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # Calculate base prompt template tokens (without the batch content)</span></span>
+<span class="line"><span style="color:#E1E4E8">        base_selection_prompt </span><span style="color:#F97583">=</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"""You are an expert assistant that selects relevant commands/tools for a user request. You manage IT infrastructure, remote machines, tickets, desktop support, code execution, web browsing, media generation, and more. Your job is to select exactly the right set of commands the agent will need.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">## User's Request</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">user_input</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">## Context</span></span>
+<span class="line"><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">context</span><span style="color:#79B8FF">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">{{</span><span style="color:#9ECBFF">BATCH_COMMANDS</span><span style="color:#79B8FF">}}</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agent-llm/" data-astro-cid-nscl5cf7>查看 Agent-LLM (AGiXT) 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AgentDock</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无独立 planner；规划=人写的 orchestration steps（声明式状态机）+ LLM 自身推理。step 可设 sequence(强制工具顺序) 与 conditions(tool_used/sequence_match) 实现确定性多阶段流程；另有 agent-planner 模板做&quot;设计其他 agent&quot;</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无独立 planner；规划=人写的 orchestration steps（声明式状态机）+ LLM 自身推理。step 可设 sequence(强制工具顺序) 与 conditions(tool_used/sequence_match) 实现确定性多阶段流程；另有 agent-planner 模板做&quot;设计其他 agent&quot;</p><a class="ig-link" href="/frameworks/agentdock/" data-astro-cid-nscl5cf7>查看 AgentDock 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Agentset</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>deepResearch 模式做查询规划：generateInitialQueries→performSearch→conductIterativeResearch(budget 轮，evaluateResearchCompleteness 产出补充 query)→filter→generateResearchAnswer 生成多页报告</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>deepResearch 模式做查询规划：generateInitialQueries→performSearch→conductIterativeResearch(budget 轮，evaluateResearchCompleteness 产出补充 query)→filter→generateResearchAnswer 生成多页报告</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>apps/web/src/lib/deep-research/index.ts:469</code><code class="ref" data-astro-cid-nscl5cf7>deep-research/index.ts:407</code><code class="ref" data-astro-cid-nscl5cf7>deep-research/config.ts:14</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>apps/web/src/lib/deep-research/index.ts:469</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">   *</span><span style="color:#E1E4E8"> @param topic The research topic</span></span>
+<span class="line"><span style="color:#F97583">   *</span><span style="color:#E1E4E8"> @returns The research answer</span></span>
+<span class="line"><span style="color:#F97583">   */</span></span>
+<span class="line"><span style="color:#E1E4E8">  async </span><span style="color:#B392F0">runResearch</span><span style="color:#E1E4E8">(topic: string) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`</span><span style="color:#79B8FF">\x1b</span><span style="color:#9ECBFF">[36m🔍 Researching topic: ${</span><span style="color:#E1E4E8">topic</span><span style="color:#9ECBFF">}</span><span style="color:#79B8FF">\x1b</span><span style="color:#9ECBFF">[0m`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Step 1: Generate initial queries</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> initialQueries</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">generateInitialQueries</span><span style="color:#E1E4E8">({ topic });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Step 2: Perform initial search</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> initialResults</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">performSearch</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      queries: initialQueries,</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentset/" data-astro-cid-nscl5cf7>查看 Agentset 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AgentVerse</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>task-solving 的&quot;规划&quot;= DecisionMaker 规则产出 List[SolverMessage] plan，支持多种拓扑：horizontal/vertical/central/concurrent/brainstorming/dynamic（rules/decision_maker/）；memory_manipulator 中另有 plan 变体辅助生成计划；simulation 无显式 planner</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>task-solving 的&quot;规划&quot;= DecisionMaker 规则产出 List[SolverMessage] plan，支持多种拓扑：horizontal/vertical/central/concurrent/brainstorming/dynamic（rules/decision_maker/）；memory_manipulator 中另有 plan 变体辅助生成计划；simulation 无显式 planner</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>dynamic.py:16</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>agentverse/environments/tasksolving_env/rules/decision_maker/dynamic.py:16</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">    from</span><span style="color:#E1E4E8"> agentverse.message </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Message</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@decision_maker_registry.register</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"dynamic"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> DynamicDecisionMaker</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BaseDecisionMaker</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#9ECBFF">    Discuss in a horizontal manner.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    name: </span><span style="color:#79B8FF">str</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "dynamic"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    ## To Do: implement dynamic</span></span>
+<span class="line"><span style="color:#6A737D">    # def step(</span></span></code></pre></figure><a class="ig-link" href="/frameworks/agentverse/" data-astro-cid-nscl5cf7>查看 AgentVerse 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Astron Agent</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>单体 agent 无显式 planner，规划隐式交给 LLM 的 CoT；显式编排在 workflow 层：decision 节点用 router prompt 做意图分流/分支，iteration/loop 节点做循环分解，整个 DAG 由 DSL 描述</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>单体 agent 无显式 planner，规划隐式交给 LLM 的 CoT；显式编排在 workflow 层：decision 节点用 router prompt 做意图分流/分支，iteration/loop 节点做循环分解，整个 DAG 由 DSL 描述</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>engine/dsl_engine.py:786</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>core/workflow/engine/dsl_engine.py:786</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> DefaultNodeExecutionStrategy()</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> WorkflowEngine</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BaseModel</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#9ECBFF">    Main workflow execution engine.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Orchestrates the execution of workflow nodes using depth-first search,</span></span>
+<span class="line"><span style="color:#9ECBFF">    manages error handling, retry mechanisms, and provides various execution</span></span>
+<span class="line"><span style="color:#9ECBFF">    strategies for different node types.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    engine_ctx: WorkflowEngineCtx </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span><span style="color:#6A737D">  # type: ignore</span></span></code></pre></figure><a class="ig-link" href="/frameworks/astron/" data-astro-cid-nscl5cf7>查看 Astron Agent 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>AutoGen</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无通用 planner；规划由 LLM 隐式完成。显式规划见 Magentic-One orchestrator：先建 task ledger（facts + plan 两段 prompt 推理），再用 progress ledger 驱动外/内双层循环</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无通用 planner；规划由 LLM 隐式完成。显式规划见 Magentic-One orchestrator：先建 task ledger（facts + plan 两段 prompt 推理），再用 progress ledger 驱动外/内双层循环</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>_magentic_one/_magentic_one_orchestrator.py:157</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>python/packages/autogen-agentchat/src/autogen_agentchat/teams/_group_chat/_magentic_one/_magentic_one_orchestrator.py:157</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">            await</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._output_message_queue.put(msg)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # Outer Loop for first time</span></span>
+<span class="line"><span style="color:#6A737D">        # Create the initial task ledger</span></span>
+<span class="line"><span style="color:#6A737D">        #################################</span></span>
+<span class="line"><span style="color:#6A737D">        # Combine all message contents for task</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._task </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> " "</span><span style="color:#E1E4E8">.join([msg.to_model_text() </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> msg </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> message.messages])</span></span>
+<span class="line"><span style="color:#E1E4E8">        planning_conversation: List[LLMMessage] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # 1. GATHER FACTS</span></span>
+<span class="line"><span style="color:#6A737D">        # create a closed book task and generate a response and update the chat history</span></span>
+<span class="line"><span style="color:#E1E4E8">        planning_conversation.append(</span></span>
+<span class="line"><span style="color:#E1E4E8">            UserMessage(</span><span style="color:#FFAB70">content</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._get_task_ledger_facts_prompt(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._task), </span><span style="color:#FFAB70">source</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._name)</span></span></code></pre></figure><a class="ig-link" href="/frameworks/autogen/" data-astro-cid-nscl5cf7>查看 AutoGen 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>ConnectOnion</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM 自身。可选 subagents 插件附带内建 plan/explore 子 agent（AGENT.md）；ReAct 插件只做意图识别+反思，不做计划</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM 自身。可选 subagents 插件附带内建 plan/explore 子 agent（AGENT.md）；ReAct 插件只做意图识别+反思，不做计划</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>useful_plugins/re_act.py:17</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>connectonion/useful_plugins/re_act.py:17</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">. After user </span><span style="color:#79B8FF">input</span><span style="color:#E1E4E8">: Acknowledge request (show we understood)</span></span>
+<span class="line"><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">. After tool execution: Reflect on results</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Planning </span><span style="color:#F97583">is</span><span style="color:#E1E4E8"> left to the main agent </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> this plugin just adds intent recognition </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> reflection.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Trace kinds </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> frontend rendering:</span></span>
+<span class="line"><span style="color:#F97583">-</span><span style="color:#E1E4E8"> kind=</span><span style="color:#9ECBFF">'intent'</span><span style="color:#E1E4E8"> → Show </span><span style="color:#F97583">as</span><span style="color:#9ECBFF"> "Understanding..."</span><span style="color:#E1E4E8"> card</span></span>
+<span class="line"><span style="color:#F97583">-</span><span style="color:#E1E4E8"> kind=</span><span style="color:#9ECBFF">'reflect'</span><span style="color:#E1E4E8"> → Show </span><span style="color:#F97583">as</span><span style="color:#9ECBFF"> "Reflecting..."</span><span style="color:#E1E4E8"> card</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Usage:</span></span>
+<span class="line"><span style="color:#F97583">    from</span><span style="color:#E1E4E8"> connectonion </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent</span></span>
+<span class="line"><span style="color:#F97583">    from</span><span style="color:#E1E4E8"> connectonion.useful_plugins </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> re_act</span></span></code></pre></figure><a class="ig-link" href="/frameworks/connectonion/" data-astro-cid-nscl5cf7>查看 ConnectOnion 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Cordum</span><span class="badge lang" data-astro-cid-nscl5cf7>go</span><span class="ig-sum" data-astro-cid-nscl5cf7>仅有 Workflow Engine 把声明式工作流拆成多个 JobRequest 步骤并推进（loop/parallel/subworkflow），非 LLM 规划</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>仅有 Workflow Engine 把声明式工作流拆成多个 JobRequest 步骤并推进（loop/parallel/subworkflow），非 LLM 规划</p><a class="ig-link" href="/frameworks/cordum/" data-astro-cid-nscl5cf7>查看 Cordum 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>CrewAI</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>①Crew 级 planning=True：跑前用 planning agent 为每个 task 生成 step-by-step plan 注入描述；②hierarchical 经理动态分解派活；任务编排本身是声明式 Task 列表</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>①Crew 级 planning=True：跑前用 planning agent 为每个 task 生成 step-by-step plan 注入描述；②hierarchical 经理动态分解派活；任务编排本身是声明式 Task 列表</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>crewai/crew.py:1406</code><code class="ref" data-astro-cid-nscl5cf7>crewai/utilities/planning_handler.py:37</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>lib/crewai/src/crewai/crew.py:1406</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">            )</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> task_outputs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> _handle_crew_planning</span><span style="color:#E1E4E8">(self) -> </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """Handles the Crew planning."""</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._logger.log(</span><span style="color:#9ECBFF">"info"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Planning the crew execution"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CrewPlanner(</span></span>
+<span class="line"><span style="color:#FFAB70">            tasks</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.tasks, </span><span style="color:#FFAB70">planning_agent_llm</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.planning_llm</span></span>
+<span class="line"><span style="color:#E1E4E8">        )._handle_crew_planning()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        plan_map: dict[</span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> step_plan </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> result.list_of_plans_per_task:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> step_plan.task_number </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> plan_map:</span></span></code></pre></figure><a class="ig-link" href="/frameworks/crewai/" data-astro-cid-nscl5cf7>查看 CrewAI 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Hive</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>不预设固定 planner：①Queen（编码 agent）把 NL 目标拆成 graph 结构（节点/边）＝离线规划；②Queen 自身用 task_create_batch/task_update 做多步任务清单（framework/tasks/）；③图内 llm_decide 边做运行时路由</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>不预设固定 planner：①Queen（编码 agent）把 NL 目标拆成 graph 结构（节点/边）＝离线规划；②Queen 自身用 task_create_batch/task_update 做多步任务清单（framework/tasks/）；③图内 llm_decide 边做运行时路由</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agents/queen/nodes/__init__.py:230</code><code class="ref" data-astro-cid-nscl5cf7>orchestrator/edge.py:205</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>core/framework/agents/queen/nodes/__init__.py:230</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">_queen_tools_independent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> """</span></span>
+<span class="line"><span style="color:#9ECBFF"># Tools</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">## Planning — use FIRST for multi-step work</span></span>
+<span class="line"><span style="color:#9ECBFF">- task_create_batch — When a request has 2+ atomic steps, your FIRST </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#9ECBFF">tool call is `task_create_batch` with one entry per step (atomic, </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#9ECBFF">one round-trip).</span></span>
+<span class="line"><span style="color:#9ECBFF">- task_create — One-off mid-run additions when you discover </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#9ECBFF">unplanned work AFTER the initial plan is laid out.</span></span>
+<span class="line"><span style="color:#9ECBFF">- task_update / task_list / task_get — Mark progress, inspect, or </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#9ECBFF">re-read state.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">See "Independent execution" for the per-step flow and granularity rule.</span></span></code></pre></figure><a class="ig-link" href="/frameworks/hive/" data-astro-cid-nscl5cf7>查看 Hive 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>LangChain</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM。可选 TodoListMiddleware 注入 write_todos 工具+todos 状态字段做轻量任务清单（对标 Claude Code TodoWrite）；更重的 planning 在上层 Deep Agents 包</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM。可选 TodoListMiddleware 注入 write_todos 工具+todos 状态字段做轻量任务清单（对标 Claude Code TodoWrite）；更重的 planning 在上层 Deep Agents 包</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agents/middleware/todo.py:35</code><code class="ref" data-astro-cid-nscl5cf7>todo.py:46</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>libs/langchain_v1/langchain/agents/middleware/todo.py:35</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#9ECBFF">    """The current status of the todo item."""</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> PlanningState</span><span style="color:#E1E4E8">(AgentState[ResponseT]):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """State schema for the todo middleware.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Type Parameters:</span></span>
+<span class="line"><span style="color:#9ECBFF">        ResponseT: The type of the structured response. Defaults to `Any`.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    todos: Annotated[NotRequired[list[Todo]], OmitFromInput]</span></span>
+<span class="line"><span style="color:#9ECBFF">    """List of todo items for tracking task progress."""</span></span></code></pre></figure><a class="ig-link" href="/frameworks/langchain/" data-astro-cid-nscl5cf7>查看 LangChain 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>LlamaIndex</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner；规划隐式交给 LLM(ReAct 的 Thought 链 / function-calling 多轮)。另有 CodeActAgent 让 LLM 写 Python 代码作为&quot;计划+执行&quot;；tools/query_plan 提供查询级子问题分解。无独立 plan-then-execute 编排器</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner；规划隐式交给 LLM(ReAct 的 Thought 链 / function-calling 多轮)。另有 CodeActAgent 让 LLM 写 Python 代码作为&quot;计划+执行&quot;；tools/query_plan 提供查询级子问题分解。无独立 plan-then-execute 编排器</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent/workflow/codeact_agent.py:25</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>llama-index-core/llama_index/core/agent/workflow/codeact_agent.py:25</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> llama_index.core.tools </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> BaseTool, FunctionTool</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> llama_index.core.workflow </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Context</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">DEFAULT_CODE_ACT_PROMPT</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> """You are a helpful AI assistant that can write and execute Python code to solve problems.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">You will be given a task to perform. You should output:</span></span>
+<span class="line"><span style="color:#9ECBFF">- Python code wrapped in &#x3C;execute>...&#x3C;/execute> tags that provides the solution to the task, or a step towards the solution. Any output you want to extract from the code should be printed to the console.</span></span>
+<span class="line"><span style="color:#9ECBFF">- Text to be shown directly to the user, if you want to ask for more information or provide the final answer.</span></span>
+<span class="line"><span style="color:#9ECBFF">- If the previous code execution can be used to respond to the user, then respond directly (typically you want to avoid mentioning anything related to the code execution in your response).</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">## Response Format:</span></span>
+<span class="line"><span style="color:#9ECBFF">Example of proper code format:</span></span>
+<span class="line"><span style="color:#9ECBFF">&#x3C;execute></span></span></code></pre></figure><a class="ig-link" href="/frameworks/llamaindex/" data-astro-cid-nscl5cf7>查看 LlamaIndex 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>LoongFlow</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>PES 的 Planner Worker 是显式独立阶段：理解任务+从进化记忆检索父代经验+产出执行蓝图（best_plan.txt）；Planner 仅是 get_worker 的薄封装，具体策略由场景 Agent 实现（如 general_agent/planner.py）；ReAct 侧用 Todo 工具做轻量任务清单</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>PES 的 Planner Worker 是显式独立阶段：理解任务+从进化记忆检索父代经验+产出执行蓝图（best_plan.txt）；Planner 仅是 get_worker 的薄封装，具体策略由场景 Agent 实现（如 general_agent/planner.py）；ReAct 侧用 Todo 工具做轻量任务清单</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>framework/pes/planner/planner.py:13</code><code class="ref" data-astro-cid-nscl5cf7>framework/pes/register.py:55</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/loongflow/framework/pes/planner/planner.py:13</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> loongflow.framework.pes.register </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> get_worker</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Planner</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Planner Class"""</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, planner_name: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, config: Any, db: Any):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.planner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> get_worker(</span></span>
+<span class="line"><span style="color:#FFAB70">            name</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">planner_name, </span><span style="color:#FFAB70">phase</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"planner"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">config</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">config, </span><span style="color:#FFAB70">db</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">db</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">(self, context: Any, message: Message </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">) -> Message:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """</span></span></code></pre></figure><a class="ig-link" href="/frameworks/loongflow/" data-astro-cid-nscl5cf7>查看 LoongFlow 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Maestro</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>由 orchestrator LLM 隐式规划：每轮只产出&quot;下一个子任务&quot;的 prompt（增量式拆解，非一次性全计划），并自评目标是否达成</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>由 orchestrator LLM 隐式规划：每轮只产出&quot;下一个子任务&quot;的 prompt（增量式拆解，非一次性全计划），并自评目标是否达成</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>maestro.py:42</code><code class="ref" data-astro-cid-nscl5cf7>maestro.py:52</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>maestro.py:42</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#6A737D"># Initialize the Rich Console</span></span>
+<span class="line"><span style="color:#E1E4E8">console </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Console()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> opus_orchestrator</span><span style="color:#E1E4E8">(objective, file_content</span><span style="color:#F97583">=</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, previous_results</span><span style="color:#F97583">=</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, use_search</span><span style="color:#F97583">=</span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.print(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">[bold]Calling Orchestrator for your objective[/bold]"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    previous_results_text </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.join(previous_results) </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> previous_results </span><span style="color:#F97583">else</span><span style="color:#9ECBFF"> "None"</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> file_content:</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.print(Panel(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"File content:</span><span style="color:#79B8FF">\n{</span><span style="color:#E1E4E8">file_content</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">title</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"[bold blue]File Content[/bold blue]"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">title_align</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"left"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">border_style</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"blue"</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    messages </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#9ECBFF">            "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">            "content"</span><span style="color:#E1E4E8">: [</span></span></code></pre></figure><a class="ig-link" href="/frameworks/maestro/" data-astro-cid-nscl5cf7>查看 Maestro 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Mastra</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner；自主规划交给 LLM。显式规划走声明式 workflow：开发者用 .then/.branch/.parallel/.dowhile/.foreach/.map 手工编排为 DAG；多 agent 场景由 routing agent 动态决定下一个 primitive（见多智能体编排）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner；自主规划交给 LLM。显式规划走声明式 workflow：开发者用 .then/.branch/.parallel/.dowhile/.foreach/.map 手工编排为 DAG；多 agent 场景由 routing agent 动态决定下一个 primitive（见多智能体编排）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>workflows/workflow.ts:1775</code><code class="ref" data-astro-cid-nscl5cf7>loop/network/index.ts:224</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/core/src/workflows/workflow.ts:1775</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">   *</span><span style="color:#E1E4E8"> The step</span><span style="color:#9ECBFF">'s inputSchema must be satisfied by the previous step'</span><span style="color:#E1E4E8">s </span><span style="color:#B392F0">output</span><span style="color:#E1E4E8"> (or workflow input for first step).</span></span>
+<span class="line"><span style="color:#F97583">   *</span><span style="color:#E1E4E8"> This </span><span style="color:#B392F0">means</span><span style="color:#E1E4E8">: TPrevSchema must be assignable to TStepInput</span></span>
+<span class="line"><span style="color:#F97583">   */</span></span>
+<span class="line"><span style="color:#E1E4E8">  then</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">TStepId extends string, TStepState, TStepInput, TSchemaOut</span><span style="color:#F97583">></span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    step: Step</span><span style="color:#F97583">&#x3C;</span></span>
+<span class="line"><span style="color:#E1E4E8">      TStepId,</span></span>
+<span class="line"><span style="color:#6A737D">      // Allow steps with any/unknown state, or steps whose state is a subset of workflow state</span></span>
+<span class="line"><span style="color:#E1E4E8">      unknown extends TStepState </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> TStepState </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> SubsetOf</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">TStepState, TState</span><span style="color:#F97583">></span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">      // Check: previous output (TPrevSchema) must satisfy step's input requirements (TStepInput)</span></span>
+<span class="line"><span style="color:#6A737D">      // If TPrevSchema can be assigned to TStepInput, allow it. Otherwise show expected type.</span></span>
+<span class="line"><span style="color:#E1E4E8">      TPrevSchema extends TStepInput </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> TStepInput </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> TPrevSchema,</span></span>
+<span class="line"><span style="color:#E1E4E8">      TSchemaOut,</span></span>
+<span class="line"><span style="color:#E1E4E8">      any,</span></span></code></pre></figure><a class="ig-link" href="/frameworks/mastra/" data-astro-cid-nscl5cf7>查看 Mastra 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>MetaGPT</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>两层：①SOP 即&quot;硬编码计划&quot;——角色的 Action 顺序就是流程；②plan_and_act 模式下 Planner 用 WritePlan 让 LLM 生成 Plan（Task 列表 + 依赖，拓扑排序），逐任务执行+review+动态改计划</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>两层：①SOP 即&quot;硬编码计划&quot;——角色的 Action 顺序就是流程；②plan_and_act 模式下 Planner 用 WritePlan 让 LLM 生成 Plan（Task 列表 + 依赖，拓扑排序），逐任务执行+review+动态改计划</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>metagpt/strategy/planner.py:77</code><code class="ref" data-astro-cid-nscl5cf7>role.py:472</code><code class="ref" data-astro-cid-nscl5cf7>metagpt/schema.py:496</code><code class="ref" data-astro-cid-nscl5cf7>schema.py:457</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>metagpt/strategy/planner.py:77</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> current_task_id</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.plan.current_task_id</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> update_plan</span><span style="color:#E1E4E8">(self, goal: </span><span style="color:#79B8FF">str</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">, max_tasks: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">, max_retries: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> goal:</span></span>
+<span class="line"><span style="color:#79B8FF">            self</span><span style="color:#E1E4E8">.plan </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Plan(</span><span style="color:#FFAB70">goal</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">goal)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        plan_confirmed </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> False</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> plan_confirmed:</span></span>
+<span class="line"><span style="color:#E1E4E8">            context </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.get_useful_memories()</span></span>
+<span class="line"><span style="color:#E1E4E8">            rsp </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> WritePlan().run(context, </span><span style="color:#FFAB70">max_tasks</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">max_tasks)</span></span>
+<span class="line"><span style="color:#79B8FF">            self</span><span style="color:#E1E4E8">.working_memory.add(Message(</span><span style="color:#FFAB70">content</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">rsp, </span><span style="color:#FFAB70">role</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"assistant"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">cause_by</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">WritePlan))</span></span></code></pre></figure><a class="ig-link" href="/frameworks/metagpt/" data-astro-cid-nscl5cf7>查看 MetaGPT 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>nanobot</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无独立 planner，规划交给 LLM；提供 sustained goal / long_task 机制：/goal 持续目标跨 turn 续跑，goal_continue_message 注入让模型继续推进或 complete_goal；Step Plan 经 skill 引导</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无独立 planner，规划交给 LLM；提供 sustained goal / long_task 机制：/goal 持续目标跨 turn 续跑，goal_continue_message 注入让模型继续推进或 complete_goal；Step Plan 经 skill 引导</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>session/goal_state.py:40</code><code class="ref" data-astro-cid-nscl5cf7>agent/runner.py:196</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>nanobot/session/goal_state.py:40</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> _session_goal_raw(metadata)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> sustained_goal_active</span><span style="color:#E1E4E8">(metadata: Mapping[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, Any] </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """True when this session has an active sustained objective (``long_task`` bookkeeping)."""</span></span>
+<span class="line"><span style="color:#E1E4E8">    goal </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> parse_goal_state(goal_state_raw(metadata))</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> isinstance</span><span style="color:#E1E4E8">(goal, </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> goal.get(</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "active"</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> sustained_goal_turn</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    metadata: Mapping[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, Any] </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    *</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    message_metadata: Mapping[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, Any] </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> None</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">,</span></span></code></pre></figure><a class="ig-link" href="/frameworks/nanobot/" data-astro-cid-nscl5cf7>查看 nanobot 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Open Multi-Agent</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>goal→任务 DAG 的一次性 LLM 拆解：coordinator 收 goal+roster，输出 json 任务数组；parseTaskSpecs 容错解析（fenced/裸数组），title 形式的 dependsOn 在 loadSpecsIntoQueue 中两遍映射为真实 task id；简单目标走 isSimpleGoal 短路只跑单 agent</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>goal→任务 DAG 的一次性 LLM 拆解：coordinator 收 goal+roster，输出 json 任务数组；parseTaskSpecs 容错解析（fenced/裸数组），title 形式的 dependsOn 在 loadSpecsIntoQueue 中两遍映射为真实 task id；简单目标走 isSimpleGoal 短路只跑单 agent</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>src/orchestrator/orchestrator.ts:1232</code><code class="ref" data-astro-cid-nscl5cf7>src/orchestrator/orchestrator.ts:358</code><code class="ref" data-astro-cid-nscl5cf7>src/orchestrator/orchestrator.ts:1773</code><code class="ref" data-astro-cid-nscl5cf7>src/orchestrator/orchestrator.ts:150</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/orchestrator/orchestrator.ts:1232</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#6A737D">    // ------------------------------------------------------------------</span></span>
+<span class="line"><span style="color:#6A737D">    // Step 2: Parse tasks from coordinator output</span></span>
+<span class="line"><span style="color:#6A737D">    // ------------------------------------------------------------------</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> taskSpecs</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> parseTaskSpecs</span><span style="color:#E1E4E8">(decompositionResult.output)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> queue</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> TaskQueue</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> scheduler</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Scheduler</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'dependency-first'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> taskMetrics</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Map</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">TaskExecutionMetrics</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (taskSpecs </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> taskSpecs.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">      // Map title-based dependsOn references to real task IDs so we can</span></span>
+<span class="line"><span style="color:#6A737D">      // build the dependency graph before adding tasks to the queue.</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">loadSpecsIntoQueue</span><span style="color:#E1E4E8">(taskSpecs, agentConfigs, queue)</span></span></code></pre></figure><a class="ig-link" href="/frameworks/open-multi-agent/" data-astro-cid-nscl5cf7>查看 Open Multi-Agent 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>OpenClaw</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner，规划交给 LLM 自身；提供 thinking 级别（--thinking high、/think &lt;level&gt;）与 reasoning 透传；自治侧靠 standing orders（写在 AGENTS.md 里的&quot;程序&quot;边界）而非结构化计划</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner，规划交给 LLM 自身；提供 thinking 级别（--thinking high、/think &lt;level&gt;）与 reasoning 透传；自治侧靠 standing orders（写在 AGENTS.md 里的&quot;程序&quot;边界）而非结构化计划</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent-loop.ts:300</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/agent-core/src/agent-loop.ts:300</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">      const</span><span style="color:#79B8FF"> nextTurnSnapshot</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> config.</span><span style="color:#B392F0">prepareNextTurn</span><span style="color:#E1E4E8">?.(nextTurnContext);</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (nextTurnSnapshot) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        currentContext </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nextTurnSnapshot.context </span><span style="color:#F97583">??</span><span style="color:#E1E4E8"> currentContext;</span></span>
+<span class="line"><span style="color:#E1E4E8">        config </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">assign</span><span style="color:#E1E4E8">({}, config, {</span></span>
+<span class="line"><span style="color:#E1E4E8">          model: nextTurnSnapshot.model </span><span style="color:#F97583">??</span><span style="color:#E1E4E8"> config.model,</span></span>
+<span class="line"><span style="color:#E1E4E8">          reasoning:</span></span>
+<span class="line"><span style="color:#E1E4E8">            nextTurnSnapshot.thinkingLevel </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> undefined</span></span>
+<span class="line"><span style="color:#F97583">              ?</span><span style="color:#E1E4E8"> config.reasoning</span></span>
+<span class="line"><span style="color:#F97583">              :</span><span style="color:#E1E4E8"> nextTurnSnapshot.thinkingLevel </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "off"</span></span>
+<span class="line"><span style="color:#F97583">                ?</span><span style="color:#79B8FF"> undefined</span></span>
+<span class="line"><span style="color:#F97583">                :</span><span style="color:#E1E4E8"> nextTurnSnapshot.thinkingLevel,</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span></code></pre></figure><a class="ig-link" href="/frameworks/openclaw/" data-astro-cid-nscl5cf7>查看 OpenClaw 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Pipecat</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>框架内核无显式 planner；任务分解交给 LLM 自身或上层应用。结构化&quot;分解&quot;体现在管道编排（Pipeline/ParallelPipeline）与多 worker job RPC（@job + job_group 扇出），而非自动 plan</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>框架内核无显式 planner；任务分解交给 LLM 自身或上层应用。结构化&quot;分解&quot;体现在管道编排（Pipeline/ParallelPipeline）与多 worker job RPC（@job + job_group 扇出），而非自动 plan</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>pipeline/pipeline.py:91</code><code class="ref" data-astro-cid-nscl5cf7>pipeline/parallel_pipeline.py:24</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/pipecat/pipeline/pipeline.py:91</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">                await</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._downstream_push_frame(frame, direction)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Pipeline</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BasePipeline</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Main pipeline implementation that connects frame processors in sequence.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">    Creates a linear chain of frame processors with automatic source and sink</span></span>
+<span class="line"><span style="color:#9ECBFF">    processors for external frame handling. Manages processor lifecycle and</span></span>
+<span class="line"><span style="color:#9ECBFF">    provides metrics collection from contained processors.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        self,</span></span></code></pre></figure><a class="ig-link" href="/frameworks/pipecat/" data-astro-cid-nscl5cf7>查看 Pipecat 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>PraisonAI</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>可选 planning=True：PlanningAgent 仿 CrewAI AgentPlanner / Claude Code Plan Mode，先以只读工具(READ_ONLY_TOOLS)研究再产出 Plan/PlanStep；Task 级别用 next_tasks/condition 静态声明 DAG，hierarchical process 由 manager LLM 动态分派</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>可选 planning=True：PlanningAgent 仿 CrewAI AgentPlanner / Claude Code Plan Mode，先以只读工具(READ_ONLY_TOOLS)研究再产出 Plan/PlanStep；Task 级别用 next_tasks/condition 静态声明 DAG，hierarchical process 由 manager LLM 动态分派</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>planning/planner.py:24</code><code class="ref" data-astro-cid-nscl5cf7>process/process.py:434</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/praisonai-agents/praisonaiagents/planning/planner.py:24</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> .plan </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Plan, PlanStep</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Define READ_ONLY_TOOLS locally to avoid circular import</span></span>
+<span class="line"><span style="color:#79B8FF">READ_ONLY_TOOLS</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "read_file"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "list_directory"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "search_codebase"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "search_files"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "grep_search"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "find_files"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "web_search"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "get_file_content"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "list_files"</span><span style="color:#E1E4E8">,</span></span></code></pre></figure><a class="ig-link" href="/frameworks/praisonai/" data-astro-cid-nscl5cf7>查看 PraisonAI 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Semantic Kernel</span><span class="badge lang" data-astro-cid-nscl5cf7>csharp</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无独立 planner（旧 Stepwise/Handlebars planner 已从主源码移除，仅余 InternalUtilities/planning/ 与 samples 迁移示例）。规划=模型自身多步 function calling；多步业务流程交给 Process 框架；Magentic manager 内含动态计划账本</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无独立 planner（旧 Stepwise/Handlebars planner 已从主源码移除，仅余 InternalUtilities/planning/ 与 samples 迁移示例）。规划=模型自身多步 function calling；多步业务流程交给 Process 框架；Magentic manager 内含动态计划账本</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>dotnet/src/Experimental/Process.Core/ProcessBuilder.cs:517</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>dotnet/src/Experimental/Process.Core/ProcessBuilder.cs:517</span><span class="cb-lang" data-astro-cid-nscl5cf7>csharp</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="csharp"><code><span class="line"><span style="color:#6A737D">    /// Builds the process.</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>An instance of &#x3C;</span><span style="color:#85E89D">see</span><span style="color:#B392F0"> cref</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"KernelProcess"</span><span style="color:#6A737D">/>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> KernelProcess</span><span style="color:#B392F0"> Build</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">KernelProcessStateMetadata</span><span style="color:#E1E4E8">? </span><span style="color:#B392F0">stateMetadata</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // Build the edges first</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#B392F0"> builtEdges</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.Edges.</span><span style="color:#B392F0">ToDictionary</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">kvp</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> kvp.Key, </span><span style="color:#B392F0">kvp</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> kvp.Value.</span><span style="color:#B392F0">Select</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">e</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> e.</span><span style="color:#B392F0">Build</span><span style="color:#E1E4E8">()).</span><span style="color:#B392F0">ToList</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // Build the steps and injecting initial state if any is provided</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#B392F0"> builtSteps</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">BuildWithStateMetadata</span><span style="color:#E1E4E8">(stateMetadata);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // Create the process</span></span>
+<span class="line"><span style="color:#B392F0">        KernelProcessState</span><span style="color:#B392F0"> state</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.Name, </span><span style="color:#B392F0">version</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.Version, </span><span style="color:#B392F0">id</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.Id);</span></span></code></pre></figure><a class="ig-link" href="/frameworks/semantic-kernel/" data-astro-cid-nscl5cf7>查看 Semantic Kernel 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>smolagents</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>可选周期性规划：planning_interval 触发独立 planning step，首步生成 initial_plan、之后 update_plan（summary_mode 重写记忆）；计划存为 PlanningStep 注入记忆，非强制</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>可选周期性规划：planning_interval 触发独立 planning step，首步生成 initial_plan、之后 update_plan（summary_mode 重写记忆）；计划存为 PlanningStep 注入记忆，非强制</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agents.py:550</code><code class="ref" data-astro-cid-nscl5cf7>agents.py:639</code></div><a class="ig-link" href="/frameworks/smolagents/" data-astro-cid-nscl5cf7>查看 smolagents 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Strands Agents</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner——这正是 model-driven 的取舍：规划交给模型隐式完成。结构化分解可借 multiagent/graph.py 的依赖图或 swarm.py 的自治移交，但单 agent 层无独立规划组件</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner——这正是 model-driven 的取舍：规划交给模型隐式完成。结构化分解可借 multiagent/graph.py 的依赖图或 swarm.py 的自治移交，但单 agent 层无独立规划组件</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>multiagent/graph.py:241</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>strands-py/src/strands/multiagent/graph.py:241</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">            raise</span><span style="color:#79B8FF"> ValueError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Session persistence is not supported for Graph agents yet."</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> GraphBuilder</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """Builder pattern for constructing graphs."""</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self) -> </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """Initialize GraphBuilder with empty collections."""</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.nodes: dict[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, GraphNode] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.edges: set[GraphEdge] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> set</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.entry_points: set[GraphNode] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> set</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        # Configuration options</span></span></code></pre></figure><a class="ig-link" href="/frameworks/strands/" data-astro-cid-nscl5cf7>查看 Strands Agents 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>SwarmClaw</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>main-agent-loop 维护持久 MainLoopState（goal/goalContract/planSteps/completedPlanSteps/currentPlanStep/reviewNote），心跳每次回灌；plan/review 由 LLM 经 meta 标记产出后解析（parseMainLoopPlan/parseMainLoopReview）</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>main-agent-loop 维护持久 MainLoopState（goal/goalContract/planSteps/completedPlanSteps/currentPlanStep/reviewNote），心跳每次回灌；plan/review 由 LLM 经 meta 标记产出后解析（parseMainLoopPlan/parseMainLoopReview）</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agents/main-agent-loop.ts:34</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/lib/server/agents/main-agent-loop.ts:34</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> MainLoopObjectiveSource</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'goal'</span><span style="color:#F97583"> |</span><span style="color:#9ECBFF"> 'working_state'</span><span style="color:#F97583"> |</span><span style="color:#9ECBFF"> 'run_context'</span><span style="color:#F97583"> |</span><span style="color:#9ECBFF"> 'legacy_tag'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> MainLoopState</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  goal</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  goalContract</span><span style="color:#F97583">:</span><span style="color:#B392F0"> GoalContract</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  objectiveSource</span><span style="color:#F97583">:</span><span style="color:#B392F0"> MainLoopObjectiveSource</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  summary</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  nextAction</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  planSteps</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#FFAB70">  completedPlanSteps</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#FFAB70">  currentPlanStep</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#FFAB70">  reviewNote</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span></span></code></pre></figure><a class="ig-link" href="/frameworks/swarmclaw/" data-astro-cid-nscl5cf7>查看 SwarmClaw 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Swarms</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>可选 plan_enabled/plan(task)：用 planning_prompt+历史让 LLM 先产出 step-by-step 计划写入短期记忆；max_loops=&quot;auto&quot; 走 _run_autonomous_loop 的 plan→execute→reflect 三段式；专门拓扑 PlannerWorkerSwarm/AutoSwarmBuilder</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>可选 plan_enabled/plan(task)：用 planning_prompt+历史让 LLM 先产出 step-by-step 计划写入短期记忆；max_loops=&quot;auto&quot; 走 _run_autonomous_loop 的 plan→execute→reflect 三段式；专门拓扑 PlannerWorkerSwarm/AutoSwarmBuilder</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent.py:3159</code><code class="ref" data-astro-cid-nscl5cf7>agent.py:2105</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>swarms/structs/agent.py:3159</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">            role</span><span style="color:#F97583">=</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.agent_name, content</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">message</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> plan</span><span style="color:#E1E4E8">(self, task: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">*</span><span style="color:#E1E4E8">args, </span><span style="color:#F97583">**</span><span style="color:#E1E4E8">kwargs) -> </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """</span></span>
+<span class="line"><span style="color:#9ECBFF">        Create a strategic plan for executing the given task.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">        This method generates a step-by-step plan by combining the conversation</span></span>
+<span class="line"><span style="color:#9ECBFF">        history, planning prompt, and current task. The plan is then added to</span></span>
+<span class="line"><span style="color:#9ECBFF">        the agent's short-term memory for reference during execution.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">        Args:</span></span>
+<span class="line"><span style="color:#9ECBFF">            task (str): The task to create a plan for</span></span></code></pre></figure><a class="ig-link" href="/frameworks/swarms/" data-astro-cid-nscl5cf7>查看 Swarms 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Transformers Agents</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>由 LLM 隐式规划工具调用序列；无独立 planner</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>由 LLM 隐式规划工具调用序列；无独立 planner</p><a class="ig-link" href="/frameworks/transformers-agents/" data-astro-cid-nscl5cf7>查看 Transformers Agents 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>Upsonic</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无强制 planner，规划交给 LLM；可选 enable_thinking_tool/enable_reasoning_tool（agent.py:263）；deepagent 子包带 planning_toolkit/TodoList(tasks.py:11 引用)；Graph 把多 Task 显式编排成 DAG/链</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无强制 planner，规划交给 LLM；可选 enable_thinking_tool/enable_reasoning_tool（agent.py:263）；deepagent 子包带 planning_toolkit/TodoList(tasks.py:11 引用)；Graph 把多 Task 显式编排成 DAG/链</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>agent.py:263</code><code class="ref" data-astro-cid-nscl5cf7>src/upsonic/graph/graph.py:438</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>src/upsonic/storage/memory/session/agent.py:263</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> is_async_storage_backend(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.storage):</span></span>
+<span class="line"><span style="color:#F97583">                await</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.storage.aupsert_session(session, </span><span style="color:#FFAB70">deserialize</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">            else</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#79B8FF">                self</span><span style="color:#E1E4E8">.storage.upsert_session(session, </span><span style="color:#FFAB70">deserialize</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.debug:</span></span>
+<span class="line"><span style="color:#E1E4E8">                status_str </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "completed"</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> is_completed </span><span style="color:#F97583">else</span><span style="color:#9ECBFF"> "incomplete"</span></span>
+<span class="line"><span style="color:#E1E4E8">                info_log(</span></span>
+<span class="line"><span style="color:#F97583">                    f</span><span style="color:#9ECBFF">"Session saved for run </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">output.run_id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> (</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">status_str</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">)"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                    "AgentSessionMemory"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                )</span></span>
+<span class="line"><span style="color:#F97583">        except</span><span style="color:#79B8FF"> Exception</span><span style="color:#F97583"> as</span><span style="color:#E1E4E8"> e:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.debug:</span></span></code></pre></figure><a class="ig-link" href="/frameworks/upsonic/" data-astro-cid-nscl5cf7>查看 Upsonic 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>vectara-agentic</span><span class="badge lang" data-astro-cid-nscl5cf7>python</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM（base 指令鼓励“拆子问题”，prompts.py:54）。提供可选 内置 workflow 做显式分解：SubQuestionQueryWorkflow（并行子问题，@step(num_workers=8)）与 SequentialSubQuestionsWorkflow（顺序依赖）；旧的 StructuredPlanning 已在 v0.4 废弃</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无显式 planner；规划交给 LLM（base 指令鼓励“拆子问题”，prompts.py:54）。提供可选 内置 workflow 做显式分解：SubQuestionQueryWorkflow（并行子问题，@step(num_workers=8)）与 SequentialSubQuestionsWorkflow（顺序依赖）；旧的 StructuredPlanning 已在 v0.4 废弃</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>sub_query_workflow.py:23</code><code class="ref" data-astro-cid-nscl5cf7>sub_query_workflow.py:149</code><code class="ref" data-astro-cid-nscl5cf7>sub_query_workflow.py:199</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>vectara_agentic/sub_query_workflow.py:23</span><span class="cb-lang" data-astro-cid-nscl5cf7>python</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="python"><code><span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SubQuestionQueryWorkflow</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Workflow</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"><span style="color:#9ECBFF">    Workflow for sub-question query engine.</span></span>
+<span class="line"><span style="color:#9ECBFF">    """</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    # Workflow inputs/outputs</span></span>
+<span class="line"><span style="color:#F97583">    class</span><span style="color:#B392F0"> InputsModel</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BaseModel</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#9ECBFF">        """</span></span>
+<span class="line"><span style="color:#9ECBFF">        Inputs for the workflow.</span></span>
+<span class="line"><span style="color:#9ECBFF">        """</span></span></code></pre></figure><a class="ig-link" href="/frameworks/vectara-agentic/" data-astro-cid-nscl5cf7>查看 vectara-agentic 完整笔记 →</a></div></details><details class="ig-item" data-astro-cid-nscl5cf7><summary data-astro-cid-nscl5cf7><span class="ig-fw" data-astro-cid-nscl5cf7>VoltAgent</span><span class="badge lang" data-astro-cid-nscl5cf7>typescript</span><span class="ig-sum" data-astro-cid-nscl5cf7>内核无强制 planner；规划交给 LLM。独立的 PlanAgent（Claude-Code 风格）内建 write_todos 规划工具箱 + filesystem + subagent，强制&quot;多步任务先写 todo&quot;</span><span class="ig-caret" aria-hidden="true" data-astro-cid-nscl5cf7>+</span></summary><div class="ig-body" data-astro-cid-nscl5cf7><p class="ig-impl" data-astro-cid-nscl5cf7>内核无强制 planner；规划交给 LLM。独立的 PlanAgent（Claude-Code 风格）内建 write_todos 规划工具箱 + filesystem + subagent，强制&quot;多步任务先写 todo&quot;</p><div class="ig-refs" data-astro-cid-nscl5cf7><code class="ref" data-astro-cid-nscl5cf7>planagent/plan-agent.ts:45</code></div><figure class="codebox" data-astro-cid-nscl5cf7><figcaption class="cb-head" data-astro-cid-nscl5cf7><span class="cb-dots" data-astro-cid-nscl5cf7><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i><i data-astro-cid-nscl5cf7></i></span><span class="cb-path" data-astro-cid-nscl5cf7>packages/core/src/planagent/plan-agent.ts:45</span><span class="cb-lang" data-astro-cid-nscl5cf7>typescript</span></figcaption><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-astro-cid-nscl5cf7 data-language="typescript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> DEFAULT_GENERAL_PURPOSE_DESCRIPTION</span><span style="color:#F97583"> =</span></span>
+<span class="line"><span style="color:#9ECBFF">  "General-purpose agent for researching complex questions, searching for files and content, and executing multi-step tasks. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries use this agent to perform the search for you. This agent has access to all tools as the main agent."</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> PLANNING_SYSTEM_MESSAGE</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#9ECBFF">  "&#x3C;planagent_planning>"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Use write_todos to plan any multi-step task or any tool usage."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "If the user asks for a plan, you must call write_todos."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Before using any tool other than write_todos, call write_todos with a short plan."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Keep exactly one todo in_progress at a time and update the list as you go."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Only mark todos done after completing the work."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "&#x3C;/planagent_planning>"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">].</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">);</span></span></code></pre></figure><a class="ig-link" href="/frameworks/voltagent/" data-astro-cid-nscl5cf7>查看 VoltAgent 完整笔记 →</a></div></details></div></section></section></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

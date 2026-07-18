@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agent-LLM (AGiXT) · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Agent-LLM (AGiXT)</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge paradigm" data-astro-cid-fwpw2zac>rag</span><span class="badge" data-astro-cid-fwpw2zac>MIT (DevXT LLC 2025，见 LICENSE)</span><a class="badge" href="https://github.com/Josh-XT/Agent-LLM" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agent-llm/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agent-llm-agixt">Agent-LLM (AGiXT)</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">AGiXT 是一个”重型 AI 自动化平台”而非轻量库：以 FastAPI 服务 + 多租户 SQL 数据库为底座，把 agent / provider / chain / memory / extension 全部做成可配置的服务端资源，自带 97+ 内置 extension（从 Tesla、家居到数据库/邮件/社交）、多 LLM provider 抽象、pgvector 长期记忆、JSON 定义的工作流编排与定时任务，并暴露 OpenAI 兼容 API，目标是”用自然语言驱动数字与物理世界的中枢神经”。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AGiXT 的核心范式是 <strong>平台化（platform）</strong>——它不是 <code>import</code> 一个 Agent 类就能跑的库，而是一整套要 <code>agixt start</code> 起服务的应用。设计取舍：</p>
+<ul>
+<li><strong>一切皆服务端资源</strong>：agent、conversation、chain、memory、prompt、extension/provider 都落在 SQL 数据库（SQLite 或 Postgres，<code>agixt/DB.py:98</code> 按 <code>DATABASE_TYPE</code> 切换），通过 FastAPI 路由（<code>agixt/app.py:220</code> 起 <code>app = FastAPI(...)</code>，<code>agixt/endpoints/</code> 下 20+ router）增删改查。多租户、OAuth、计费（Stripe/crypto）、webhook 全部内建。</li>
+<li><strong>extension = 工具的唯一抽象</strong>：所有能力（包括 LLM provider 本身）都是继承 <code>Extensions</code> 的类，把方法挂进 <code>self.commands</code> 字典即成为 agent 可调用的命令（<code>agixt/Extensions.py:435</code>）。Provider 只是 <code>CATEGORY = "AI Provider"</code> 的特殊 extension（<code>agixt/Providers.py:57</code>）。</li>
+<li><strong>prompt 驱动的 ReAct 循环</strong>：推理不强依赖原生 function-calling，而是用 “Think About It” 提示让 LLM 输出 <code>&#x3C;thinking></code>/<code>&#x3C;reflection></code>/<code>&#x3C;answer></code>/<code>&#x3C;execute>&#x3C;name>…&#x3C;/name>&#x3C;/execute></code> 这类 XML 标签，平台解析 <code>&#x3C;execute></code> 块、执行命令、把 <code>&#x3C;output></code> 回灌再次推理（<code>agixt/Interactions.py:7058</code> 解析，<code>:7199</code> <code>execution_agent</code> 执行循环）。</li>
+<li><strong>三层封装</strong>：<code>Extensions</code>（工具/provider 底座）→ <code>Interactions</code>（推理/反思/命令选择与执行循环，<code>agixt/Interactions.py:1162</code>）→ <code>XT</code>（对外门面：<code>inference</code>、<code>chat_completions</code>、<code>run_chain_step</code>，<code>agixt/XT.py</code>）。</li>
+<li><strong>入口形态</strong>：CLI <code>agixt=agixt.cli:main</code>（<code>setup.py:47</code>）启动；编程入口是 OpenAI 兼容的 <code>XT.chat_completions</code>（<code>agixt/XT.py:2783</code>）或 <code>XT.inference</code>（<code>agixt/XT.py:736</code>）。</li>
+</ul>
+<p>最小示例（取自 docs/README.md 的 Quick Start）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 安装并启动平台（起 FastAPI 服务，默认 7437 端口）</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> agixt</span></span>
+<span class="line"><span style="color:#B392F0">agixt</span><span style="color:#9ECBFF"> start</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># 通过官方 SDK 以 OpenAI 兼容方式调用已配置好的 agent</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agixtsdk </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> AGiXTSDK</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">sdk </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> AGiXTSDK(</span><span style="color:#FFAB70">base_uri</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"http://localhost:7437"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"YOUR_API_KEY"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sdk.prompt_agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    agent_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"AGiXT"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    prompt_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Think About It"</span><span style="color:#E1E4E8">,          </span><span style="color:#6A737D"># 触发 ReAct/反思式推理循环</span></span>
+<span class="line"><span style="color:#FFAB70">    prompt_args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"user_input"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Search the web for Python tutorials and summarize."</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(response)</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>自定义 XML 标签 ReAct+反思：LLM 输出 <code>&#x3C;thinking></code>/<code>&#x3C;reflection></code>/<code>&#x3C;execute>&#x3C;name>…&#x3C;/name>&#x3C;/execute></code>/<code>&#x3C;answer></code>，平台正则解析 <code>&#x3C;execute></code> 块→执行→把 <code>&#x3C;output></code> 回灌再次推理，直到出现完整 <code>&#x3C;answer></code>；非纯原生 function-calling</td><td><code>Interactions.py:7058</code> (解析 execute 块), <code>Interactions.py:7199</code> (<code>execution_agent</code>), <code>Interactions.py:3247</code> (<code>run_stream</code>), <code>Interactions.py:64</code> (<code>_RE_EXECUTE_TAG</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>①隐式：靠 “Think About It” 提示让 LLM 自己 thinking/reflection；②显式：用 JSON <strong>Chain</strong> 预编排多步工作流（如 <code>chains/Smart Instruct.json</code>、<code>Generate Task Chain.json</code>）；命令选择阶段先让 LLM 挑出相关命令及其前置命令</td><td><code>Interactions.py:2831</code> (命令选择 prompt), <code>agixt/chains/*.json</code>, <code>Chain.py:38</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=数据库里的 Conversation/Message；长期=向量记忆，<code>Memory</code> 表 <code>embedding = Column(Vector)</code>（Postgres 走 pgvector），余弦相似度检索；embedding 用<strong>本地 ONNX 模型</strong>（<code>onnx/model.onnx</code>）离线生成，无需外部 embedding API</td><td><code>DB.py:2725</code> (<code>class Memory</code>/<code>Vector</code>), <code>DB.py:2775</code> (<code>calculate_vector_similarity</code>), <code>Memories.py:64</code> (<code>embed</code>), <code>Memories.py:73</code> (ONNX <code>InferenceSession</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>extension 类把方法挂进 <code>self.commands</code> 字典即成工具；运行时 <code>Extensions.execute_command</code> 按签名注入参数与 <code>injection_variables</code>（user_id/agent_id/ApiClient/凭据等）；支持 client-side 远程工具与 MCP（<code>Use MCP Server</code> 命令、<code>mcp_client.py</code>）</td><td><code>Extensions.py:435</code>, <code>Extensions.py:893</code> (<code>load_commands</code>), <code>Extensions.py:1045</code> (<code>execute_command</code>), <code>mcp_client.py</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>provider = <code>CATEGORY="AI Provider"</code> 的 extension，按 <code>services()</code>（llm/tts/image/embeddings/vision…）分类自动发现；<code>get_providers_by_service</code> 路由；内置 OpenAI/Anthropic/Gemini/Azure/DeepSeek/HuggingFace/ezlocalai 等（<code>extensions/*.py</code>）</td><td><code>Providers.py:23</code> (<code>_get_ai_provider_extensions</code>), <code>Providers.py:204</code> (<code>get_providers_by_service</code>), <code>agixt/extensions/openai.py</code> 等</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>①agent 互调：extension 命令内经 <code>self.ApiClient.prompt_agent(...)</code> 让一个 agent 调另一个 agent（<code>automation_helpers.py:264</code>）；②Chain 可在步骤里指定不同 <code>agent_name</code> 串接多 agent；③各 BotManager（Discord/Slack/Teams…）+ <code>WorkerRegistry</code>/<code>BotManagerRegistry</code> 做渠道侧编排</td><td><code>automation_helpers.py:264</code>, <code>XT.py:1004</code> (<code>run_chain_step</code>, 每步可 <code>agent_override</code>), <code>WorkerRegistry.py</code>, <code>BotManagerRegistry.py</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>注入向量记忆（<code>injected_memories</code>/<code>context_results</code>）+ 近期对话（<code>conversation_results</code>）+ 可选 web 搜索（<code>Websearch.py</code>）+ 浏览链接；<strong>两段式命令选择</strong>先用大窗口模型从全部命令里筛出相关子集再注入，控制工具上下文膨胀；对话历史可压缩</td><td><code>Interactions.py:3247</code> (<code>run_stream</code> 组装上下文), <code>Interactions.py:2831</code> (命令选择), <code>Websearch.py</code>, <code>Interactions.py:2521</code> (历史压缩)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>extension 即插件体系：97+ 内置（<code>agixt/extensions/</code>），可自定义并经 <strong>Extensions Hub</strong> 从外部 git 仓库/本地路径热加载（<code>EXTENSIONS_HUB</code> 环境变量，<code>ExtensionsHub.py</code>）；extension 可带 SQLAlchemy 模型、FastAPI 路由、WebSocket、webhook、Desktop UI 包</td><td><code>agixt/extensions/</code> (97 文件), <code>ExtensionsHub.py</code>, <code>extensions/README.md</code> (扩展开发规范), <code>Marketplace.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>全程把活动写入 conversation 日志（<code>[ACTIVITY]</code>/<code>[SUBACTIVITY]</code> 标记，含命令执行成功/失败）；webhook 事件 <code>command.execution.started/failed</code>（<code>Extensions.py:1078</code>）；<code>UsageTrackingMiddleware</code> 记 token/用量；评估类 chain（Smart Instruct）做自反思。无独立 eval harness（待确认）</td><td><code>Interactions.py:7542</code> (subactivity 日志), <code>Extensions.py:1078</code> (webhook 事件), <code>middleware.py</code> (<code>UsageTrackingMiddleware</code>), <code>session_tracker.py</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>FastAPI + uvicorn 服务（<code>app.py:220</code>），Docker/<code>docker-compose.yml</code> 部署；危险代码经 <code>safeexecute</code>（Docker 沙箱执行库，见 requirements）隔离；<code>agixt start</code> CLI 一键起服务，ngrok 内网穿透可选</td><td><code>app.py:220</code>, <code>Dockerfile</code>, <code>docker-compose.yml</code>, <code>cli.py</code>, <code>run-local.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>多租户 + RBAC：<code>MagicalAuth.py</code> 做认证/OAuth/角色，<code>endpoints/Roles.py</code>；extension 自动派生 <code>ext:&#x3C;name>:read/execute/configure</code> 权限作用域；<code>CriticalEndpointProtectionMiddleware</code>/<code>middleware.py</code> 端点保护；可经聊天渠道由人审批/介入。无内置逐工具调用审批 UI（待确认）</td><td><code>MagicalAuth.py</code>, <code>endpoints/Roles.py</code>, <code>middleware.py:258</code> (<code>CriticalEndpointProtectionMiddleware</code>), <code>extensions/README.md</code> (scopes 章节)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>全部状态入 SQL：<code>Agent</code>/<code>Conversation</code>/<code>Message</code>/<code>Chain</code>/<code>ChainStep</code>/<code>ChainStepResponse</code>/<code>Memory</code>/<code>TaskItem</code> 等 SQLAlchemy 模型（<code>DB.py</code>）；SQLite 或 Postgres 二选一；定时/重复任务由 <code>Task</code>+<code>TaskMonitor</code> 持久化调度（<code>scheduled</code>/<code>due_date</code>/cron 式重复）</td><td><code>DB.py:1594</code> (<code>Agent</code>), <code>DB.py:1939</code> (<code>Chain</code>), <code>DB.py:2169</code> (<code>TaskItem</code>), <code>DB.py:2725</code> (<code>Memory</code>), <code>Task.py:64</code> (<code>create_task</code>), <code>TaskMonitor.py</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>平台 vs 库</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a>（薄库，两行起 agent）相反，AGiXT 是”先起服务、再配资源”的整套后端。强项是开箱即用的企业级能力（多租户、OAuth、计费、webhook、97+ 集成、定时任务、OpenAI 兼容 API）；代价是依赖极重（playwright、spacy、onnxruntime、SQLAlchemy、stripe、solana、各种厂商 SDK，<code>requirements.txt</code> 近 90 项）且必须跑 DB+服务，单文件极简场景不适用。</li>
+<li><strong>extension 一统天下</strong>：把 tool 与 LLM provider 统一成同一种 <code>Extensions</code> 抽象（provider 只是 <code>CATEGORY="AI Provider"</code>），并支持从外部 git 仓库热加载 hub，是其最大特色——生态扩展边界清晰，但也意味着新增任何能力都要遵循这套服务端约定（命名、<code>self.commands</code>、<code>__init__</code> 显式参数）。</li>
+<li><strong>prompt 标签式 ReAct 而非原生 function-calling</strong>：用 <code>&#x3C;execute>&#x3C;name>…&#x3C;/name>&#x3C;/execute></code> 文本协议解析工具调用，跨 provider 一致（连不支持 function-calling 的模型也能用），但需要大量正则与”标签是真调用还是文中提及”的鲁棒性处理（<code>Interactions.py</code> 中可见对 <code>&#x3C;answer></code>/<code>&#x3C;execute></code> 误用的纠偏逻辑），脆弱性高于结构化 tool-calls。</li>
+<li><strong>两段式命令选择控上下文</strong>：面对 97+ extension 的海量命令，先用大窗口模型筛出相关命令子集再注入推理上下文（<code>Interactions.py:2831</code>），缓解工具列表爆炸——是平台级框架特有的工程取舍。</li>
+<li><strong>本地 ONNX embedding + pgvector</strong>：长期记忆用本地 ONNX 模型生成向量、Postgres pgvector 存储检索，避免外部 embedding API 依赖与成本，适合自托管。</li>
+<li><strong>待确认/坑</strong>：①目标仓库标注为 <code>Josh-XT/Agent-LLM</code>，但代码与品牌已全面更名为 <strong>AGiXT</strong>（<code>Josh-XT/AGiXT</code>），Agent-LLM 实为其历史名/重定向；②可观测仅靠对话活动日志 + webhook + 用量中间件，无独立 eval/tracing harness（待确认是否有外部 evals 仓库）；③人在环主要靠 RBAC/权限作用域与聊天渠道审批，未见内置”逐工具调用确认”UI（待确认）；④代码量巨大（单 <code>DB.py</code>/<code>Interactions.py</code>/<code>XT.py</code> 均数十万字符），单文件远超常规可维护阈值。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式（platform/电池全包）：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/agent-llm/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

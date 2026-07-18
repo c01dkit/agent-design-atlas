@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Llama Agentic System (llama-stack-apps) · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Llama Agentic System (llama-stack-apps)</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>model-stack</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/meta-llama/llama-agentic-system" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/llama-agentic-system/</span></div><div class="cov-strip" aria-label="组件覆盖 9/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>9/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="llama-agentic-system-llama-stack-apps">Llama Agentic System (llama-stack-apps)</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">Meta 官方的 Llama agentic 参考实现，已演进并改名为 llama-stack-apps：它本身是一组”客户端应用样例”，真正的 agentic 内核被下沉到 Llama Stack 这套标准化 API 平台——把 inference / safety(Llama Guard shields) / tool execution / 多步推理循环统一抽象为服务端 API，客户端只用 llama-stack-client SDK 的 Agent 即可拼出 RAG、ReAct、带安全护栏的 agent，model-stack 范式的代表。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>这个仓库的核心定位是 <strong>model-stack（模型即栈）</strong>：与 ConnectOnion/CrewAI 那种”框架自带 agent loop”不同，llama-stack-apps 自己几乎不实现 agent 逻辑——它是 <strong>Llama Stack</strong> 的”消费端”。设计取舍：</p>
+<ul>
+<li><strong>三层分离</strong>：① <code>llama-stack</code>（服务端，独立仓库，跑在 <code>:8321</code>，提供 Agents/Inference/Safety/VectorIO/ToolRuntime 等 API）；② <code>llama-stack-client</code>（Python/Node/Swift/Kotlin SDK，封装 <code>Agent</code>、<code>ReActAgent</code>、<code>ClientTool</code>、<code>AgentEventLogger</code>）；③ 本仓库 <code>examples/</code>（hello/rag/react/multimodal 脚本 + <code>agent_store</code>/<code>interior_design_assistant</code> 等 Gradio/移动端样例）。<code>requirements.txt:6</code> 仅依赖 <code>llama-stack-client>=0.1.0</code>，证明 agent 运行时不在本仓库内（待确认：SDK 源码在 <code>llama-stack-client-python</code> 仓库，本地不可见）。</li>
+<li><strong>Distribution 概念</strong>：README 强调各 API 的具体实现被”组装”成一个 <strong>Llama Stack Distribution</strong>，开发者只需把 app 指向 server URL（<code>examples/agents/simple_chat.py:25</code>）。</li>
+<li><strong>Agentic Loop 是服务端契约</strong>：<code>docs/sequence-diagram.md</code> 给出权威时序——一个 Turn 内 Executor 串起 ShieldCallStep → InferenceStep →（ToolCallStep + Shield + Inference 的循环）→ 最终 Shield → 输出；<strong>安全护栏(Shields)是与推理/工具同级的一等步骤</strong>，这是本框架最鲜明的特征。</li>
+<li><strong>Tools 三态</strong>：built-in（模型内建知识，如 <code>builtin::websearch</code>/<code>builtin::rag</code>）、zero-shot（in-context 传入的 client tool）、code interpreter；客户端工具用 <code>@client_tool</code> 装饰普通函数或继承 <code>ClientTool</code> 类实现。</li>
+<li><strong>入口 API</strong>：<code>from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger</code>，<code>agent.create_session()</code> → <code>agent.create_turn()</code>（<code>examples/agents/agent_with_tools.py:14,45,60,70</code>）。</li>
+</ul>
+<p>最小示例（取自 README <code>examples/agents/hello</code> 风格，见 <code>examples/agents/simple_chat.py</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> os</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> llama_stack_client </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> LlamaStackClient, Agent, AgentEventLogger</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 1. 连接到 Llama Stack server (须先单独启动 server)</span></span>
+<span class="line"><span style="color:#E1E4E8">client </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> LlamaStackClient(</span></span>
+<span class="line"><span style="color:#FFAB70">    base_url</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"http://localhost:8321"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    provider_data</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"tavily_search_api_key"</span><span style="color:#E1E4E8">: os.getenv(</span><span style="color:#9ECBFF">"TAVILY_SEARCH_API_KEY"</span><span style="color:#E1E4E8">)},</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. Llama Guard shields 作为输入/输出安全护栏(一等步骤)</span></span>
+<span class="line"><span style="color:#E1E4E8">available_shields </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [s.identifier </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> s </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> client.shields.list()]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#E1E4E8">    client,</span></span>
+<span class="line"><span style="color:#FFAB70">    model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"meta-llama/Llama-3.1-8B-Instruct"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    instructions</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"You are a helpful assistant."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span><span style="color:#9ECBFF">"builtin::websearch"</span><span style="color:#E1E4E8">],          </span><span style="color:#6A737D"># 服务端内建工具</span></span>
+<span class="line"><span style="color:#FFAB70">    input_shields</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">available_shields,        </span><span style="color:#6A737D"># 输入护栏</span></span>
+<span class="line"><span style="color:#FFAB70">    output_shields</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">available_shields,       </span><span style="color:#6A737D"># 输出护栏</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">session_id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent.create_session(</span><span style="color:#9ECBFF">"test-session"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent.create_turn(</span></span>
+<span class="line"><span style="color:#FFAB70">    messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Hello"</span><span style="color:#E1E4E8">}],</span></span>
+<span class="line"><span style="color:#FFAB70">    session_id</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">session_id,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> log </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> AgentEventLogger().log(response):   </span><span style="color:#6A737D"># 流式打印 inference/shield/tool 步骤</span></span>
+<span class="line"><span style="color:#E1E4E8">    log.print()</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>服务端 Agentic Loop：一个 Turn 内 Executor 串 Shield→Inference→(Tool+Inference 循环)→Shield→输出；客户端经 <code>create_turn</code> 触发，<code>AgentEventLogger</code> 流式回放 inference/shield/tool_execution 步骤。另有 <code>ReActAgent</code> 提供 ReAct 范式(JSON schema 约束输出)</td><td><code>docs/sequence-diagram.md:1</code>, <code>examples/agents/agent_with_tools.py:70</code>, <code>examples/agents/react_agent.py:55</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无独立 planner；多步推理交给模型自身(README “breaking a task down and performing multi-step reasoning”)。<code>ReActAgent</code> 用 <code>ReActOutput</code> schema 引导”思考-行动”结构化分解</td><td><code>examples/agents/react_agent.py:12,55,59</code>, <code>README.md:7</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=服务端 session(<code>enable_session_persistence</code>，<code>create_session</code>/<code>create_turn</code> 维持多轮)；长期/向量=<code>builtin::rag</code> + VectorIO API，<code>vector_dbs.register</code> 建库、<code>tool_runtime.rag_tool.insert</code> 灌库(all-MiniLM-L6-v2/384 维)；<code>agent_store</code> 还有 “live memory bank” 动态写入</td><td><code>examples/agents/rag_agent.py:63,72,80</code>, <code>examples/agent_store/api.py:67,259</code></td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>三态：built-in(<code>builtin::websearch</code>/<code>builtin::rag/knowledge_search</code>)、client tool(<code>@client_tool</code> 装饰函数 / 继承 <code>ClientTool</code> 实现 <code>get_params_definition</code>+<code>run_impl</code>)、code interpreter。工具以 list 传入 <code>Agent(tools=[...])</code></td><td><code>examples/client_tools/calculator.py:9</code>, <code>examples/client_tools/web_search.py:155</code>, <code>examples/agents/agent_with_tools.py:52</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>模型抽象在服务端 Inference API；客户端按 <code>model_id</code> 字符串选模型，<code>client.models.list()</code> 发现可用模型(区分 <code>model_type=="llm"</code> 与含 “guard” 的安全模型)。模型族=Llama 3.1/3.2 等</td><td><code>examples/agents/utils.py:5,24</code>, <code>examples/agent_store/api.py:35</code>, <code>README.md:5</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>无框架级编排原语；<code>agent_store</code> 做应用层”多 agent + 路由”：注册 WebSearch / Memory 两个独立 Agent，由 UI dropdown 选择派发(<code>AgentChoice</code> 枚举)。无 agent 间自动通信/委派</td><td><code>examples/agent_store/api.py:27,52,208</code>, <code>examples/agent_store/app.py:45</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><code>instructions</code>(system prompt) + <code>sampling_params</code>(top_p/greedy)；document/attachment 注入(<code>agent.create_turn(documents=...)</code>)，RAG <code>query_config</code>(max_chunks/max_tokens_in_context) 控制召回上下文长度；首轮注入 system message 的手动管理</td><td><code>examples/agents/chat_with_documents.py:83,90</code>, <code>examples/agent_store/api.py:100,216</code>, <code>examples/agents/agent_with_tools.py:49</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无 skills/plugin 体系；扩展点是 toolgroups(<code>builtin::*</code>) 与 client tools。能力以”工具组”形态从服务端 provider 暴露</td><td>N/A（<code>examples/agent_store/api.py:96</code> 仅 toolgroups）</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>可观测=<code>AgentEventLogger</code>/<code>EventLogger</code> 流式打印每步(shield_call/inference/tool_execution)，turn.steps 可遍历 step_type；评估=<code>llama-stack-client eval run_scoring</code> CLI + <code>agent_store/eval/bulk_generate.py</code> 批量跑数据集生成答案再打分</td><td><code>examples/agents/react_agent.py:73</code>, <code>examples/agent_store/api.py:250</code>, <code>examples/agent_store/eval/bulk_generate.py:25,53</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>C/S 架构：server 单独启动(<code>llama stack run</code>，uvicorn <code>:8321</code>)，client app 经 HTTP 连接。部署形态多样：CLI 脚本(<code>python -m examples.agents.*</code>)、Gradio web(<code>agent_store</code>/<code>interior_design_assistant</code>)、桌面(DocQA .dmg/PyInstaller)、移动端(android/iOS 样例)</td><td><code>README.md:52,107</code>, <code>examples/agent_store/app.py:151</code>, <code>examples/DocQA/app.py</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>治理核心=<strong>Llama Guard Shields</strong>：<code>input_shields</code>/<code>output_shields</code> 在推理前后做安全过滤(ShieldCallStep)，含 code/cybersec shield 拦截工具调用代码；<code>client.shields.list()</code> 发现。无审批/打断式 HITL，但有人工反馈(“Ingest into Memory Bank”点赞写回)</td><td><code>examples/agents/simple_chat.py:30,50</code>, <code>docs/sequence-diagram.md:14</code>, <code>examples/agent_store/app.py:66</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>服务端会话持久化(<code>enable_session_persistence=True</code>)；agent_id/session_id 由 server 分配并复用；向量库 register 后持久；客户端侧仅缓存 chat_history/context(内存字典)</td><td><code>examples/agent_store/api.py:131,156,169</code>, <code>examples/agents/simple_chat.py:53</code>, <code>examples/agent_store/app.py:18</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>平台/栈优先 vs 库优先</strong>：最大特征是”agent 逻辑在服务端”。优点：多语言客户端(py/node/swift/kotlin)共享同一 server 契约、Distribution 可换实现、安全/工具/向量统一标准化；代价：必须先跑起一个 Llama Stack server 才能用，本仓库脱离 server 不可独立运行，学习曲线在”理解 Stack API”而非读本仓库代码。</li>
+<li><strong>安全是一等公民</strong>：Shields(Llama Guard) 被设计成与 inference/tool 同级的循环步骤(<code>docs/sequence-diagram.md</code>)，并区分 prompt shield / code-cybersec shield / output shield——这是多数 agent 框架缺失的、Meta 主打的差异化卖点。</li>
+<li><strong>样例仓库的本质</strong>：本仓库代码量小、几乎全是 <code>examples/</code>，真正可复用的抽象(<code>Agent</code>/<code>ReActAgent</code>/<code>ClientTool</code>/<code>AgentEventLogger</code>)都来自 <code>llama-stack-client</code> SDK。要理解内核需读 SDK 与 <code>llama-stack</code> server 两个外部仓库。</li>
+<li><strong>绑定 Llama 生态</strong>：默认面向 Llama 3.1/3.2 系列与 Llama Guard，模型发现/选择都假设 Llama Stack 后端；虽 Inference API 理论上可接其它 provider，但本仓库样例未展示。</li>
+<li><strong>待确认</strong>：① 本地 commit <code>10eff82</code>(2025-08-05)，仓库已改名 <code>llama-stack-apps</code>，README/import 与原 <code>llama-agentic-system</code> 名称已不一致(框架名为历史名)；② SDK 内部的真实 reasoning loop/记忆/模型路由实现不在本地源码内，表中相关条目据 examples 调用方式与官方时序图推断，SDK 行级实现待确认；③ <code>agent_store/api.py:204</code> 残留旧 <code>client.memory.insert</code> API 与新 <code>tool_runtime.rag_tool.insert</code> 并存，存在版本漂移。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/human-in-the-loop-governance/">human-in-the-loop-governance</a></li>
+<li>同范式(model-stack/平台契约)：<a class="wikilink" href="/frameworks/semantic-kernel/">semantic-kernel</a> · <a class="wikilink" href="/frameworks/haystack/">haystack</a> · 源码：<code>agents-example/llama-agentic-system/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

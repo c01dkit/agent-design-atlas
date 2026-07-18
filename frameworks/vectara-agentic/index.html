@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>vectara-agentic · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>vectara-agentic</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>rag</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0</span><a class="badge" href="https://github.com/vectara/py-vectara-agentic" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/vectara-agentic/</span></div><div class="cov-strip" aria-label="组件覆盖 9/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:2" title="治理: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>9/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="vectara-agentic">vectara-agentic</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个构建在 LlamaIndex Agent 框架之上的 Agentic-RAG 库：核心卖点是把 Vectara 的检索/RAG 管线“一行代码封装成工具”（create_rag_tool / create_search_tool），再让 ReAct 或 Function-Calling agent 调度这些工具；并内置多 LLM provider、流式、可观测（Arize Phoenix）以及 Vectara 自家的幻觉纠正（VHC）。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>vectara-agentic 不重写 agent 内核，而是 <strong>薄封装 LlamaIndex 的 workflow-based agent</strong>（<code>FunctionAgent</code> / <code>ReActAgent</code>），把自己的价值集中在“检索即工具”和“RAG 专属配套能力”上。设计取舍：</p>
+<ul>
+<li><strong>检索封装为工具（核心范式）</strong>：<code>VectaraToolFactory.create_rag_tool()</code>（<code>vectara_agentic/tools.py:448</code>）与 <code>create_search_tool()</code>（<code>tools.py:199</code>）把一次 Vectara RAG/检索调用动态生成成一个 <code>FunctionTool</code>。RAG 工具<strong>自动注入 <code>query</code> 参数</strong>，再追加用户用 Pydantic schema（<code>tool_args_schema</code>）声明的元数据过滤字段（如 <code>year</code>/<code>ticker</code>）；这些字段经 <code>build_filter_string</code>（<code>tool_utils.py:543</code>）翻译成 Vectara 的 metadata filter，并支持 <code>year='>2022'</code> 这类条件表达式。</li>
+<li><strong>工厂模式 + 动态函数</strong>：所有工具都经 <code>create_tool_from_dynamic_function</code>（<code>tool_utils.py:386</code>）根据签名/schema 生成；<code>ToolsFactory.create_tool()</code>（<code>tools.py:763</code>）把任意 Python 函数转工具，<code>get_llama_index_tools()</code>（<code>tools.py:784</code>）桥接 LlamaIndex ToolSpecs（Tavily/EXA/arXiv/Slack/Google 等）。</li>
+<li><strong>薄 Agent 内核</strong>：<code>Agent</code> 类（<code>vectara_agentic/agent.py:78</code>）只持有 tools/memory/config，真正的 agent 由 <code>create_agent_from_config</code>（<code>agent_core/factory.py:157</code>）按 <code>agent_type</code> 委托给 LlamaIndex 的 <code>FunctionAgent</code> 或 <code>ReActAgent</code>。两类 agent 都是 LlamaIndex workflow，<code>achat()</code> 内部用 <code>current_agent.run(...)</code> 跑 workflow（<code>agent.py:602</code>）。</li>
+<li><strong>配置集中</strong>：<code>AgentConfig</code>（冻结 dataclass，<code>agent_config.py:10</code>）统一 agent_type、main/tool 两套 LLM provider、private LLM、observer，全部可由环境变量回退。</li>
+<li><strong>入口 API</strong>：<code>from vectara_agentic import Agent</code>；<code>agent.chat()</code> / <code>achat()</code> 返回 <code>AgentResponse</code>，<code>stream_chat()</code> / <code>astream_chat()</code> 返回 <code>AgentStreamingResponse</code>（<code>types.py:111</code>）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> os</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> vectara_agentic.tools </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> VectaraToolFactory</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> vectara_agentic </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pydantic </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> BaseModel, Field</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">vec_factory </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> VectaraToolFactory(</span></span>
+<span class="line"><span style="color:#FFAB70">    vectara_api_key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">os.environ[</span><span style="color:#9ECBFF">"VECTARA_API_KEY"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#FFAB70">    vectara_corpus_key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">os.environ[</span><span style="color:#9ECBFF">"VECTARA_CORPUS_KEY"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> QueryFinancialReportsArgs</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BaseModel</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">    year: </span><span style="color:#79B8FF">int</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> str</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Field(</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">description</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"The year, e.g. 2022 or '>2020'"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    ticker: </span><span style="color:#79B8FF">str</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Field(</span><span style="color:#79B8FF">...</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">description</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"The company ticker, e.g. AAPL"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 检索被封装成一个工具；query 参数由 create_rag_tool 自动添加</span></span>
+<span class="line"><span style="color:#E1E4E8">ask_finance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> vec_factory.create_rag_tool(</span></span>
+<span class="line"><span style="color:#FFAB70">    tool_name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"query_financial_reports"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    tool_description</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Query financial reports for a company and year"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    tool_args_schema</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">QueryFinancialReportsArgs,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[ask_finance],</span></span>
+<span class="line"><span style="color:#FFAB70">    topic</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"10-K annual financial reports"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    custom_instructions</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"You are a helpful financial assistant."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(agent.chat(</span><span style="color:#9ECBFF">"What was the revenue for Apple in 2021?"</span><span style="color:#E1E4E8">).response)</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>不自研循环，复用 LlamaIndex 的 workflow agent：<code>AgentType.FUNCTION_CALLING</code>（原生 function calling，默认）或 <code>REACT</code>（Thought/Action/Observation 文本协议）。<code>achat()</code> 经 <code>current_agent.run(user_msg, memory, ctx)</code> 驱动 workflow，循环由 LlamaIndex <code>FunctionAgent</code>/<code>ReActAgent</code> 内部完成</td><td><code>agent.py:592</code> (分支), <code>agent.py:602</code> (<code>run</code>), <code>agent_core/factory.py:58</code> (<code>create_react_agent</code>), <code>factory.py:103</code> (<code>create_function_agent</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无显式 planner；规划交给 LLM（base 指令鼓励“拆子问题”，<code>prompts.py:54</code>）。提供可选 <strong>内置 workflow</strong> 做显式分解：<code>SubQuestionQueryWorkflow</code>（并行子问题，<code>@step(num_workers=8)</code>）与 <code>SequentialSubQuestionsWorkflow</code>（顺序依赖）；旧的 StructuredPlanning 已在 v0.4 废弃</td><td><code>sub_query_workflow.py:23</code>, <code>sub_query_workflow.py:149</code>, <code>sub_query_workflow.py:199</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=LlamaIndex <code>Memory.from_defaults(session_id=..., token_limit=65536)</code>（<code>agent.py:175</code>），workflow 内部管理、结束后从 <code>ctx.store.get("memory")</code> 回写（<code>agent.py:739</code>）；<code>chat_history</code> 可初始化（<code>agent.py:178</code>）。<strong>长期/向量记忆 N/A</strong>（向量检索属于 Vectara 语料层，不是 agent memory）</td><td><code>agent.py:175</code>, <code>agent.py:739</code>, <code>agent.py:259</code> (<code>clear_memory</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>三类来源：① Vectara RAG/search 工具（<code>tools.py:448</code> / <code>tools.py:199</code>）；② 任意 Python 函数 <code>ToolsFactory.create_tool</code>（<code>tools.py:763</code>）；③ LlamaIndex ToolSpecs 桥接 <code>get_llama_index_tools</code>（<code>tools.py:784</code>）。统一经 <code>create_tool_from_dynamic_function</code>（<code>tool_utils.py:386</code>）按签名+Pydantic schema 生成 <code>VectaraTool</code>；<code>get_current_date</code> 工具自动追加（<code>agent.py:133</code>）</td><td><code>tools.py:179</code> (<code>VectaraToolFactory</code>), <code>tool_utils.py:386</code>, <code>tools_catalog.py</code> (内置 legal/finance/db 工具)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>get_llm(role, config)</code>（<code>llm_utils.py:174</code>）按 provider 枚举工厂式实例化 LlamaIndex LLM；支持 OpenAI/Anthropic/Gemini/Together/GROQ/Bedrock/Cohere/Private(OpenAILike)。<strong>主 LLM 与工具 LLM 可分别配置</strong>（<code>LLMRole.MAIN</code>/<code>TOOL</code>，<code>types.py:52</code>）；带 LLM 实例缓存与各 provider 默认模型表</td><td><code>llm_utils.py:174</code> (<code>get_llm</code>), <code>llm_utils.py:19</code> (默认模型表), <code>agent_config.py:28</code> (main/tool provider)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>无内建多 agent 系统（无 agent-as-tool / handoff / swarm）。“多步协作”通过 workflow 内多个 <code>@step</code> 与子问题分解模拟；可在自定义 Workflow 的 <code>StartEvent</code> 拿到 <code>agent</code>/<code>tools</code>/<code>llm</code> 复用。<strong>多 agent 编排 N/A（仅单 agent + workflow）</strong></td><td><code>agent.py:1025</code> (<code>run</code>), <code>sub_query_workflow.py</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>提示词模板化：<code>GENERAL_PROMPT_TEMPLATE</code> / <code>REACT_PROMPT_TEMPLATE</code>（<code>prompts.py:134,150</code>）由 <code>format_prompt</code> 注入 topic/date/general+custom 指令（<code>factory.py:32</code>）。<code>get_general_instructions</code> 按是否含 DB 工具动态拼接指令（<code>prompts.py:111</code>）；强约束“仅基于工具输出、内联引用”。Gemini 工具需 <code>sanitize_tools_for_gemini</code>（<code>agent.py:153</code>）</td><td><code>prompts.py:35</code> (<code>_BASE_INSTRUCTIONS</code>), <code>factory.py:32</code> (<code>format_prompt</code>), <code>prompts.py:111</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立 skills/plugin 体系。扩展点是 <strong>自定义 Workflow</strong>（<code>workflow_cls</code>，<code>agent.py:1025</code>）与 ToolSpecs 生态接入（<code>tools.py:32</code> 的 <code>LI_packages</code> 注册表，含 yahoo_finance/arxiv/tavily/google/slack 等）。<strong>插件系统 N/A，以工具+workflow 为扩展面</strong></td><td><code>tools.py:32</code> (<code>LI_packages</code>), <code>agent.py:1040</code> (<code>workflow_cls</code>)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>内置 <strong>Arize Phoenix</strong>（OpenInference instrument LlamaIndex，<code>_observability.py:16</code> <code>setup_observer</code>），<code>eval_fcs()</code> 把 Vectara FCS 分数作为 span 评估写回（<code>_observability.py:101</code>）。回调 <code>AgentCallbackHandler</code>/<code>agent_progress_callback</code> 实时上报 <code>TOOL_CALL</code>/<code>TOOL_OUTPUT</code>（<code>agent.py:623</code>）。<strong>VHC（幻觉纠正）</strong> <code>compute_vhc</code>/<code>analyze_hallucinations</code> 是其独特评估能力</td><td><code>_observability.py:16</code>, <code>_observability.py:101</code>, <code>_callback.py</code>, <code>agent_core/utils/hallucination.py:113</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯 Python 库；<code>chat()</code> 用 <code>asyncio.run</code> 包裹 <code>achat()</code>（<code>agent.py:547</code>）。内置 <strong>OpenAI 兼容 HTTP 端点</strong>：<code>create_app()</code> 基于 FastAPI 暴露 <code>/chat</code>、<code>/v1/completions</code>、<code>/v1/chat</code>（X-API-Key 鉴权），<code>start_app()</code> 用 uvicorn 起服务（<code>agent_endpoint.py:95,240</code>）；附 Dockerfile</td><td><code>agent_endpoint.py:95</code> (<code>create_app</code>), <code>agent_endpoint.py:240</code> (<code>start_app</code>), <code>docker/Dockerfile</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>无审批/打断式 HITL（无 tool-approval 拦截）。治理偏“内容安全”：<code>get_bad_topics</code> 工具+指令限制可谈话题（<code>prompts.py:39</code>），工具按 <code>ToolType.QUERY</code>/<code>ACTION</code> 分类（<code>types.py:59</code>，可据此识别副作用工具），<code>validate_tools</code> 校验指令引用的工具是否存在（<code>agent.py:157</code>）。<strong>交互式人在环 N/A</strong></td><td><code>prompts.py:39</code>, <code>types.py:59</code>, <code>agent.py:157</code> (<code>validate_tool_consistency</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>Agent 可整体序列化：<code>dumps</code>/<code>loads</code>、<code>to_dict</code>/<code>from_dict</code>（<code>agent.py:1103</code>）经 <code>serialize_agent_to_dict</code>（<code>serialization.py:252</code>）落盘配置+工具+memory，并用 cloudpickle 处理自定义函数工具。<code>session_id</code>（默认 <code>topic:date</code>，<code>agent.py:169</code>）+ <code>Memory</code> 提供会话维度状态；带 fallback agent 配置切换（<code>agent.py:480</code>）</td><td><code>agent.py:1103</code>, <code>agent_core/serialization.py:252</code>, <code>serialization.py:285</code> (<code>deserialize_agent_from_dict</code>)</td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“RAG 优先、薄封装 LlamaIndex” vs 自研内核</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 那种自带循环/事件/插件的“电池全包”内核不同，vectara-agentic 几乎不自研 agent 循环——<code>FunctionAgent</code>/<code>ReActAgent</code> 全来自 LlamaIndex。它的差异化完全压在 <strong>“检索即工具”</strong> 这一层：<code>create_rag_tool</code> 自动注入 <code>query</code>、把 Pydantic 字段映射成 Vectara 元数据过滤、支持 <code>>2022</code> 条件与 <code>fixed_filter</code>，让“给语料配一个带过滤维度的检索工具”变成一行代码。</li>
+<li><strong>双 LLM 角色</strong>：主 agent LLM 与工具内部 LLM（summarize/rephrase 等）可分开配置（<code>LLMRole.MAIN</code>/<code>TOOL</code>），便于“强模型做编排、便宜模型做摘要”。</li>
+<li><strong>VHC（Vectara Hallucination Correction）是独特卖点</strong>：对最终回答做幻觉检测与纠正，且只采信标记为 <code>vhc_eligible=True</code> 的工具输出作为事实依据（<code>tools.py:489</code>、<code>agent.py:914</code>）。这是把厂商自有的事实一致性能力（FCS）下沉到 agent 评估层，同类通用框架罕见。</li>
+<li><strong>生产配套齐全</strong>：内置 Arize Phoenix 可观测、OpenAI 兼容 HTTP 端点、Docker、序列化（cloudpickle），定位“快速做出可上线的 Agentic-RAG 助手”。</li>
+<li><strong>能力边界 / 待确认</strong>：① <strong>无真正的多 agent 编排与交互式人在环/审批</strong>——多步靠 workflow 子问题分解模拟；② 强绑定 LlamaIndex 版本（<code>requirements.txt</code> 锁 <code>llama-index==0.14.7</code> 等精确版本），升级面较脆；③ 对 Vectara 平台有耦合（RAG 工具、VHC、FCS 评估均依赖 Vectara API key）；④ v0.4 起移除 Fireworks、OPENAI AgentType、StructuredPlanning、token counting（迁移注意，README 有说明）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/tool-use/">tool-use</a> · <a class="wikilink" href="/components/observability-eval/">observability-eval</a></li>
+<li>同范式(RAG/检索封装为工具)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/vectara-agentic/</code>
+
+</li>
+</ul>
+</div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

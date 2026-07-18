@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AgentField · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>AgentField</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>go</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>Apache-2.0</span><a class="badge" href="https://github.com/Agent-Field/agentfield" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agentfield/</span></div><div class="cov-strip" aria-label="组件覆盖 10/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:15" title="运行时: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>10/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agentfield">AgentField</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">面向 AI 后端的”生产基础设施”：一个 Kubernetes 风格的无状态 Go control plane + 多语言 SDK（Python/Go/TypeScript），把任意函数变成可被前端/后端/其他 agent/定时任务直接 curl 的 REST 端点；同时为每个 agent 颁发密码学身份（W3C DID/VC，类 Okta 的 IAM）、做跨 agent 路由编排、记忆、异步执行、人审暂停与可验证审计——目标是”用框架证明行为，用 AgentField 把 agent 跑成生产系统”。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AgentField 的范式是 <strong>platform / control-plane</strong>，而非单体 agent 库。它刻意把”写 agent 逻辑”与”跑 agent 生产化”分层，核心设计取舍：</p>
+<ul>
+<li><strong>控制平面与数据平面分离</strong>：control plane 是一个 <strong>无状态 Go 服务</strong>（Gin + zerolog + Viper），agent 进程从任意位置（笔记本、Docker、K8s）连上来注册能力；所有跨 agent 调用都经控制平面路由、构建 workflow DAG、注入 metrics、强制策略——<strong>禁止 agent 之间直连 HTTP</strong>（<code>CLAUDE.md</code> “Agent-to-Agent Communication”）。</li>
+<li><strong>装饰器即端点</strong>：SDK 侧用 <code>@app.reasoner()</code>（AI 判断）/ <code>@app.skill()</code>（确定性代码）装饰普通函数；<code>app.run()</code> 一行就把每个函数暴露为 <code>POST /api/v1/execute/{node}.{func}</code>，并在启动时自动向控制平面注册（service mesh，零配置）。最小侵入：无 DSL、无 YAML、无 graph wiring。</li>
+<li><strong>三层 monorepo</strong>：<code>control-plane/</code>（Go：<code>internal/{handlers,services,storage,events,core,...}</code> + <code>cmd/agentfield-server</code>、<code>cmd/af</code> CLI + 嵌入式 React/TS web UI）；<code>sdk/{python,go,typescript}</code>（构建 agent 的库，Python 基于 FastAPI/Uvicorn）；web UI 经 Go <code>embed</code> 打进单一二进制。</li>
+<li><strong>存储可切换</strong>：local 模式 SQLite+BoltDB（零外部依赖），cloud/PostgreSQL 模式（goose 迁移，生产就绪）；services 调统一 storage 接口，按 config 切后端。</li>
+<li><strong>身份内建</strong>：每个 agent 自动获得 W3C DID + Ed25519 密钥，每次执行可产出可离线验证的 Verifiable Credential（<code>af vc verify audit.json</code>）。</li>
+<li><strong>入口 API</strong>：<code>from agentfield import Agent, AIConfig</code>；核心动词 <code>app.ai()</code>（结构化 LLM）/<code>app.call()</code>（跨 agent）/<code>app.pause()</code>（人审）/<code>app.harness()</code>（多轮编码 agent）/<code>app.memory</code>/<code>app.discover()</code>/<code>app.note()</code>。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> agentfield </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Agent, AIConfig</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pydantic </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> BaseModel</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Agent(</span></span>
+<span class="line"><span style="color:#FFAB70">    node_id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"claims-processor"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    version</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"2.1.0"</span><span style="color:#E1E4E8">,                                  </span><span style="color:#6A737D"># 支持 canary / A-B / blue-green</span></span>
+<span class="line"><span style="color:#FFAB70">    ai_config</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">AIConfig(</span><span style="color:#FFAB70">model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"anthropic/claude-sonnet-4-20250514"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Decision</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">BaseModel</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">    action: </span><span style="color:#79B8FF">str</span><span style="color:#6A737D">        # "approve" | "deny" | "escalate"</span></span>
+<span class="line"><span style="color:#E1E4E8">    confidence: </span><span style="color:#79B8FF">float</span></span>
+<span class="line"><span style="color:#E1E4E8">    reasoning: </span><span style="color:#79B8FF">str</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@app.reasoner</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">tags</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span><span style="color:#9ECBFF">"insurance"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"critical"</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> evaluate_claim</span><span style="color:#E1E4E8">(claim: </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    decision </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> app.ai(                          </span><span style="color:#6A737D"># 结构化 AI 判断，返回 typed Pydantic</span></span>
+<span class="line"><span style="color:#FFAB70">        system</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Insurance claims adjuster. Evaluate and decide."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">        user</span><span style="color:#F97583">=</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Claim #</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">claim[</span><span style="color:#9ECBFF">'id'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">claim[</span><span style="color:#9ECBFF">'description'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">        schema</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">Decision,</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> decision.confidence </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 0.85</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">        await</span><span style="color:#E1E4E8"> app.pause(                             </span><span style="color:#6A737D"># 人审：挂起执行，webhook 通知，批准后恢复</span></span>
+<span class="line"><span style="color:#FFAB70">            approval_request_id</span><span style="color:#F97583">=</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"claim-</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">claim[</span><span style="color:#9ECBFF">'id'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">            approval_request_url</span><span style="color:#F97583">=</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"https://internal.acme.com/approvals/claim-</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">claim[</span><span style="color:#9ECBFF">'id'</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">            expires_in_hours</span><span style="color:#F97583">=</span><span style="color:#79B8FF">48</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> app.call(</span><span style="color:#9ECBFF">"notifier.send_decision"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">input</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{ </span><span style="color:#6A737D"># 跨 agent 调用，经控制平面 traced</span></span>
+<span class="line"><span style="color:#9ECBFF">        "claim_id"</span><span style="color:#E1E4E8">: claim[</span><span style="color:#9ECBFF">"id"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#9ECBFF">        "decision"</span><span style="color:#E1E4E8">: decision.model_dump(),</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> decision.model_dump()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app.run()</span></span>
+<span class="line"><span style="color:#6A737D"># 暴露：POST /api/v1/execute/claims-processor.evaluate_claim</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>框架本身<strong>不强制</strong> ReAct 内循环；单次推理是 <code>app.ai()</code> 一发 LLM 调用。当传 <code>tools=</code> 时进入 discover→call 工具循环（<code>execute_tool_call_loop</code>，默认 <code>max_tool_calls=25</code>）；更”自治”的多轮循环交给外部 harness（Claude Code/Codex 等）。控制平面则把多步建成 workflow DAG</td><td><code>sdk/python/agentfield/tool_calling.py:394</code> (<code>execute_tool_call_loop</code>), <code>tool_calling.py:48</code> (<code>max_tool_calls</code>), <code>agent_ai.py:257</code> (<code>ai</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无内建 planner；规划交给 LLM 自身或外部 harness。系统级”分解”体现为跨 agent <code>app.call()</code> 编排成 DAG，以及 harness 的 <code>permission_mode="plan"</code> 计划模式</td><td><code>agent.py:3710</code> (<code>call</code>), <code>harness/providers/claude.py:28</code> (<code>_PERMISSION_MAP</code> plan), <code>agent.py:3324</code> (<code>harness</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>控制平面托管的分布式记忆，<strong>四作用域</strong> global / session / actor / workflow(run)，读时按 workflow→session→actor→global 由窄到宽回退；KV + 向量检索（<code>/memory/vector</code> set/search，余弦 top_k，含 metadata filter），<strong>零外部依赖</strong>（内建于控制平面，无需 Redis）</td><td><code>sdk/python/agentfield/memory.py:1</code>(作用域文档), <code>control-plane/internal/handlers/memory.go</code>, <code>control-plane/internal/handlers/vector_memory.go:31</code> (<code>VectorSearchRequest</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>两类原语：<code>@app.reasoner</code>(AI)/<code>@app.skill</code>(确定性) 经装饰器自动转 REST 端点；<code>app.ai(tools=...)</code> 支持 raw OpenAI tool schema 或 <code>tools="discover"</code> 让 LLM 自动发现并调用 mesh 内其他 agent；底层用 LiteLLM function calling + 工具循环执行</td><td><code>decorators.py:49</code> (<code>reasoner</code>), <code>agent.py:1701</code> (<code>reasoner</code>), <code>agent.py:2573</code> (<code>skill</code>), <code>tool_calling.py:334</code> (<code>_build_tool_config</code>), <code>agent_ai.py:559</code>(tools 分支)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>经 <strong>LiteLLM</strong> 统一 100+ LLM provider（<code>AIConfig(model="anthropic/...")</code>）；<code>app.ai(schema=...)</code> 通过 system prompt 注入 schema 指令 + LiteLLM <code>response_format=json_schema</code> 双保险得到 typed 输出；支持 stream、多模态(image/audio)、temperature 等</td><td><code>agent_ai.py:26</code> (<code>_get_litellm</code>), <code>agent_ai.py:403</code>(schema 注入), <code>agent_ai.py:546</code>(<code>response_format</code>), <code>litellm_adapters.py</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>核心卖点：<code>app.call("node.func")</code> 经控制平面路由（绝不直连），自动传播 workflow/session/actor 上下文并构建 DAG；版本路由用加权轮询做 canary（5%→50%→100%），回 <code>X-Routed-Version</code>；<code>AgentRouter(prefix=...)</code> 做命名空间</td><td><code>agent.py:3710</code> (<code>call</code>), <code>control-plane/internal/handlers/execute.go:1567</code> (<code>selectVersionedAgent</code> 加权轮询), <code>execute.go:310</code> (<code>X-Routed-Version</code>), <code>router.py</code> (<code>AgentRouter</code>)</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>自动上下文传播（Workflow/Session/Actor/Execution ID 经 header 转发，<code>X-Workflow-ID</code>/<code>X-Execution-ID</code>）；<code>app.ai</code> 的 system/user/schema 拼装；harness 支持 <code>system_prompt</code> 覆盖与 <code>env</code> 注入。无内建 token 压缩/auto-compact（依赖外部 harness 自管）</td><td><code>agent.py:34</code> (<code>ExecutionContext</code>), <code>execution_context.py</code>, <code>agent_ai.py:402</code>(prompt 拼装), <code>agent.py:3335</code>(harness <code>system_prompt</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td><code>@app.skill()</code> = 确定性代码端点（与 reasoner 对称）；MCP 集成（<code>af add --mcp --url</code>，控制平面 <code>internal/mcp/</code>）；harness 4 providers(Claude Code/Codex/Gemini CLI/OpenCode) 作为可插拔”超能力”经 factory 装配</td><td><code>agent.py:2573</code> (<code>skill</code>), <code>harness/providers/_factory.py</code> (<code>build_provider</code>), <code>harness/providers/{claude,codex,gemini,opencode}.py</code>, <code>control-plane/internal/mcp/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>自动 workflow DAG 可视化（<code>GET /api/v1/workflows/{id}/dag</code>）；Prometheus <code>/metrics</code>（discovery 等用 promauto 埋点）；结构化 JSON 日志；执行时间线；<code>/health</code>+<code>/ready</code>(K8s)；<code>app.note()</code> 写审计日志。形式化 eval N/A（靠 VC 审计而非 eval 框架）</td><td><code>control-plane/internal/handlers/workflow_dag.go</code>, <code>control-plane/internal/handlers/discovery.go:18</code>(promauto), <code>agent.py:4190</code> (<code>note</code>), <code>control-plane/internal/handlers/execution_notes.go</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>无状态 Go 控制平面，水平扩展；同步 <code>POST /execute</code>、异步 fire-and-forget(<code>/execute/async</code>)+webhook(HMAC-SHA256 签名)、SSE 流(<code>/execute/stream</code>)；<strong>无超时上限</strong>（可跑数小时/天）；PostgreSQL 持久队列 + 租约原子处理、自动重试指数退避、背压/熔断；Docker/K8s ready</td><td><code>control-plane/internal/handlers/execute.go:1</code> , <code>control-plane/cmd/agentfield-server/main.go</code>, <code>control-plane/internal/services/webhook_dispatcher.go</code>, <code>control-plane/internal/storage/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><strong>双重</strong>：①执行级 <code>app.pause()</code> 把执行转 “waiting”，注册 future 后等审批 webhook 回调或超时恢复，crash-safe 可持久（<code>execute_pause.go</code>/<code>webhook_approval.go</code>）；②访问治理 = 类 Okta IAM：tag-based ALLOW/DENY 访问策略（按 priority 降序求值）+ tag VC 校验 + 跨 agent 调用 Ed25519 签名</td><td><code>agent.py:4369</code> (<code>pause</code>), <code>control-plane/internal/handlers/execute_pause.go</code>, <code>control-plane/internal/services/access_policy_service.go:68</code> (<code>EvaluateAccess</code>), <code>control-plane/internal/services/tag_vc_verifier.go</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>控制平面统一持久层：local=SQLite+BoltDB / cloud=PostgreSQL(goose 迁移)；执行记录、workflow execution、记忆四作用域、配置存储(<code>POST /api/v1/configs/:key</code>)、payload store 均落库；身份与 VC 链持久化可离线验证</td><td><code>control-plane/internal/storage/</code>, <code>control-plane/migrations/</code>, <code>control-plane/internal/services/payload_store.go</code>, <code>control-plane/internal/services/vc_storage.go</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“AI 后端”定位 vs 框架</strong>：作者明确把 LangChain/CrewAI/PydanticAI/OpenAI Agents SDK 归为”证明行为”的框架，把 Temporal/Airflow 归为工作流引擎，把 n8n/Zapier 归为可视化搭建——AgentField 自定位为三者之上的”运行层”。它<strong>不</strong>和你写 agent 逻辑的框架竞争，而是接管”路由、协调、抗故障、策略治理、审计”。可与任意框架组合。</li>
+<li><strong>编排类 Kubernetes，身份类 Okta</strong>：控制平面像 K8s（无状态、声明能力、健康状态机 pending→starting→ready→degraded→offline、加权流量路由）；身份像 Okta（每个 agent 一个 DID 而非共享 API key，VC 三级层次 Platform→Node→Function，tag 策略由基础设施而非 prompt 强制）。这套”给 agent 做 IAM”的设计在同类里少见。</li>
+<li><strong>多语言对等 SDK</strong>：Python（FastAPI 基座，DX 最全）、Go、TypeScript 都能注册 reasoner/skill；控制平面语言无关。Harness 编排（多轮编码 agent，Claude Code/Codex/Gemini CLI/OpenCode + schema 约束 + 成本/turn 上限 + 多层输出恢复）是较独特的”把 coding agent 当一等公民调度”能力。</li>
+<li><strong>可验证审计是一等公民</strong>：每次执行可产 tamper-proof VC，离线可验，配合 <code>app.note()</code> 与非否认签名，面向金融/保险/安全等合规场景（README 示例多为 claims/security/audit）。</li>
+<li><strong>强项 / tradeoff</strong>：强在”生产化”(异步/重试/canary/HITL/审计/服务发现)与零依赖记忆；tradeoff 是必须运行控制平面这一中心组件（所有跨 agent 流量过它），且推理智能本身较薄——复杂 agent 行为要靠 <code>app.ai</code> 自拼或外部 harness，框架不替你做 ReAct/planning。</li>
+<li><strong>待确认</strong>：① GitHub stars 数（README badge 动态、未在源码内固化）= 待确认；② TypeScript SDK 细节本次未逐文件核验（README/CLAUDE.md 声明存在）；③ <code>app.ai</code> 的 schema 既走 prompt 指令又走 <code>response_format</code>，对不支持 json_schema 的 provider 的回退行为本次未深入核验。</li>
+<li><strong>一致性</strong>：License 在 LICENSE 文件、README badge、Python <code>pyproject.toml</code>（<code>license = {text = "Apache-2.0"}</code>）三处一致为 <strong>Apache-2.0</strong>；版本 <code>VERSION</code>/<code>pyproject</code> 一致（0.1.89）。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a></li>
+<li>同范式(platform/控制平面+电池)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/agentfield/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

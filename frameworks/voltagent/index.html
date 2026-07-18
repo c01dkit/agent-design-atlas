@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>VoltAgent · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>VoltAgent</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>typescript</span><span class="badge paradigm" data-astro-cid-fwpw2zac>general</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/VoltAgent/voltagent" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/voltagent/</span></div><div class="cov-strip" aria-label="组件覆盖 12/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>12/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="voltagent">VoltAgent</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个开源 TypeScript AI Agent 工程平台：以 @voltagent/core 为内核，把 Agent、Tool(Zod)、Memory、RAG、Workflow、Guardrails、Voice、MCP/A2A 都建在 Vercel AI SDK (ai@6) 之上，全栈原生基于 OpenTelemetry 做 LLM 可观测——任何执行都生成 span/trace，配套自托管/云的 VoltOps Console 做实时追踪、评估与运维。卖点是”全代码可控的 agent + 生产级可见性”。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>VoltAgent 不自己造推理循环，而是<strong>当 Vercel AI SDK 的”工程化外壳”</strong>：Agent 把 <code>generateText/streamText/generateObject/streamObject</code> 包起来，注入 system prompt、tools、memory、guardrails、middleware、subagent、hooks 与 <strong>OpenTelemetry trace context</strong>，对外暴露统一的、可观测的 agent 运行时。设计取舍：</p>
+<ul>
+<li><strong>建在 AI SDK 之上而非重造</strong>：<code>model: openai("gpt-4o-mini")</code> 直接是 AI SDK 的 <code>LanguageModel</code>；多步工具循环交给 AI SDK 的 <code>stopWhen: stepCountIs(maxSteps)</code>（<code>packages/core/src/agent/agent.ts:1383</code>）。VoltAgent 只在外层加 span、guardrail、middleware、memory 持久化。</li>
+<li><strong>monorepo + 适配器分包</strong>：pnpm/lerna/nx workspace，~40 个包。<code>packages/core</code> 是骨架（agent/tool/memory/observability/workflow/mcp/retriever/voice/eval…），storage/vector/sandbox/provider/server 全部拆成独立适配器包（<code>libsql</code>/<code>postgres</code>/<code>supabase</code>/<code>cloudflare-d1</code>/<code>sandbox-e2b</code>/<code>sandbox-daytona</code>/<code>server-hono</code>/<code>server-elysia</code>/<code>anthropic-ai</code>/<code>google-ai</code>/<code>groq-ai</code>/<code>voice</code>/<code>scorers</code>/<code>evals</code>/<code>langfuse-exporter</code>…）。</li>
+<li><strong>观测是一等公民</strong>：<code>@voltagent/core</code> 直接依赖一整套 <code>@opentelemetry/*</code>；observability 用 3 个自定义 SpanProcessor（WebSocket 实时、LocalStorage 本地存、LazyRemoteExport→OTLP/VoltOps）把每次 agent/tool/workflow 调用变成可检索的 trace（<code>packages/core/src/observability/node/volt-agent-observability.ts:124</code>）。</li>
+<li><strong>入口 API 双层</strong>：<code>new Agent({...})</code> 定义单个 agent；<code>new VoltAgent({ agents, workflows, server, logger, observability })</code> 是顶层应用容器，负责注册表、全局 memory/observability、graceful shutdown 与起 HTTP server（<code>packages/core/src/voltagent.ts:33</code>）。</li>
+</ul>
+<p>最小示例（取自 README，TypeScript）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { VoltAgent, Agent, Memory } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@voltagent/core"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { LibSQLMemoryAdapter } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@voltagent/libsql"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createPinoLogger } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@voltagent/logger"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { honoServer } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@voltagent/server-hono"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { openai } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@ai-sdk/openai"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { weatherTool } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./tools"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> agent</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Agent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">"my-agent"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  instructions: </span><span style="color:#9ECBFF">"A helpful assistant that can check weather"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  model: </span><span style="color:#B392F0">openai</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"gpt-4o-mini"</span><span style="color:#E1E4E8">),       </span><span style="color:#6A737D">// 直接是 Vercel AI SDK 的 LanguageModel</span></span>
+<span class="line"><span style="color:#E1E4E8">  tools: [weatherTool],               </span><span style="color:#6A737D">// Zod 定义的 createTool</span></span>
+<span class="line"><span style="color:#E1E4E8">  memory: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Memory</span><span style="color:#E1E4E8">({                </span><span style="color:#6A737D">// 可插拔存储适配器</span></span>
+<span class="line"><span style="color:#E1E4E8">    storage: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> LibSQLMemoryAdapter</span><span style="color:#E1E4E8">({ url: </span><span style="color:#9ECBFF">"file:./.voltagent/memory.db"</span><span style="color:#E1E4E8"> }),</span></span>
+<span class="line"><span style="color:#E1E4E8">  }),</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 顶层容器：注册 agent/workflow，起 server，自动接 OpenTelemetry 观测</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> VoltAgent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  agents: { agent },</span></span>
+<span class="line"><span style="color:#E1E4E8">  server: </span><span style="color:#B392F0">honoServer</span><span style="color:#E1E4E8">(),               </span><span style="color:#6A737D">// http://localhost:3141，可连 VoltOps Console</span></span>
+<span class="line"><span style="color:#E1E4E8">  logger: </span><span style="color:#B392F0">createPinoLogger</span><span style="color:#E1E4E8">({ name: </span><span style="color:#9ECBFF">"my-agent-app"</span><span style="color:#E1E4E8"> }),</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>不自造循环：委托 Vercel AI SDK 的多步工具循环，<code>stopWhen: stepCountIs(maxSteps)</code> 控制步数（默认 maxSteps=5，启用 workspace 时=100）；每步 <code>onStepFinish</code> 回灌并写 trace。提供 generateText/streamText/generateObject/streamObject 四种入口</td><td><code>agent/agent.ts:1383</code> (<code>stepCountIs</code>), <code>agent/agent.ts:1081</code> (<code>defaultMaxSteps = workspace ? 100 : 5</code>), <code>agent/agent.ts:1190/1721/2756/3096</code></td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无强制 planner；规划交给 LLM。独立的 <strong>PlanAgent</strong>（Claude-Code 风格）内建 <code>write_todos</code> 规划工具箱 + filesystem + subagent，强制”多步任务先写 todo”</td><td><code>planagent/plan-agent.ts:45</code> (PLANNING_SYSTEM_MESSAGE), <code>planagent/planning/</code> (<code>WRITE_TODOS_TOOL_NAME</code>/<code>createPlanningToolkit</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td><code>Memory</code> 门面三件套：StorageAdapter(消息/会话/working memory)、VectorAdapter+EmbeddingAdapter(向量语义检索)；<code>getMessagesWithSemanticSearch</code> 把最近消息+语义召回拼接；<code>searchSimilar</code> 做向量检索；WorkingMemory 做结构化长期记忆</td><td><code>memory/index.ts:76</code> (<code>class Memory</code>), <code>memory/index.ts:321</code> (<code>getMessagesWithSemanticSearch</code>), <code>memory/index.ts:487</code> (<code>searchSimilar</code>), <code>memory/index.ts:698</code> (<code>getWorkingMemory</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>createTool</code>/<code>tool()</code> 用 Zod schema 定义工具，编译为 AI SDK <code>Tool</code>；支持 lifecycle hooks(onStart/onEnd)、<code>needsApproval</code>(HITL 审批)、Toolkit 分组、tool routing(embedding 检索式选工具)</td><td><code>tool/index.ts:311</code> (<code>createTool</code>), <code>tool/index.ts:198</code> (<code>class Tool</code>), <code>tool/toolkit.ts</code> (<code>createToolkit</code>), <code>tool/routing/</code> (<code>createEmbeddingToolSearchStrategy</code>)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>直接复用 Vercel AI SDK 的 <code>LanguageModel</code>/<code>EmbeddingModel</code>（OpenAI/Anthropic/Google/Groq/Mistral/xAI/Bedrock/Vertex/Ollama 等十余 provider 作 deps）；另有 <code>model-provider-registry</code> 把字符串模型名经 models.dev API 解析为 provider，按 env 自动选 + 本地缓存</td><td><code>registries/model-provider-registry.ts:12</code> (<code>ModelProvider</code>), <code>registries/model-provider-registry.ts:33</code> (models.dev), <code>core/package.json:5-49</code> (各 <code>@ai-sdk/*</code> deps)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>Supervisor/Sub-agent：<code>SubAgentManager</code> 经 <code>delegate_task</code> 工具把任务 <code>handoffTask</code> 给子 agent，<code>handoffToMultiple</code> 并行委派多个；另有 A2A server 协议跨进程协作</td><td><code>agent/subagent/index.ts:55</code> (<code>SubAgentManager</code>), <code>:319</code> (<code>handoffTask</code>), <code>:710</code> (<code>handoffToMultiple</code>), <code>:748</code> (<code>createDelegateTool</code>); <code>agent/types.ts</code> (<code>SupervisorConfig</code>); <code>packages/a2a-server/</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td>system prompt(instructions 静态/动态)、conversation buffer、消息归一化(message-normalizer)、按 token 的上下文裁剪(<code>contextLimit</code>)与 <code>apply-summarization</code> 摘要旧消息；createPrompt 工具</td><td><code>agent/agent.ts:5166</code> (<code>getSystemMessage</code>), <code>agent/conversation-buffer.ts</code>, <code>agent/apply-summarization.ts</code>, <code>agent/message-normalizer.ts</code>, <code>utils/createPrompt/</code></td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>扩展点为 hooks(onStart/onEnd/onToolStart…)、middleware(input/output 可重试)、guardrails、Toolkit、MCP/A2A 接入；Workspace 下有 SKILL（<code>workspace/skills/</code>，gray-matter 解析 SKILL.md frontmatter）；外部能力主要靠 MCP server</td><td><code>agent/hooks/index.ts</code>, <code>agent/middleware.ts</code>, <code>workspace/skills/index.ts</code>, <code>mcp/</code> (<code>@modelcontextprotocol/sdk</code>)</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><strong>核心卖点</strong>：全栈 OpenTelemetry，3 个自定义 SpanProcessor——WebSocket(实时推 VoltOps Console)、LocalStorage(本地 trace 存储+查询)、LazyRemoteExport(OTLP→VoltOps/任意后端)；零配置默认开启。评估：<code>eval</code>(create-scorer/LLM-judge) + 独立 <code>@voltagent/scorers</code>/<code>@voltagent/evals</code> + langfuse exporter</td><td><code>observability/index.ts:1</code>, <code>observability/node/volt-agent-observability.ts:31/124</code>, <code>observability/processors/*</code>, <code>eval/create-scorer.ts</code>, <code>eval/llm/create-judge-scorer.ts</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>库 + server provider 模式：<code>@voltagent/server-hono</code>/<code>server-elysia</code>/<code>serverless-hono</code>(Cloudflare/边缘) 把 agents/workflows 暴露为 HTTP(默认 :3141)；代码沙箱适配器 <code>sandbox-e2b</code>/<code>sandbox-daytona</code>/<code>sandbox-blaxel</code>；<code>create-voltagent-app</code> 脚手架、<code>@voltagent/cli</code></td><td><code>voltagent.ts:144</code> (server provider 装配), <code>packages/server-hono/</code>, <code>packages/serverless-hono/</code>, <code>packages/sandbox-*</code>, <code>packages/create-voltagent-app/</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>两条线：①Guardrails(input/output 方向，可设 severity/action 拦截校验 IO)；②工具 <code>needsApproval</code> + Workflow <code>suspend()/resume()</code>(带 resumeSchema) 做审批挂起恢复（README 报销审批示例）</td><td><code>agent/guardrail.ts:28</code> (<code>GuardrailDirection</code>), <code>agent/guardrails/defaults.ts</code>, <code>tool/index.ts:138</code> (<code>needsApproval</code>), <code>workflow/suspend-controller.ts</code>, README:165-229 (suspend/resume)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>Memory 经 StorageAdapter 持久化消息/会话/working memory；<code>memory-persist-queue</code> 异步落盘；Workflow 有 WorkflowStateStore/checkpoint(suspend 后可 restart)；observability 的 LocalStorage 持久化 trace；resumable-streams 支持断线续流</td><td><code>agent/memory-persist-queue.ts</code>, <code>memory/adapters/storage/</code>, <code>workflow/registry.ts</code> (<code>WorkflowStateStore</code>/checkpoint), <code>packages/resumable-streams/</code>, <code>packages/libsql</code>/<code>postgres</code>/<code>supabase</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“AI SDK 之上的工程平台” vs 自造内核</strong>：与自己实现 ReAct 循环的框架（如 <a class="wikilink" href="/frameworks/smolagents/">smolagents</a>）不同，VoltAgent 把推理循环完全交给 Vercel AI SDK（<code>stepCountIs</code>），自己专注 span/trace、guardrail、memory、subagent、server。好处是模型/工具调用语义与 AI SDK 完全一致、provider 覆盖广；代价是与 <code>ai@6</code> 强绑定，升级要跟随其 breaking change。</li>
+<li><strong>可观测性是真正的差异点</strong>：不是事后加 logging，而是 <code>@voltagent/core</code> 直接 hard-depend 一整套 <code>@opentelemetry/*</code>，每个 agent/tool/workflow 调用都是 OTel span，三路 processor（实时 WS / 本地存 / OTLP 远端）零配置开箱。这让它天然对接 VoltOps Console 与任意 OTLP 后端（Langfuse exporter 现成），是它相对多数 TS agent 框架最强的卖点。</li>
+<li><strong>平台 + 框架双形态</strong>：开源 framework（本仓库）+ VoltOps Console（云/自托管，做 observability/evals/guardrails/prompt builder/deploy）。框架可独立用，但很多运维能力指向 Console。</li>
+<li><strong>与 <a class="wikilink" href="/frameworks/mastra/">mastra</a> 高度同生态位</strong>：同为 TS、同建于 Vercel AI SDK、同有 agent/workflow/memory/RAG/voice/eval 全家桶；差异在 VoltAgent 把 OpenTelemetry 观测做成内核一等公民并配 VoltOps，Mastra 则更偏 workflow-graph 与自带 playground。</li>
+<li><strong>PlanAgent 是 Claude-Code 风格的彩蛋</strong>：<code>planagent/</code> 提供 write_todos 规划 + 内存文件系统 + 通用子 agent + 工具结果驱逐(context 控制)，启用 workspace 时默认 maxSteps 直接拉到 100，面向”长程多步自治任务”。</li>
+<li><strong>坑/注意</strong>：①LICENSE 文件名为 <code>LICENCE</code>(英式拼写)，内容确为 MIT（README/各 package.json 一致）；②<code>peerDependencies</code> 要求 <code>ai@^6</code> 与 <code>zod ^3.25||^4</code>，与旧版 AI SDK 不兼容；③observability 默认会尝试连 VoltOps（serverless 下自动从 VoltOpsClient 推导 OTLP endpoint），离线/隐私场景需显式配置或关闭远端导出。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/observability-eval/">observability-eval</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a> · <a class="wikilink" href="/components/model-abstraction/">model-abstraction</a></li>
+<li>同生态位(TS + Vercel AI SDK 全家桶)：<a class="wikilink" href="/frameworks/mastra/">mastra</a> · 源码：<code>agents-example/voltagent/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

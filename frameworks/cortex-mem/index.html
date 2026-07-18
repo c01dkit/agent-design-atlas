@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cortex Memory · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Cortex Memory</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>rust</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT</span><a class="badge" href="https://github.com/sopaco/cortex-mem" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/cortex-mem/</span></div><div class="cov-strip" aria-label="组件覆盖 8/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class style="--h:285" title="推理循环: N/A" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:265" title="编排: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>8/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="cortex-memory">Cortex Memory</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">用 Rust 写的 AI-native 长期记忆基础设施（不是 agent 编排框架）：为任意 LLM 应用/agent 提供”提取 → 分层组织 → 向量检索 → 自动优化/遗忘”的完整记忆方案，以 cortex:// 虚拟文件系统做持久层、Qdrant 做语义检索，并通过 REST API / MCP / CLI / Rig 库 / Web Dashboard 五种方式接入。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>Cortex Memory 的范式是 <strong>memory-as-a-service / 记忆中间件</strong>——它本身不跑 ReAct、不做规划、不编排多 agent，而是把”记忆”这一横切能力抽出来做成独立基础设施。核心设计取舍：</p>
+<ul>
+<li><strong>混合存储（Hybrid Storage）</strong>：持久层是 <code>cortex://</code> 虚拟文件系统（markdown 文件，可版本控制、可移植，<code>filesystem/uri.rs:170</code> 解析 <code>cortex://{dimension}/{path}</code>，dimension = <code>session</code>/<code>user</code>/<code>agent</code>/<code>resources</code>）；检索层是 Qdrant 向量库（<code>vector_store/qdrant.rs</code>）。内容真相在文件系统，向量只是索引。</li>
+<li><strong>三层渐进披露（L0/L1/L2）</strong>：每条记忆生成三个抽象层级——L0 Abstract(~100 token，粗定位) → L1 Overview(~500-2000 token，结构化摘要) → L2 Detail(全文)。检索时按意图加权组合三层（默认 <code>0.2/0.3/0.5</code>，<code>search/weight_model.rs:11</code>），只为真正需要的细节付 token。这是它对标 OpenClaw 内置记忆能”省 80% token”的核心。</li>
+<li><strong>事件驱动的自动优化</strong>：记忆变更 → <code>MemoryEvent</code> → <code>MemoryEventCoordinator</code> → <code>CascadeLayerUpdater</code> 增量重算受影响的 L0/L1（<code>cascade_layer_updater.rs:183</code>）；配合 <code>LlmResultCache</code>(LRU+TTL) 与 cascade debouncer，把 LLM 调用降 50-75%、层更新降 70-90%。</li>
+<li><strong>艾宾浩斯遗忘曲线</strong>：<code>MemoryCleanupService</code>（<code>memory_cleanup.rs:96</code>）按 <code>strength = confidence * exp(-0.1 * decay_days / consolidation_factor)</code>（<code>memory_index.rs:191</code>）自动归档/删除低强度记忆，控制长跑 agent 的存储膨胀；每访问 5 次提升一次巩固因子（<code>memory_index.rs:181</code>）。</li>
+<li><strong>包结构</strong>：workspace 多 crate（<code>Cargo.toml:3</code>）。<code>cortex-mem-core</code> 是引擎（filesystem / layers / search / session / embedding / llm / automation / 增量更新 / 遗忘）；<code>-service</code>(Axum REST,8085) / <code>-mcp</code>(MCP stdio) / <code>-cli</code> / <code>-rig</code>(Rig 工具) / <code>-tools</code>(MCP schema) / <code>-config</code> 是接入面；<code>-insights</code> 是 Svelte 5 仪表盘。</li>
+</ul>
+<p>最小示例（取自 README，CLI 入口）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. 起依赖：Qdrant + 配 config.toml(llm/embedding/qdrant/cortex)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. 写入一条消息到会话线程（自动落 cortex:// 文件系统）</span></span>
+<span class="line"><span style="color:#B392F0">cortex-mem</span><span style="color:#79B8FF"> --config</span><span style="color:#9ECBFF"> config.toml</span><span style="color:#79B8FF"> --tenant</span><span style="color:#9ECBFF"> acme</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  add</span><span style="color:#79B8FF"> --thread</span><span style="color:#9ECBFF"> thread-123</span><span style="color:#79B8FF"> --role</span><span style="color:#9ECBFF"> user</span><span style="color:#9ECBFF"> "The user is interested in Rust programming."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3. 关闭会话 → 触发"提取 + L0/L1/L2 分层生成 + 向量索引"流水线</span></span>
+<span class="line"><span style="color:#B392F0">cortex-mem</span><span style="color:#79B8FF"> --config</span><span style="color:#9ECBFF"> config.toml</span><span style="color:#79B8FF"> --tenant</span><span style="color:#9ECBFF"> acme</span><span style="color:#9ECBFF"> session</span><span style="color:#9ECBFF"> close</span><span style="color:#9ECBFF"> thread-123</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4. 语义检索（L0/L1/L2 加权打分）</span></span>
+<span class="line"><span style="color:#B392F0">cortex-mem</span><span style="color:#79B8FF"> --config</span><span style="color:#9ECBFF"> config.toml</span><span style="color:#79B8FF"> --tenant</span><span style="color:#9ECBFF"> acme</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  search</span><span style="color:#9ECBFF"> "what is the user interested in?"</span><span style="color:#79B8FF"> --thread</span><span style="color:#9ECBFF"> thread-123</span><span style="color:#79B8FF"> --limit</span><span style="color:#79B8FF"> 10</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+<blockquote>
+<p>注：Cortex Memory 是记忆基础设施而非编排框架，agent 推理/规划/多智能体等”编排类”组件天然 N/A；记忆/检索/存储类组件为其核心，详写。</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>N/A —— 不含 agent 推理循环；仅在记忆提取/层生成时一次性调用 LLM <code>complete</code>，无 ReAct/迭代。检索侧可选用 LLM 做查询意图分析(<code>enable_intent_analysis</code>)</td><td>N/A（接入方自带循环；提取调用见 <code>session/extraction.rs:183</code>）</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>N/A —— 无任务规划/分解概念</td><td>N/A</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td><strong>核心</strong>。短期=会话消息时间线(<code>session/manager.rs</code>,<code>session/timeline.rs</code>)；长期=LLM 提取的结构化记忆(preferences/entities/events/cases/personal_info/work_history/relationships/goals 八类，带 confidence 评分)；向量=Qdrant 三层(L0/L1/L2)语义索引</td><td><code>session/extraction.rs:170</code> (<code>extract</code>), <code>session/extraction.rs:15</code> (<code>ExtractedMemories</code>), <code>layers/generator.rs:24</code> (L0/L1 生成), <code>search/vector_engine.rs:353</code> (<code>layered_semantic_search</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>反向——它是”被 agent 当工具调用”的一方：<code>cortex-mem-rig</code> 暴露 11 个 Rig Tool(abstract/overview/read/search/find/ls/explore/store…)，MCP server 暴露 search/recall/store/commit/ls/explore/abstract/overview/content 等工具</td><td><code>cortex-mem-rig/src/lib.rs:26-61</code>, <code>cortex-mem-mcp/src/service.rs:486</code> (<code>search</code>),<code>:537</code> (<code>recall</code>),<code>:582</code> (<code>store</code>)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>LLMClient</code> trait(<code>llm/client.rs</code>) + <code>EmbeddingClient</code>(<code>embedding/client.rs:334</code> <code>embed</code>,<code>:364</code> <code>embed_batch</code>)，均走 OpenAI 兼容 HTTP 端点；底层依赖 <code>rig-core 0.31</code>(<code>Cargo.toml:41</code>)；模型在 config.toml 配 <code>model_efficient</code>/<code>model_reasoning</code></td><td><code>llm/client.rs:184</code> (<code>extract_memories</code>), <code>embedding/client.rs:334</code>, <code>Cargo.toml:41</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>N/A —— 不编排 agent。多 agent 仅体现为”记忆隔离”：<code>agent/</code> 维度 + 多租户 collection 命名，让不同 agent 各有独立记忆空间</td><td>N/A（隔离见 <code>memory_index.rs</code> <code>MemoryScope</code>、租户 collection 见 <code>vector_store/qdrant.rs</code>）</td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><strong>核心卖点</strong>。三层渐进披露按查询意图动态加权(EntityLookup 偏 L2 0.7、Relational 偏 L1 0.5 等，<code>search/weight_model.rs:45</code> <code>weights_for_intent</code>)，让接入方只加载所需粒度，省 token</td><td><code>search/weight_model.rs:11,45</code>, <code>search/vector_engine.rs:353</code>, <code>layers/generator.rs:56</code> (<code>estimate_tokens</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>N/A —— 无技能/插件系统（社区扩展如 MemClaw/Cortex TARS 是外部应用，非插件机制）</td><td>N/A</td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><code>tracing</code> 结构化日志(<code>logging.rs</code>)；REST <code>/health</code>+<code>/health/ready</code> 健康检查；<code>stats</code> 统计与 <code>UpdateStats</code>/<code>CacheStats</code>(skip_rate/cache_hit_rate)；Svelte 仪表盘(insights) 可视化；LoCoMo10 基准脚本 <code>examples/locomo-evaluation</code></td><td><code>cortex-mem-core/src/logging.rs</code>, <code>cascade_layer_updater.rs:44,52</code>, <code>cortex-mem-service/src/main.rs:135</code>, <code>examples/locomo-evaluation/</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>五种接入：① REST 服务(Axum,默认 8085,<code>service/src/main.rs:134</code> Router <code>/api/v2</code>)；② MCP server(stdio)；③ CLI 二进制；④ Rust 库直接嵌入(<code>CortexMemBuilder</code> <code>builder.rs:74</code> <code>build</code>)；⑤ Rig 工具集。Tokio 异步运行时</td><td><code>cortex-mem-service/src/main.rs:134</code>, <code>cortex-mem-mcp/src/service.rs</code>, <code>cortex-mem-core/src/builder.rs:74</code>, <code>Cargo.toml:24</code></td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td>多租户隔离(<code>--tenant</code>/<code>X-Tenant-ID</code>，tenant 后缀 collection)做数据边界；本地优先、零云依赖(MemClaw 主打隐私)。无审批/权限审查流</td><td><code>cortex-mem-cli/src/commands/tenant.rs</code>, <code>cortex-mem-service/src/routes</code>(tenants 路由), <code>config</code> 模块租户覆盖</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td><strong>核心</strong>。混合持久化：<code>cortex://</code> 虚拟文件系统(markdown 真相源,<code>filesystem/operations.rs</code>,<code>filesystem/uri.rs:170</code>) + Qdrant 向量索引(<code>vector_store/qdrant.rs</code>)；<code>VectorSyncManager</code> 维护二者一致；<code>MemoryIndex</code> 做版本/元数据追踪</td><td><code>filesystem/uri.rs:170</code>, <code>filesystem/operations.rs</code>, <code>vector_store/qdrant.rs</code>, <code>vector_sync_manager.rs</code>, <code>memory_index.rs</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“记忆中间件”而非”agent 框架”</strong>：与 <a class="wikilink" href="/frameworks/connectonion/">ConnectOnion</a> 这类”自带推理循环+工具+托管”的 agent 平台正交。Cortex Memory 只解决”记住”，把推理/编排留给接入方(Rig/MCP 客户端/任意 HTTP 调用方)。它在 component-taxonomy 里属于 <strong>platform / 基础设施层</strong>。</li>
+<li><strong>三层 L0/L1/L2 + 意图加权是核心差异化</strong>：相比”把整段历史塞进向量库”的朴素方案，渐进披露让检索从 ~100 token 摘要起步，按意图(EntityLookup/Factual/Temporal/Relational/Search/General)动态调三层权重。README 基准称 LoCoMo10 上 68.42%、对 OpenClaw+LanceDB 约 11× 更少 token、18× 更高 score/token——基准数据来自作者自评，需谨慎看待。</li>
+<li><strong>事件驱动自动优化 + 遗忘曲线</strong>：增量层更新(<code>CascadeLayerUpdater</code>) + LLM 缓存(<code>LlmResultCache</code> LRU/TTL) + debounce 把 LLM 成本压下来；艾宾浩斯遗忘(<code>MemoryCleanupService</code>)让长跑 agent 不会无限膨胀——这两点是多数向量记忆库缺失的”运维侧”能力。</li>
+<li><strong>文件系统做真相源</strong>：记忆是可读 markdown + <code>cortex://</code> URI，天然可 git diff/可移植/可人工编辑，向量库可随时从文件重建(<code>automation/index-all</code>)。代价是写路径较重(每次关会话要跑提取+三层生成+索引)。</li>
+<li><strong>Rust + Qdrant 的部署门槛</strong>：需 Rust 1.86+、Qdrant 1.7+、OpenAI 兼容 LLM 与 Embedding 端点各一。非 Rust 项目通常经 REST/MCP 接入而非嵌库。</li>
+<li><strong>license 一致</strong>：Cargo.toml(<code>license = "MIT"</code>)、README、badge 三处均为 MIT，无 ConnectOnion 那种声明冲突。</li>
+<li><strong>版本</strong>：workspace <code>version = 2.7.1</code>(<code>Cargo.toml:15</code>)，README 提及功能演进到 v5/v2.6(遗忘机制)，文档与代码版本号体系略有错位，以源码为准。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · 记忆专题：<a class="wikilink" href="/components/memory/">memory</a> · <a class="wikilink" href="/components/context-engineering/">context-engineering</a> · <a class="wikilink" href="/components/state-persistence/">state-persistence</a></li>
+<li>对比(agent 平台，正交)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/cortex-mem/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>工具系统 · Agent Design Atlas</title><meta name="description" content="工具的 JSON Schema 能不能从函数签名自动生成？"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><style>.chapter[data-astro-cid-767qrylq]{max-width:none}.chapter[data-astro-cid-767qrylq] .prose[data-astro-cid-767qrylq] [data-astro-cid-767qrylq]:is(p,ul,ol,blockquote,h2,h3,h4){max-width:74ch}.chapter[data-astro-cid-767qrylq] .prose[data-astro-cid-767qrylq]>h1[data-astro-cid-767qrylq]:first-of-type{display:none}.ch-title[data-astro-cid-767qrylq]{font-family:var(--display);letter-spacing:-.04em;margin:.2rem 0 1rem;font-size:clamp(2rem,1.3rem + 3vw,3.4rem);line-height:1.05}.ch-meta[data-astro-cid-767qrylq]{flex-wrap:wrap;align-items:center;gap:.5rem;margin:.8rem 0;display:flex}.ch-toc[data-astro-cid-767qrylq]{font-size:var(--text-sm);border-block:1px solid var(--line);flex-wrap:wrap;gap:.4rem 1rem;margin:1rem 0 1.6rem;padding:.7rem 0;display:flex}.ch-toc[data-astro-cid-767qrylq] a[data-astro-cid-767qrylq]{color:var(--ink-soft);text-decoration:none}.ch-toc[data-astro-cid-767qrylq] a[data-astro-cid-767qrylq]:hover{color:var(--accent)}
+</style></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/" aria-current="page">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><div class="read-bar" data-astro-cid-767qrylq><i id="readBar" data-astro-cid-767qrylq></i></div><article class="chapter" data-chapter="ch02-tools" data-astro-cid-767qrylq><nav class="crumbs" data-astro-cid-767qrylq><a href="/" data-astro-cid-767qrylq>首页</a> / <a href="/course/" data-astro-cid-767qrylq>专栏</a></nav><header data-astro-cid-767qrylq><p class="eyebrow" data-astro-cid-767qrylq>第 2 章 · Part 1</p><h1 class="ch-title" data-astro-cid-767qrylq>工具系统</h1><div class="drive" data-astro-cid-767qrylq><p data-astro-cid-767qrylq>本章你将回答：</p><ul data-astro-cid-767qrylq><li data-astro-cid-767qrylq>工具的 JSON Schema 能不能从函数签名自动生成？</li><li data-astro-cid-767qrylq>工具报错时，循环应该崩溃还是把错误交给模型？</li><li data-astro-cid-767qrylq>工具和技能（skills）是什么关系？</li></ul></div><p class="ch-meta" data-astro-cid-767qrylq><a class="badge" href="/components/tool-use/" data-astro-cid-767qrylq>tool-use</a><a class="badge" href="/components/skills-plugins/" data-astro-cid-767qrylq>skills-plugins</a><code class="mono" data-astro-cid-767qrylq>python labs/ch02/…</code></p><nav class="ch-toc" aria-label="本章内容" data-astro-cid-767qrylq><a href="#上一章留下的伤口" data-astro-cid-767qrylq>上一章留下的伤口</a><a href="#工具注册表" data-astro-cid-767qrylq>工具注册表</a><a href="#循环瘦身了" data-astro-cid-767qrylq>循环瘦身了</a><a href="#从工具到技能" data-astro-cid-767qrylq>从工具到技能</a><a href="#检查你的理解" data-astro-cid-767qrylq>检查你的理解</a><a href="#动手挑战" data-astro-cid-767qrylq>动手挑战</a><a href="#小结" data-astro-cid-767qrylq>小结</a></nav></header><div class="prose" data-astro-cid-767qrylq><h1 id="第-2-章--工具系统">第 2 章 · 工具系统</h1>
+<h2 id="上一章留下的伤口">上一章留下的伤口</h2>
+<p><a class="wikilink" href="/course/ch01-minimal-agent/">第 1 章</a>结尾留了个挑战：给 agent 再加一个 <code>now()</code> 工具，回答”现在距离 2027 年元旦还有多少天”。如果你真动手了，就会发现”加一个工具”远不止”写个函数”这么轻巧。你至少要同时改三处地方：在 <code>TOOLS</code> 列表里手抄一段 JSON schema（名字、<code>description</code>、<code>parameters</code>、<code>required</code> 一个字段都不能错，还得跟函数签名严丝合缝地对齐）；在循环里把原本写死的 <code>result = calculator(**args)</code> 改成按 <code>call.function.name</code> 分发的 <code>if/else</code>；最后才是函数本身。三件事里，真正有价值的只有第三件。</p>
+<p>这套手工活的麻烦不在”累”，在”容易错且不可扩展”。schema 是手抄的，它和函数是两份各自独立的”真相”——你哪天改了函数签名却忘了同步 schema，模型就会照着一份过时的说明书传参，而这种错往往不报错、只是行为诡异，最难排查。分发的 <code>if/else</code> 也一样：每加一个工具就多一段 <code>elif</code>，十个工具就是十段 <code>elif</code> 加十段手抄 schema，任何一个笔误都得你拿肉眼去逮。工具越多，这堆样板代码就越失控。</p>
+<p>追到根上，病因是”定义一个函数”和”把它暴露给模型”被拆成了两件彼此不同步的事。本章要做的，就是把这两件事重新捏回成一件——你只管写一个规范的 Python 函数，schema 和分发就自动都有了。</p>
+<div class="think"><p class="think-q"><span class="badge-think">停下来想想</span>如果由你来设计：怎样让任何一个普通 Python 函数，一行代码就能变成 agent 工具？模型需要知道这个函数的哪些信息？</p><details class="think-a"><summary>先自己想一想，再展开参考思路</summary><p>模型需要三样：<strong>名称</strong>（调用时引用）、<strong>描述</strong>（何时该用它）、<strong>参数 schema</strong>（怎么传参）。
+而这三样在一个写得规范的 Python 函数里本来就有：函数名、docstring、签名+类型注解。所以答案是一个装饰器 + 反射（<code>inspect</code>）——这正是 smolagents、LangChain、Strands 等一众框架 <code>@tool</code> 装饰器的原理。</p></details></div>
+<h2 id="工具注册表">工具注册表</h2>
+<figure class="code-lab" data-file="labs/ch02/tools.py"><figcaption><span class="cl-file">labs/ch02/tools.py</span><button type="button" class="cl-copy" hidden>复制</button></figcaption>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#9ECBFF">"""工具注册表：普通 Python 函数 + 装饰器 = agent 工具，schema 自动生成。"""</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> inspect</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> json</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> typing </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Callable, get_type_hints</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">_PY_TO_JSON</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"integer"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">float</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"number"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"boolean"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ToolRegistry</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._tools: dict[</span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, Callable] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> tool</span><span style="color:#E1E4E8">(self, fn: Callable) -> Callable:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """装饰器：注册函数，schema 从签名 + 类型注解 + docstring 自动生成。"""</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._tools[fn.</span><span style="color:#79B8FF">__name__</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> fn</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> fn</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> schemas</span><span style="color:#E1E4E8">(self) -> list[</span><span style="color:#79B8FF">dict</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">        out </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> name, fn </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._tools.items():</span></span>
+<span class="line"><span style="color:#E1E4E8">            hints </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> get_type_hints(fn)</span></span>
+<span class="line"><span style="color:#E1E4E8">            props, required </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}, []</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8"> p </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> inspect.signature(fn).parameters.values():</span></span>
+<span class="line"><span style="color:#E1E4E8">                props[p.name] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">_PY_TO_JSON</span><span style="color:#E1E4E8">.get(hints.get(p.name, </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">), </span><span style="color:#9ECBFF">"string"</span><span style="color:#E1E4E8">)}</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> p.default </span><span style="color:#F97583">is</span><span style="color:#E1E4E8"> inspect.Parameter.empty:</span></span>
+<span class="line"><span style="color:#E1E4E8">                    required.append(p.name)</span></span>
+<span class="line"><span style="color:#E1E4E8">            out.append({</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"function"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"function"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                "name"</span><span style="color:#E1E4E8">: name,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "description"</span><span style="color:#E1E4E8">: inspect.getdoc(fn) </span><span style="color:#F97583">or</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">                "parameters"</span><span style="color:#E1E4E8">: {</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"object"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"properties"</span><span style="color:#E1E4E8">: props, </span><span style="color:#9ECBFF">"required"</span><span style="color:#E1E4E8">: required},</span></span>
+<span class="line"><span style="color:#E1E4E8">            }})</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> out</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> call</span><span style="color:#E1E4E8">(self, name: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">, arguments: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">        """执行一次工具调用。任何异常都转成字符串返回——绝不让循环崩掉。"""</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">not</span><span style="color:#F97583"> in</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._tools:</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"错误：不存在名为 </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">name</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF"> 的工具。可用工具: </span><span style="color:#79B8FF">{list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._tools)</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#F97583">        try</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#79B8FF"> str</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">._tools[name](</span><span style="color:#F97583">**</span><span style="color:#E1E4E8">json.loads(arguments)))</span></span>
+<span class="line"><span style="color:#F97583">        except</span><span style="color:#79B8FF"> Exception</span><span style="color:#F97583"> as</span><span style="color:#E1E4E8"> e:</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"工具执行出错: </span><span style="color:#79B8FF">{type</span><span style="color:#E1E4E8">(e).</span><span style="color:#79B8FF">__name__}</span><span style="color:#9ECBFF">: </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">e</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">registry </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ToolRegistry()</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@registry.tool</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> calculator</span><span style="color:#E1E4E8">(expression: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """计算一个 Python 数学表达式，如 '3 * (4 + 5)' 或 'math.sqrt(2)'。"""</span></span>
+<span class="line"><span style="color:#F97583">    import</span><span style="color:#E1E4E8"> math</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> str</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">eval</span><span style="color:#E1E4E8">(expression, {</span><span style="color:#9ECBFF">"__builtins__"</span><span style="color:#E1E4E8">: {}}, {</span><span style="color:#9ECBFF">"math"</span><span style="color:#E1E4E8">: math}))  </span><span style="color:#6A737D"># 演示用</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@registry.tool</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> now</span><span style="color:#E1E4E8">() -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """返回当前日期和时间，ISO 格式。"""</span></span>
+<span class="line"><span style="color:#F97583">    import</span><span style="color:#E1E4E8"> datetime</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> datetime.datetime.now().isoformat(</span><span style="color:#FFAB70">sep</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">" "</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">timespec</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"seconds"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@registry.tool</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> list_files</span><span style="color:#E1E4E8">(directory: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """列出目录下的文件名。"""</span></span>
+<span class="line"><span style="color:#F97583">    import</span><span style="color:#E1E4E8"> os</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> "</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.join(</span><span style="color:#79B8FF">sorted</span><span style="color:#E1E4E8">(os.listdir(directory)))</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@registry.tool</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> read_file</span><span style="color:#E1E4E8">(path: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#9ECBFF">    """读取一个文本文件的内容（最多 4000 字符）。"""</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#79B8FF"> open</span><span style="color:#E1E4E8">(path, </span><span style="color:#FFAB70">encoding</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"utf-8"</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> f:</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> f.read()[:</span><span style="color:#79B8FF">4000</span><span style="color:#E1E4E8">]</span></span></code></pre>
+</figure>
+<p>先看那个 <code>@registry.tool</code> 装饰器，它其实简单到有点反高潮：<code>self._tools[fn.__name__] = fn</code>，把函数按名字塞进一个字典，然后原样 <code>return fn</code>。注意它并不包装、不改写函数——所以 <code>calculator("1+1")</code> 这样直接调用照样能用。注册发生在 import 时（装饰器在模块加载那一刻执行），等 agent 真正跑起来，<code>registry</code> 里早已躺好了 <code>calculator</code>、<code>now</code>、<code>list_files</code>、<code>read_file</code> 四个工具。加第五个？在函数上方贴一行 <code>@registry.tool</code>，别的什么都不用碰。</p>
+<p>真正的魔法在 <code>schemas()</code>。它遍历 <code>self._tools</code>，对每个函数用 <code>inspect.signature</code> 取参数列表、<code>get_type_hints</code> 取类型注解、<code>inspect.getdoc</code> 取 docstring——第 1 章里你手抄进 <code>TOOLS</code> 的那三样信息，现在全从函数自身反射出来。参数类型经 <code>_PY_TO_JSON</code> 映射成 JSON Schema 类型（<code>str→"string"</code>、<code>int→"integer"</code>…，认不出的兜底成 <code>"string"</code>）；有没有默认值决定它进不进 <code>required</code>（<code>p.default is inspect.Parameter.empty</code> 为真，就是必填参数）。产出的 dict 结构和你上一章手写的一模一样，区别只在于：现在再没有人会写错，因为函数签名成了唯一的真相来源。这里也顺带回答了本章第一个问题——docstring 不是给人看的注释，它会原样变成模型读到的 <code>description</code>，写得含糊模型就用得糊涂；至于返回值类型注解（<code>-> str</code>），它压根不进 schema，因为模型只关心”怎么调用”，返回什么是运行时才回灌的观察。</p>
+<p>分发同样被收进了一处。<code>call(name, arguments)</code> 先查 <code>name in self._tools</code>——查不到并不崩溃，而是返回一句”不存在名为……的工具”外带一份可用工具清单，让模型看到后自己改用对的名字。查到了，就 <code>json.loads(arguments)</code> 解出参数、用 <code>**</code> 展开调用、再 <code>str()</code> 转成字符串。整个执行裹在一层 <code>try/except</code> 里：任何异常都被 <code>f"工具执行出错: {type(e).__name__}: {e}"</code> 接住，当作<strong>结果</strong>返回。这正是第 1 章 <code>calculator</code> 里那个 <code>except</code> 的升级版——把它从单个函数里提上来，一处 <code>try/except</code> 就守住了所有工具，而不用每个函数各写一遍。原则没变、且更彻底：错误是有信息量的观察，回灌给模型它就能换参数、换思路自我修正，绝不让一次工具报错掀翻整个循环。</p>
+<h2 id="循环瘦身了">循环瘦身了</h2>
+<figure class="code-lab" data-file="labs/ch02/agent.py" data-added="1,3,10-11,14,19,23-24,26-30,35"><figcaption><span class="cl-file">labs/ch02/agent.py</span><span class="cl-diff">高亮 = 本章新增/修改</span><button type="button" class="cl-copy" hidden>复制</button></figcaption>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#9ECBFF">"""最小 Agent + 工具注册表：循环不再关心具体有哪些工具。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">运行：python agent.py "labs 目录下有几个章节目录？现在几点了？"</span></span>
+<span class="line"><span style="color:#9ECBFF">"""</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> os</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> sys</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> openai </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> OpenAI</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> tools </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> registry</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">client </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OpenAI(</span><span style="color:#FFAB70">base_url</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">os.getenv(</span><span style="color:#9ECBFF">"OPENAI_BASE_URL"</span><span style="color:#E1E4E8">), </span><span style="color:#FFAB70">api_key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">os.environ[</span><span style="color:#9ECBFF">"OPENAI_API_KEY"</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#79B8FF">MODEL</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> os.getenv(</span><span style="color:#9ECBFF">"MODEL"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"gpt-4o-mini"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">MAX_STEPS</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 10</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">(task: </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">) -> </span><span style="color:#79B8FF">str</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    messages </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"system"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"你是一个会用工具的助手。用工具获取事实，得到最终答案后直接回答。"</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: task},</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> step </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">MAX_STEPS</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">        msg </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> client.chat.completions.create(</span><span style="color:#FFAB70">model</span><span style="color:#F97583">=</span><span style="color:#79B8FF">MODEL</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">messages</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">messages, </span><span style="color:#FFAB70">tools</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">registry.schemas()).choices[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].message</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> msg.tool_calls:</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> msg.content</span></span>
+<span class="line"><span style="color:#E1E4E8">        messages.append(msg)</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> call </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> msg.tool_calls:  </span><span style="color:#6A737D"># 模型可能一次请求多个工具调用（并行工具调用）</span></span>
+<span class="line"><span style="color:#E1E4E8">            result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> registry.call(call.function.name, call.function.arguments)</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"  [step </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">step</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">] </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">call.function.name</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">(</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">call.function.arguments</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">) -> </span><span style="color:#79B8FF">{str</span><span style="color:#E1E4E8">(result)[:</span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">]</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            messages.append({</span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"tool"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"tool_call_id"</span><span style="color:#E1E4E8">: call.id, </span><span style="color:#9ECBFF">"content"</span><span style="color:#E1E4E8">: result})</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> "（超出最大步数，强制停止）"</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#79B8FF"> __name__</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "__main__"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"最终答案:"</span><span style="color:#E1E4E8">, run(sys.argv[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">if</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(sys.argv) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> else</span><span style="color:#9ECBFF"> "现在几点？顺便算一下 365*24。"</span><span style="color:#E1E4E8">))</span></span></code></pre>
+</figure>
+<p>打开这段 <code>agent.py</code>，高亮的行就是它相对第 1 章的全部差异——而最值得玩味的，是差异之”少”。开头的 <code>import json</code>、<code>import math</code> 不见了（数学计算是 <code>calculator</code> 工具内部的事，循环本不该操心），换上的只有一行 <code>from tools import registry</code>。中段那一大块 <code>TOOLS</code> schema 加 <code>calculator</code> 函数定义——上一章占了约二十行——整个消失，搬进了 <code>tools.py</code>。循环把”有哪些工具、各自怎么实现”这些细节，全部甩给了注册表。</p>
+<p>循环体的高亮乍看不少，但逐行对着读你会发现，大半是”措辞”在变、不是”逻辑”在变。docstring 和示例任务换了说法；system prompt 从”需要计算时调用 calculator”泛化成”用工具获取事实”——提示词里从此不点名任何工具，这本身就是解耦的一部分；<code>print</code> 那行不再写死 <code>calculator</code>，改打通用的 <code>call.function.name</code>，结果还加了 <code>[:80]</code> 截断（<code>read_file</code> 这类工具的输出可能很长，别刷屏）；剩下几处高亮，其实只是删掉了第 1 章的教学注释。注释变少本身也是收益：像”错误也要回灌”这样当初需要旁白解释的意图，如今沉淀进了 <code>tools.py</code> 的结构里，代码自己会说话。</p>
+<p>真正改变循环逻辑的只有两处。一是 <code>create(...)</code> 里的 <code>tools=</code> 参数，从写死的 <code>TOOLS</code> 换成了 <code>registry.schemas()</code>——工具清单现在是每次动态生成的。二是分发：上一章那两行 <code>args = json.loads(...); result = calculator(**args)</code> 缩成了一行 <code>registry.call(call.function.name, call.function.arguments)</code>。关键在于，这一行里再也没有任何具体工具的名字。你往 <code>tools.py</code> 加第五个、第十个工具，这段循环一个字都不用改——它只负责”把模型点名的那个工具跑一遍”，至于是哪个、怎么跑，全交给注册表。这就是”循环瘦身”的实质：<strong>控制流和工具集彻底解耦了</strong>。</p>
+<p>还有个细节藏在 <code>for call in msg.tool_calls</code> 里值得停一停。模型在一条 assistant 消息里可以一次点名多个工具——比如同时要”现在几点”和”算一下 365*24”——这就是<strong>并行工具调用</strong>。协议层天然支持它，因为 <code>tool_calls</code> 本来就是个列表。我们这里用 <code>for</code> 逐个执行，每跑完一个就追加一条 <code>role: "tool"</code> 消息，并带上它自己的 <code>tool_call_id</code>。这个 id 是回灌的命脉：模型靠它把每份结果对回当初发起的那次调用；少一条或对错 id，服务端多半直接报错。要说清楚的是，“并行”指的是模型一次请求多个，执行端像我们这样串行跑完全合法（<a class="wikilink" href="/frameworks/agentscope/">AgentScope</a> 才真的把它们并发执行）——够用，且简单。</p>
+<div class="think"><p class="think-q"><span class="badge-think">停下来想想</span>工具越多越好吗？如果给模型挂上 100 个工具会发生什么？</p><details class="think-a"><summary>先自己想一想，再展开参考思路</summary><p>三个代价：①每个 schema 都进上下文，<strong>token 膨胀</strong>；②选项越多<strong>误选率越高</strong>；③很多工具还需要配套的使用知识（先调 A 再调 B）。
+所以规模化的答案不是”更多工具”，而是<strong>分组、按需加载、把工具+知识+流程打包</strong>——这就是”技能（skills）“的动机，见 <a class="wikilink" href="/components/skills-plugins/">技能与插件</a>。</p></details></div>
+<h2 id="从工具到技能">从工具到技能</h2>
+<p>上面的思考题已经点破：工具无限往上堆，会 token 膨胀、会误选率飙升，很多工具还得配一套”什么时候用、按什么顺序用”的知识。规模化的答案不是”更多工具”，而是换一个封装粒度——把”一组相关工具 + 使用它们的知识 + 推荐的流程”打成一个包，需要时才展开加载。这个介于单个函数和整个 agent 之间的中等粒度单元，就是<a class="wikilink" href="/components/skills-plugins/">技能（skill）</a>。</p>
+<p>如今一个相当有代表性的形态是 Claude Code 式的 skill：一个带 YAML frontmatter 的 <code>SKILL.md</code>，frontmatter 里用一句话讲清”这技能干什么、何时该用”，正文写详细流程，附带的脚本与参考文档按需再读。模型平时只看到那句摘要（省 token），判断”该用了”才展开全文——这叫渐进式披露。这套约定几乎成了事实标准，被 <a class="wikilink" href="/frameworks/openclaw/">OpenClaw</a>、<a class="wikilink" href="/frameworks/hive/">Hive</a>、<a class="wikilink" href="/frameworks/agentscope/">AgentScope</a> 等一大批框架兼容。OpenClaw 还更进一步，用 plugin / extension 把技能、生命周期钩子、主题打成可安装可卸载的包，让 agent 的能力像装 App 一样扩展。</p>
+<p>工具和技能不是取代关系，而是粒度关系。单个函数解决的是”让 agent 多一个动作”，技能解决的是”让 agent 多一整套本领”——两者回答的是同一个问题：怎么扩展 agent 能做什么。这条从工具到技能的谱系，<a class="wikilink" href="/components/skills-plugins/">技能与插件</a>里有更完整的横向对比。</p>
+<aside class="compare"><p class="compare-t">相同与相反</p><div class="compare-body"><ul>
+<li><strong>相同</strong>：装饰器/反射生成 schema 是主流 → <a class="wikilink" href="/frameworks/smolagents/">smolagents</a>、<a class="wikilink" href="/frameworks/langchain/">LangChain</a>、<a class="wikilink" href="/frameworks/strands/">Strands</a> 的 <code>@tool</code> · 汇总见 <a class="wikilink" href="/components/tool-use/">工具调用</a></li>
+<li><strong>相反</strong>：schema <strong>自动生成</strong>（省事，但描述质量受限于 docstring）↔ schema <strong>手写</strong>（<a class="wikilink" href="/frameworks/llamaindex/">LlamaIndex</a> 等支持精调每个字段描述——描述写得好坏直接影响模型调用准确率）</li>
+<li><strong>相反</strong>：<strong>工具</strong>（单个函数）↔ <strong>技能</strong>（工具+知识+流程的包，<a class="wikilink" href="/components/skills-plugins/">skills-plugins</a>）——粒度不同，解决的都是”扩展 agent 能做什么”</li>
+</ul></div></aside>
+<h2 id="检查你的理解">检查你的理解</h2>
+<div class="quiz" data-quiz="" data-key="ch02-tools-q0"><p class="quiz-q">自动生成工具 schema 时，信息来源
+<strong>不包括</strong>
+？</p><div class="quiz-opts"><label class="quiz-opt"><input type="radio" name="ch02-tools-q0" value="0" data-correct="0"><span>函数名</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q0" value="1" data-correct="0"><span>类型注解</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q0" value="2" data-correct="0"><span>docstring</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q0" value="3" data-correct="1"><span>函数运行时的返回值</span></label></div><button type="button" class="quiz-check" hidden>检查答案</button><p class="quiz-result" role="status"></p><details class="quiz-expl"><summary>查看解析</summary><p>schema 在注册时静态生成，函数还没运行。返回值类型甚至不进 schema——模型只关心怎么调用，结果是运行时才回灌的。</p></details></div>
+<div class="quiz" data-quiz="" data-key="ch02-tools-q1"><p class="quiz-q">工具执行抛了异常，最佳实践是？</p><div class="quiz-opts"><label class="quiz-opt"><input type="radio" name="ch02-tools-q1" value="0" data-correct="0"><span>终止整个 agent 并打印堆栈</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q1" value="1" data-correct="1"><span>把错误信息作为工具结果回灌给模型</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q1" value="2" data-correct="0"><span>静默忽略，返回空字符串</span></label><label class="quiz-opt"><input type="radio" name="ch02-tools-q1" value="3" data-correct="0"><span>自动无限重试直到成功</span></label></div><button type="button" class="quiz-check" hidden>检查答案</button><p class="quiz-result" role="status"></p><details class="quiz-expl"><summary>查看解析</summary><p>错误是有信息量的观察。回灌后模型能换参数、换思路自我修正；静默忽略让模型误以为成功；无限重试可能死循环。</p></details></div>
+<div class="quiz" data-quiz="" data-key="ch02-tools-q2"><p class="quiz-q">关于并行工具调用，下列说法正确的有（多选）？</p><div class="quiz-opts"><label class="quiz-opt"><input type="checkbox" name="ch02-tools-q2" value="0" data-correct="1"><span>模型可以在一条 assistant 消息里请求多个 tool_calls</span></label><label class="quiz-opt"><input type="checkbox" name="ch02-tools-q2" value="1" data-correct="1"><span>每个结果都必须带对应的 tool_call_id 回灌</span></label><label class="quiz-opt"><input type="checkbox" name="ch02-tools-q2" value="2" data-correct="0"><span>并行调用必须用多进程才能实现</span></label><label class="quiz-opt"><input type="checkbox" name="ch02-tools-q2" value="3" data-correct="0"><span>OpenAI 协议不支持并行工具调用</span></label></div><button type="button" class="quiz-check" hidden>检查答案</button><p class="quiz-result" role="status"></p><details class="quiz-expl"><summary>查看解析</summary><p>协议层天然支持一条消息多个 tool_calls；“并行”指模型一次请求多个调用，执行端串行跑也完全合法（<a class="wikilink" href="/frameworks/agentscope/">AgentScope</a> 则真的分批并发执行）。</p></details></div>
+<h2 id="动手挑战">动手挑战</h2>
+<p>给 <code>ToolRegistry</code> 加一个”危险工具”机制：注册时可标记 <code>dangerous=True</code>，执行前在终端 <code>input()</code> 请求用户确认，拒绝则把”用户拒绝了此操作”回灌给模型。</p>
+<p>提示：装饰器要支持参数（<code>@registry.tool(dangerous=True)</code>）。这个小机制是第 9 章”人机协同”的种子。</p>
+<h2 id="小结">小结</h2>
+<ul>
+<li><strong>一个装饰器 + 反射 = 定义即暴露</strong>。<code>@registry.tool</code> 把函数塞进注册表，<code>schemas()</code> 再从签名、类型注解、docstring 自动生成 JSON schema。第 1 章手抄 schema、<code>if/else</code> 分发的两份”真相”合成了一份，工具签名成了唯一来源，加工具不再动循环。</li>
+<li><strong>一处 <code>try/except</code> 守住所有工具</strong>。<code>call()</code> 把未知工具名、参数错误、执行异常统统转成字符串回灌。错误是观察、交给模型自我修正——这是第 1 章的原则，本章把它做成了基础设施：绝不让一次工具报错掀翻循环。</li>
+<li><strong>循环因此瘦身，控制流与工具集解耦</strong>。<code>agent.py</code> 和上一章的 diff 里，循环体不再 import math、不再手写 <code>TOOLS</code>、分发一行搞定；工具增删循环一字不改。</li>
+<li><strong>工具之上是技能</strong>。工具多到失控时，答案是分组、按需加载、把工具+知识+流程打包，而不是无脑堆更多——见 <a class="wikilink" href="/components/skills-plugins/">技能与插件</a>。</li>
+<li><strong>但我们一直吃着一个前提</strong>：模型和服务端支持原生 function calling，会规规矩矩吐出结构化的 <code>tool_calls</code>。要是模型没这本事，或你想换一种”先思考、再行动”的方式呢？那就得改造循环本身——下一章 <a class="wikilink" href="/concepts/agent-loop-paradigms/">循环范式</a>（ReAct、plan-execute…）登场。</li>
+</ul></div><div class="ch-foot" data-astro-cid-767qrylq><button id="chapterDone" type="button" data-astro-cid-767qrylq>标记完成本章</button><nav class="pager" data-astro-cid-767qrylq><a href="/course/ch01-minimal-agent/" data-astro-cid-767qrylq>← 第 1 章</a><a href="/course/ch03-loop-paradigms/" data-astro-cid-767qrylq>第 3 章 →</a></nav></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html><script type="module" src="/_astro/_slug_.astro_astro_type_script_index_0_lang.MtfInGzL.js"></script>

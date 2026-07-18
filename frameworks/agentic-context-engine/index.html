@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agentic Context Engine (ACE) · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>Agentic Context Engine (ACE)</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>single</span><span class="badge" data-astro-cid-fwpw2zac>FSL-1.1-MIT (Functional Source License, 两年后转 MIT)</span><a class="badge" href="https://github.com/kayba-ai/agentic-context-engine" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/agentic-context-engine/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:320" title="规划: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:62" title="技能: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="agentic-context-engine-ace">Agentic Context Engine (ACE)</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">一个让 single-agent 从执行反馈中自我改进的 Python 框架：不微调、不训练、不要向量库，而是用 Agent / Reflector / SkillManager 三角色把每次执行的经验沉淀进一本可演化的 Skillbook（策略手册 = 自策展上下文），下次执行时把策略注入 prompt——核心创新是 Recursive Reflector：在受限沙箱里写并执行 Python 代码来”程序化地”分析 trace、定位错误、提炼可行策略。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>ACE 的范式是 <strong>single-agent + 持续自改进（self-improving）</strong>。它不发明新的 agent 执行循环，而是给”任意 agent”外挂一个<strong>学习闭环</strong>：执行 → 评估 → 反思 → 策展上下文。理论基础是 ACE 论文（Stanford &#x26; SambaNova, arXiv:2510.04618）与 Dynamic Cheatsheet。</p>
+<p>opinionated 设计取舍：</p>
+<ul>
+<li><strong>三角色分工</strong>（<code>ace/implementations/</code>）：<strong>Agent</strong>（用当前 Skillbook 的策略作答）、<strong>Reflector</strong>（分析 trace，提炼”哪条策略有用/有害/中性”，纯分析不打标签）、<strong>SkillManager</strong>（把反思转成对 Skillbook 的原子增删改）。三者全部由 <a href="https://ai.pydantic.dev/">PydanticAI</a> 驱动，输出经 Pydantic 结构化校验+自动重试。</li>
+<li><strong>Skillbook 即”上下文”</strong>（<code>ace/core/skillbook.py:348</code>）：一份持久化的策略集合，分 <code>context</code> / <code>harness</code> 两段，每条 <code>Skill</code> 带 keywords、issue、insight、<code>used/helpful/harmful/neutral_count</code> 与来源 <code>occurrences</code>。这就是 ACE 名字里 “Context Engine” 的本体——上下文不是静态 prompt，而是会被 ADD/UPDATE/TAG/REMOVE 持续策展的结构化资产。</li>
+<li><strong>Pipeline-first</strong>（<code>pipeline/</code>）：所有功能都是带 <code>requires</code>/<code>provides</code> 契约的 <code>Step</code>，经 <code>Pipeline().then(...)</code> 组合，<code>StepContext</code> 不可变（<code>ACEStepContext</code> 是 frozen dataclass）。标准学习链：<code>AgentStep -> EvaluateStep -> ReflectStep -> UpdateStep -> (DeduplicateStep)</code>。</li>
+<li><strong>Recursive Reflector（RR）</strong>：关键创新。Reflector 不再”一遍读 trace 写摘要”，而是作为递归 agent 在 <code>TraceSandbox</code>（<code>ace/core/sandbox.py:53</code>）里反复 <code>execute_code</code> 跑 Python，把 trace 当”证据工作台”逐步切片、校验、定位错误，直到产出结构化 <code>ReflectorOutput</code>。</li>
+<li><strong>Runner 多入口</strong>：<code>ACELiteLLM</code>（电池全包，<code>.ask()/.learn()/.save()</code>，100+ LiteLLM provider）、<code>ACE</code>（带 epoch 的完整批量学习）、<code>TraceAnalyser</code>（仅从已录 trace 学习，不重跑）、<code>LangChain</code> / <code>BrowserUse</code> / <code>ClaudeCode</code>（把外部框架包成”可学习”）。</li>
+<li><strong>包结构</strong>：<code>ace/core/</code>（skillbook / context / sandbox / recursive_agent / environments，受保护内核）、<code>ace/implementations/</code>（三角色 + RR）、<code>ace/steps/</code>（每个 Step 一文件）、<code>ace/runners/</code>、<code>ace/integrations/</code>（langchain / browser_use / claude_code / mcp / openclaw）、<code>ace/deduplication/</code>、<code>ace/providers/</code>、<code>ace/tracing/</code>、<code>pipeline/</code>（通用引擎）。</li>
+</ul>
+<p>最小示例（取自 README）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> ace </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ACELiteLLM</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ACELiteLLM(</span><span style="color:#FFAB70">model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4o-mini"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 第一次：agent 可能幻觉</span></span>
+<span class="line"><span style="color:#E1E4E8">answer </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent.ask(</span><span style="color:#9ECBFF">"Is there a seahorse emoji?"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 喂入纠错反馈 —— ACE 提炼出一条策略并更新 Skillbook</span></span>
+<span class="line"><span style="color:#E1E4E8">agent.learn_from_feedback(</span><span style="color:#9ECBFF">"There is no seahorse emoji in Unicode."</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 之后的调用受益于学到的策略</span></span>
+<span class="line"><span style="color:#E1E4E8">answer </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> agent.ask(</span><span style="color:#9ECBFF">"Is there a seahorse emoji?"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 查看 agent 学到了什么</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(agent.get_strategies())</span></span></code></pre>
+<h2 id="组件实现横向逐项无则标-na">组件实现（横向逐项，无则标 N/A）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>非传统 ReAct；核心是”执行→评估→反思→策展”学习闭环，组合为不可变 Pipeline 顺序执行。Agent 角色本身是一次结构化 LLM 调用（<code>run_sync</code>）；RR/SkillManager 是带递归+预算的 agentic 循环（RecursiveAgent）</td><td><code>pipeline/pipeline.py:53</code>, <code>ace/runners/ace.py:27</code> (<code>ACE</code>), <code>ace/implementations/agent.py:71</code> (<code>generate</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>无显式 planner。任务分解隐含在 Reflector 的”递归”中：RR 可拆分对 trace 的多步检查、<code>parallel_map</code> 并行处理 batch 项；不做前置 plan-then-execute</td><td><code>ace/steps/rr_step.py:51</code>, <code>ace/core/sandbox.py:526</code> (<code>_parallel_map</code>)</td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>长期记忆=<strong>Skillbook</strong>（跨会话持久化的策略库，JSON + <code>.embeddings.npz</code> sidecar）；可选向量=dedup 用 sentence-transformers 给 skill 算 embedding；检索=BM25(lexical)+dense 的 RRF 融合 top-k</td><td><code>ace/core/skillbook.py:348,663</code> (<code>save_to_file</code>), <code>ace/implementations/skill_rendering.py:129</code> (<code>retrieve_top_k</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td>框架自身的”工具”是给内部 agent 的：SkillManager 的 <code>add/update/remove/tag_skill</code>+<code>search/read_skill</code>（<code>sm_tools.py</code>），RR 的 <code>execute_code/think/read_skill/search_skillbook</code>（<code>rr/tools.py</code>）。被学习对象（用户 agent）的工具调用由其所属框架(LangChain/browser-use)负责，ACE 仅消费其 trace</td><td><code>ace/implementations/sm_tools.py</code>, <code>ace/implementations/rr/tools.py</code>, <code>ace/integrations/mcp/</code></td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td>经 PydanticAI 统一；<code>resolve_model()</code> 把 LiteLLM 风格模型名路由到 PydanticAI 原生 provider 或 <code>litellm:</code> 代理（100+ provider：OpenAI/Anthropic/Google/Bedrock/Groq…）；可按角色分别配模型(<code>ACEModelConfig</code>)</td><td><code>ace/providers/pydantic_ai.py:107</code> (<code>resolve_model</code>), <code>ace/providers/config.py</code>, <code>ace/core/metered_model.py</code></td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>非”多个对等 agent 协作”，而是<strong>三个固定角色的学习流水线</strong>经 Pipeline 编排；<code>Branch</code> 支持并行分支+合并，RR 内部可递归派生只读 sandbox 子 agent(<code>create_readonly_sandbox</code>)</td><td><code>pipeline/branch.py</code>, <code>ace/runners/ace.py:80</code> (<code>build_steps</code>), <code>ace/core/sandbox.py:749</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><strong>本框架重点</strong>。Skillbook 即被工程化的上下文：策略以 XML <code>&#x3C;strategy></code> 注入 agent prompt(<code>render_skills_xml</code>)；检索用 BM25+dense 的 RRF top-k；SkillManager 用 ADD/UPDATE/TAG/REMOVE 自策展；<code>as_prompt()</code> 渲染整本；外部 agent 用 <code>wrap_skillbook_for_external_agent</code> 注入</td><td><code>ace/implementations/skill_rendering.py:44,129</code>, <code>ace/core/skillbook.py:767</code> (<code>as_prompt</code>), <code>ace/integrations/langchain.py:149</code> (<code>_inject_context</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>“Skill”=Skillbook 条目(策略)，非可执行插件；可插拔性体现在：Step 协议(<code>requires</code>/<code>provides</code>)、Runner 经 <code>extra_steps</code> 扩展、<code>learning_tail()</code> 复用、optional extras(browser-use/langchain/mcp/dedup)。另含 Claude Code <code>.claude/skills/kayba-pipeline/</code> 七阶段分析技能</td><td><code>ace/steps/__init__.py:50</code> (<code>learning_tail</code>), <code>ace/core/skillbook.py:302</code> (<code>Skill</code>), <code>ace/cli/skills/kayba-pipeline/</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td><strong>本框架重点</strong>。<code>EvaluateStep</code>+<code>TaskEnvironment</code> 产出反馈/对错信号；自带 tau2-bench 等基准(<code>benchmarks/</code>)；可观测：<code>ObservabilityStep</code>、Logfire 自动插桩 PydanticAI(<code>logfire</code> extra)、<code>kayba-tracing</code> SDK(<code>configure/trace/start_span</code>)、每条 skill 的 helpful/harmful/used 计数即效用度量</td><td><code>ace/steps/evaluate.py</code>, <code>ace/steps/observability.py</code>, <code>ace/observability/__init__.py</code>, <code>ace/tracing/__init__.py:17</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td>纯库（pip/uv 安装），无服务进程；<code>ace</code> CLI 做交互式配置/模型校验，<code>ace-mcp</code> 起 MCP server 供 IDE 集成，<code>kayba</code> 是云端 CLI(上传 trace/拉取洞见)；RR 的代码执行在 <code>TraceSandbox</code>(SIGALRM 超时, 仅 Unix; Windows 不强制超时)</td><td><code>ace/cli/setup.py</code>, <code>ace/integrations/mcp/server.py</code>, <code>ace/core/sandbox.py:612</code> (<code>execute</code>)</td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>learn_from_feedback()</code>/<code>learn_from_traces()</code> 让人提供纠错反馈或历史 trace 作为学习信号；Skillbook 可读(<code>get_strategies</code>)、可导出 markdown、可人工编辑后回载；CLAUDE.md 规定核心模块改动需人工批准。无运行时审批拦截</td><td><code>ace/runners/litellm.py:424</code> (<code>learn_from_feedback</code>), <code>ace/steps/export_markdown.py</code>, <code>.claude/skills/kayba-pipeline/stage-6-hitl/</code></td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>Skillbook 序列化为 JSON(v2 schema)+ embedding sidecar(<code>.embeddings.npz</code>)；<code>save_to_file</code>/<code>load_from_file</code>；<code>CheckpointStep</code> 按间隔存档、<code>PersistStep</code> 每样本写目标文件(如项目 CLAUDE.md)；<code>SimilarityDecision</code>(KEEP)持久化去重决策</td><td><code>ace/core/skillbook.py:663,692</code>, <code>ace/steps/checkpoint.py</code>, <code>ace/steps/persist.py:12</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>“学习层”而非”执行框架”</strong>：ACE 不和 LangChain/CrewAI 等竞争 agent 执行循环，而是做它们的<strong>上行学习闭环</strong>。卖点是 README 的实测：Tau2 航空基准 pass^4 一致性翻倍（15 条学到的策略、无奖励信号）、browser-use token 降 49%、Claude Code 自治翻译 14k 行 0 编译错误（学习成本约 $1.50）。</li>
+<li><strong>Recursive Reflector 是核心差异化</strong>：把”反思”从一次性摘要升级为”在沙箱里写代码查证据”。优点是能对大/复杂 trace 做程序化精确定位；代价是更多 LLM 轮次与预算管理（<code>BudgetExhausted</code>/微压缩/超时回退），且沙箱<strong>明确声明非安全隔离</strong>（<code>TraceSandbox</code> 注释：仅信任 LLM 不写恶意代码，勿跑不可信代码；Windows 下超时不强制）。</li>
+<li><strong>上下文自策展（curation）很克制</strong>：SkillManager 直接用工具原子改 Skillbook（无 staging、无独立 ApplyStep，返回的是事后审计日志）；TAG 机制让策略带 helpful/harmful 计数从而可被”投票淘汰”；可选 embedding 去重(<code>DeduplicationManager</code>)合并近义策略，KEEP 决策会被记住避免反复。</li>
+<li><strong>不可变 + 契约式 Pipeline</strong>：<code>ACEStepContext</code> frozen、<code>StepContext.replace()</code> 更新、Step 声明 <code>requires</code>/<code>provides</code> 并在组装期做顺序/契约校验（<code>PipelineOrderError</code>），<code>async_boundary</code> 让 ReflectStep 之后的重学习步骤进后台线程池，主调用快速返回。</li>
+<li><strong>License 注意</strong>：FSL-1.1-MIT 是 <strong>Functional Source License</strong>（限制竞争性使用，发布两年后自动转 MIT），并非标准 OSI 开源；pyproject 同时标 <code>License :: Other/Proprietary License</code> 分类器。商用前需确认条款。</li>
+<li><strong>依赖较重 / Python 3.12+</strong>：核心依赖 litellm、pydantic-ai-slim、rank-bm25、tau2；向量去重/浏览器/langchain/transformers 等均为 optional extras。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/components/context-engineering/">context-engineering</a> · <a class="wikilink" href="/components/observability-eval/">observability-eval</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a></li>
+<li>同范式(single + 自改进/平台外挂)：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a> · 源码：<code>agents-example/agentic-context-engine/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>

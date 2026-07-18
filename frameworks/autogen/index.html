@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AutoGen · Agent Design Atlas</title><meta name="description" content="Agent 设计原理、组件构成与 50 个开源框架的源码级实现图谱"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23b06a3a'/%3E%3C/svg%3E"><!-- 霞鹭文楷 LXGW WenKai：unicode-range 分片，只下用到的字块；CDN 拉不到时优雅回退到系统字体 --><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-bold/result.css"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.D4eiATAK.js"></script><script>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.dataset.theme = t;
+      else if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-on');
+      document.addEventListener('astro:before-swap', (e) => { const cur = document.documentElement, nxt = e.newDocument.documentElement; if (cur.dataset.theme) nxt.dataset.theme = cur.dataset.theme; if (cur.classList.contains('reveal-on')) nxt.classList.add('reveal-on'); });
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.UxTNTXm3.css"><link rel="stylesheet" href="/_astro/_slug_.Lg4htnQ7.css"></head><body><header class="site-header" id="siteHeader"><div class="wrap bar"><a class="brand" href="/"><span class="dot"></span>Agent&nbsp;Design&nbsp;Atlas</a><button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false" aria-controls="primaryNav"><span class="nt-bars"></span></button><nav class="nav" id="primaryNav" aria-label="主导航"><a href="/">首页</a><a href="/course/">专栏</a><a href="/concepts/">理念</a><a href="/components/">组件</a><a href="/frameworks/" aria-current="page">图鉴</a><a href="/matrix/">矩阵</a><a href="/search/">搜索</a></nav><button class="auth-btn" id="authBtn" type="button">登录</button><div class="auth-modal" id="authModal" hidden><div class="auth-backdrop" data-auth-close></div><div class="auth-card" role="dialog" aria-modal="true" aria-label="登录"><button class="auth-x" type="button" data-auth-close aria-label="关闭">×</button><p class="auth-title">登录 Agent Design Atlas</p><div class="auth-tabs" role="tablist"><button type="button" class="on" data-auth-tab="oauth">第三方</button><button type="button" data-auth-tab="email">邮箱</button><button type="button" data-auth-tab="phone">手机号</button></div><div class="auth-pane" data-auth-pane="oauth"><button type="button" class="auth-provider" data-auth-oauth="google">使用 Google 登录</button><button type="button" class="auth-provider" data-auth-oauth="github">使用 GitHub 登录</button></div><form class="auth-pane" data-auth-pane="email" hidden><input name="email" type="email" placeholder="邮箱" required autocomplete="email"><input name="password" type="password" placeholder="密码(至少 6 位)" required minlength="6" autocomplete="current-password"><label class="auth-reg"><input name="register" type="checkbox"> 注册新账号</label><button type="submit" class="auth-submit">登录 / 注册</button></form><form class="auth-pane" data-auth-pane="phone" hidden><input name="phone" type="tel" placeholder="手机号(含国家码,如 +8613800000000)" required autocomplete="tel"><div class="auth-row"><input name="code" type="text" inputmode="numeric" placeholder="验证码"><button type="button" class="auth-send" id="authSendCode">获取验证码</button></div><button type="submit" class="auth-submit">登录</button></form><p class="auth-err" data-auth-err hidden></p></div></div><script type="module" src="/_astro/AuthWidget.astro_astro_type_script_index_0_lang.CLcoL0tM.js"></script><button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换主题">◑</button></div></header><main class="wrap" style="padding-block: clamp(1.5rem, 3vw, 3rem) var(--space-section);"><article class="note fw" data-astro-cid-fwpw2zac><nav class="crumbs" data-astro-cid-fwpw2zac><a href="/" data-astro-cid-fwpw2zac>首页</a> / <a href="/frameworks/" data-astro-cid-fwpw2zac>图鉴</a></nav><header class="fw-hero" data-astro-cid-fwpw2zac><h1 class="fw-title" data-astro-cid-fwpw2zac>AutoGen</h1><div class="note-meta" data-astro-cid-fwpw2zac><span class="badge lang" data-astro-cid-fwpw2zac>python</span><span class="badge paradigm" data-astro-cid-fwpw2zac>multi</span><span class="badge paradigm" data-astro-cid-fwpw2zac>platform</span><span class="badge" data-astro-cid-fwpw2zac>MIT（代码，各 package 的 LICENSE-CODE 与 pyproject 声明）；仓库根 LICENSE 为 CC BY 4.0（用于文档/内容）</span><a class="badge" href="https://github.com/microsoft/autogen" target="_blank" rel="noopener" data-astro-cid-fwpw2zac>repo ↗</a><span class="badge mono" data-astro-cid-fwpw2zac>agents-example/autogen/</span></div><div class="cov-strip" aria-label="组件覆盖 11/12" data-astro-cid-fwpw2zac><div class="cov-bars" data-astro-cid-fwpw2zac><i class="on" style="--h:285" title="推理循环: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:320" title="规划: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:30" title="记忆: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:150" title="工具: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:230" title="模型: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:265" title="编排: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:350" title="上下文: 实现" data-astro-cid-fwpw2zac></i><i class style="--h:62" title="技能: N/A" data-astro-cid-fwpw2zac></i><i class="on" style="--h:190" title="可观测: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:15" title="运行时: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:2" title="治理: 实现" data-astro-cid-fwpw2zac></i><i class="on" style="--h:205" title="状态: 实现" data-astro-cid-fwpw2zac></i></div><span class="cov-num" data-astro-cid-fwpw2zac>11/12 组件</span></div></header><div class="prose" data-astro-cid-fwpw2zac><h1 id="autogen">AutoGen</h1>
+<blockquote class="callout-abstract" data-callout="abstract" data-expandable="false" data-expanded="false">
+
+                <div class="callout-title">
+                  <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
+                  <div class="callout-title-text">一句话定位</div>
+                </div>
+                <div class="callout-content">Microsoft 出品的事件驱动多智能体框架：底层 autogen-core 提供 actor 式消息传递（send / publish-subscribe）、agent runtime（单进程 / 分布式 / 跨 .NET-Python）与一套与 LLM provider 无关的 model/tool/memory 抽象；上层 autogen-agentchat 在其上封装 AssistantAgent 与 RoundRobin / Selector / Swarm / GraphFlow / Magentic-One 等 group chat 编排模式，主打”两个 agent 对话到一队专家协作”。当前已进入 maintenance mode，官方推荐新项目转向 Microsoft Agent Framework。</div>
+              
+</blockquote>
+<h2 id="设计理念--顶层架构">设计理念 / 顶层架构</h2>
+<p>AutoGen 的核心范式不是单 agent 的 ReAct 循环，而是 <strong>actor 模型 + 事件驱动消息传递</strong>——agent 是订阅 topic、处理 typed message 的独立单元，多智能体协作是这套消息系统的自然产物。设计取舍：</p>
+<ul>
+<li><strong>分层、可在不同抽象层介入</strong>（README:179）：<code>autogen-core</code>（消息、runtime、底层抽象）→ <code>autogen-agentchat</code>（opinionated 高层 API，常见多 agent 模式）→ <code>autogen-ext</code>（OpenAI/Azure client、code executor 等一/三方扩展）。agentchat 仅依赖 core（<code>autogen-agentchat/pyproject.toml</code>）。</li>
+<li><strong>Agent = 消息处理器</strong>：底层 <code>Agent</code> 是 Protocol，<code>BaseAgent</code>/<code>RoutedAgent</code> 用 <code>@message_handler</code>/<code>@event</code>/<code>@rpc</code> 装饰器把方法注册为按消息类型分发的 handler（<code>autogen-core/src/autogen_core/_routed_agent.py:415</code>）。runtime 负责投递。</li>
+<li><strong>两种通信原语</strong>：<code>send_message</code>（点对点 RPC，有返回值）与 <code>publish_message</code>（按 <code>TopicId</code> 广播 pub/sub，无返回）（<code>autogen-core/src/autogen_core/_agent_runtime.py:22,50</code>）。group chat 正是建立在 pub/sub + topic 订阅之上。</li>
+<li><strong>Component 配置系统</strong>：几乎所有抽象（agent、team、model client、tool、termination、memory、model_context）都继承 <code>Component</code>，支持 <code>dump_component()</code>/<code>load_component()</code> 声明式序列化（用于 AutoGen Studio 等无代码工具）。</li>
+<li><strong>入口 API</strong>：<code>from autogen_agentchat.agents import AssistantAgent</code>；<code>await agent.run(task=...)</code> 返回 <code>TaskResult</code>，<code>run_stream(...)</code> 返回异步事件流。</li>
+</ul>
+<p>最小示例（取自 README:51）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> asyncio</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> autogen_agentchat.agents </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> AssistantAgent</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> autogen_ext.models.openai </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> OpenAIChatCompletionClient</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">() -> </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    model_client </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OpenAIChatCompletionClient(</span><span style="color:#FFAB70">model</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"gpt-4.1"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    agent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> AssistantAgent(</span><span style="color:#9ECBFF">"assistant"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">model_client</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">model_client)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> agent.run(</span><span style="color:#FFAB70">task</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Say Hello World!"</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> model_client.close()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())</span></span></code></pre>
+<p>多 agent 团队（RoundRobin + 终止条件，AgentChat 典型形态）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> autogen_agentchat.agents </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> AssistantAgent</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> autogen_agentchat.teams </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> RoundRobinGroupChat</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> autogen_agentchat.conditions </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> TextMentionTermination</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">team </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> RoundRobinGroupChat(</span></span>
+<span class="line"><span style="color:#E1E4E8">    [writer, critic],                              </span><span style="color:#6A737D"># 一组 ChatAgent</span></span>
+<span class="line"><span style="color:#FFAB70">    termination_condition</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">TextMentionTermination(</span><span style="color:#9ECBFF">"APPROVE"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#FFAB70">    max_turns</span><span style="color:#F97583">=</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">result </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> team.run(</span><span style="color:#FFAB70">task</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"Write a short poem."</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h2 id="组件实现横向逐项">组件实现（横向逐项）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>实现方式</th><th>关键抽象 / 文件</th></tr></thead><tbody><tr><td><a class="wikilink" href="/components/reasoning-loop/">推理循环/范式</a></td><td>双层：①底层是 actor 事件循环（runtime 投递消息→<code>@message_handler</code> 分发）；②<code>AssistantAgent</code> 提供 ReAct 式工具循环：LLM→若返回 <code>FunctionCall</code> 则执行→结果回灌→再次推理，受 <code>max_tool_iterations</code>(默认 1)约束；末轮可 <code>reflect_on_tool_use</code> 再推理或直接 summarize</td><td><code>_assistant_agent.py:1118</code> (<code>_process_model_result</code>，内含 <code>for loop_iteration in range(max_tool_iterations)</code> @1149), <code>_assistant_agent.py:1056</code> (<code>_call_llm</code>)</td></tr><tr><td><a class="wikilink" href="/components/planning/">规划/任务分解</a></td><td>内核无通用 planner；规划由 LLM 隐式完成。显式规划见 <strong>Magentic-One</strong> orchestrator：先建 task ledger（facts + plan 两段 prompt 推理），再用 progress ledger 驱动外/内双层循环</td><td><code>_magentic_one/_magentic_one_orchestrator.py:157</code> (建 ledger), <code>:107</code>/<code>:116</code> (facts/plan/progress prompt), <code>_magentic_one/_prompts.py</code></td></tr><tr><td><a class="wikilink" href="/components/memory/">记忆(短/长/向量)</a></td><td>短期=<code>ChatCompletionContext</code>（消息历史）；长期=<code>Memory</code> 抽象基类（<code>query</code>/<code>add</code>/<code>update_context</code> 在推理前把检索内容注入 context），内置 <code>ListMemory</code>；向量/语义检索由 <code>autogen-ext</code>（如 ChromaDB）实现，core 内 N/A</td><td><code>autogen-core/src/autogen_core/memory/_base_memory.py:60</code>, <code>memory/_list_memory.py</code>, agent 侧注入 <code>_assistant_agent.py:1027</code> (<code>_update_model_context_with_memory</code>)</td></tr><tr><td><a class="wikilink" href="/components/tool-use/">工具调用</a></td><td><code>Tool</code> Protocol + <code>BaseTool</code>（pydantic args schema）；<code>FunctionTool</code> 用 <code>inspect</code> 从函数签名+docstring 自动生成 schema（<code>args_base_model_from_signature</code>）；原生 function calling，工具经 <code>Workbench</code> 暴露给 LLM；支持 MCP（<code>McpWorkbench</code>）与 <code>AgentTool</code>（把 agent 当工具）；并行执行用 <code>asyncio.gather</code></td><td><code>autogen-core/src/autogen_core/tools/_base.py:96</code> (<code>BaseTool</code>), <code>tools/_function_tool.py:30,100</code>, 执行 <code>_assistant_agent.py:1196</code> (<code>_execute_tool_calls</code>) / <code>:1536</code> (<code>_execute_tool_call</code>)</td></tr><tr><td><a class="wikilink" href="/components/model-abstraction/">模型抽象</a></td><td><code>ChatCompletionClient</code> 抽象基类定义 <code>create</code>/<code>create_stream</code>/<code>model_info</code>（<code>ModelInfo</code> TypedDict 描述 vision/function-calling/family 等能力）；统一 <code>LLMMessage</code>（System/User/Assistant/FunctionExecutionResult）与 <code>CreateResult</code>；具体 OpenAI/Azure/Anthropic 等 client 在 <code>autogen-ext</code></td><td><code>autogen-core/src/autogen_core/models/_model_client.py:209</code> (<code>ChatCompletionClient</code>), <code>:164</code> (<code>ModelInfo</code>), <code>models/_types.py</code> (LLMMessage/CreateResult)</td></tr><tr><td><a class="wikilink" href="/components/multi-agent-orchestration/">多智能体编排</a></td><td>核心强项。<code>BaseGroupChat</code>(Team) + <code>BaseGroupChatManager</code>：manager 通过 pub/sub 选下一发言者（<code>select_speaker</code>），participant 经 <code>ChatAgentContainer</code> 包成 runtime agent；五种内置模式：RoundRobin / Selector(LLM 选人) / Swarm(handoff 驱动) / GraphFlow(DiGraph 显式拓扑) / Magentic-One(ledger 编排)</td><td><code>_group_chat/_base_group_chat_manager.py:25,306</code> (<code>select_speaker</code>；<code>_transition_to_next_speakers</code> @172), <code>_round_robin_group_chat.py:72</code>, <code>_selector_group_chat.py:152,232</code>, <code>_swarm_group_chat.py:82</code>, <code>_graph/_digraph_group_chat.py:309,458</code></td></tr><tr><td><a class="wikilink" href="/components/context-engineering/">上下文工程</a></td><td><code>ChatCompletionContext</code> 抽象管理喂给 LLM 的消息窗口；多策略实现：<code>UnboundedChatCompletionContext</code>、<code>BufferedChatCompletionContext</code>(取最近 N)、<code>HeadAndTailChatCompletionContext</code>、<code>TokenLimitedChatCompletionContext</code>；<code>system_message</code> + memory 注入 + <code>_get_compatible_context</code>(按 model_info 去图像)</td><td><code>autogen-core/src/autogen_core/model_context/_chat_completion_context.py:10</code>, <code>_buffered_chat_completion_context.py</code>, <code>_token_limited_chat_completion_context.py</code>, <code>_assistant_agent.py</code> (<code>_get_compatible_context</code>)</td></tr><tr><td><a class="wikilink" href="/components/skills-plugins/">技能/插件</a></td><td>无独立”skill/插件”系统；扩展性靠 ①<code>Component</code> 声明式组件 + <code>autogen-ext</code> 包生态（model client、code executor、tools/MCP）；②自定义 <code>BaseChatAgent</code>/<code>BaseTool</code>/<code>Workbench</code> 子类。无 Claude-Code 式 SKILL.md / slash command 概念</td><td><code>autogen-core/src/autogen_core/_component_config.py</code>, <code>autogen-ext</code>(包级扩展), <code>tools/_workbench.py</code></td></tr><tr><td><a class="wikilink" href="/components/observability-eval/">可观测/评估</a></td><td>runtime 内建 <strong>OpenTelemetry</strong> tracing（<code>TraceHelper</code>，可经 <code>tracer_provider</code> 注入，<code>AUTOGEN_DISABLE_RUNTIME_TRACING</code> 关闭）；结构化事件流（每步 <code>ToolCallRequestEvent</code>/<code>ThoughtEvent</code> 等）+ <code>EVENT_LOGGER_NAME</code>/<code>TRACE_LOGGER_NAME</code> 日志；评估工具 <strong>AGBench</strong>(<code>python/packages/agbench</code>)</td><td><code>autogen-core/src/autogen_core/_single_threaded_agent_runtime.py:256</code> (TraceHelper), <code>_telemetry/</code>, <code>autogen-agentchat/messages.py</code>(事件类型), <code>python/packages/agbench/</code></td></tr><tr><td><a class="wikilink" href="/components/runtime-execution/">运行时/部署</a></td><td><code>AgentRuntime</code> Protocol 多实现：<code>SingleThreadedAgentRuntime</code>(单进程异步事件队列)；分布式 gRPC worker/host runtime（<code>autogen-ext</code>，跨 .NET/Python，见 protos/）；agent 经 <code>register_factory</code> 惰性实例化；code executor 经 <code>autogen-ext</code>(Docker/本地)沙箱执行</td><td><code>autogen-core/src/autogen_core/_single_threaded_agent_runtime.py:149</code>, <code>_agent_runtime.py:75</code> (<code>register_factory</code>), <code>_base_agent.py:60</code>, <code>protos/</code> (gRPC)</td></tr><tr><td><a class="wikilink" href="/components/human-in-the-loop-governance/">人在环/治理</a></td><td><code>UserProxyAgent</code> 把人类作为 agent 接入：<code>on_messages</code> 时调用可注入的 <code>input_func</code>(同步/异步均可)向人取输入，并发 <code>UserInputRequestedEvent</code>；group chat 中作为普通 participant 参与轮转；<code>Handoff</code>/<code>HandoffTermination</code> 可把控制权交回人</td><td><code>autogen-agentchat/src/autogen_agentchat/agents/_user_proxy_agent.py:37,160,210</code>, <code>messages.py</code> (<code>UserInputRequestedEvent</code> @502), <code>conditions/_terminations.py:313</code> (<code>HandoffTermination</code>)</td></tr><tr><td><a class="wikilink" href="/components/state-persistence/">状态/持久化</a></td><td>全链路 <code>save_state()</code>/<code>load_state()</code> → <code>Mapping</code>：agent、<code>ChatCompletionContext</code>、group chat manager(各自 ManagerState) 与 Team(<code>TeamState</code> 聚合各 agent state)均可序列化；<code>CancellationToken</code> 控制中断</td><td><code>autogen-core/src/autogen_core/model_context/_chat_completion_context.py:66,69</code>, <code>_group_chat/_base_group_chat.py:748,798</code> (Team save/load), <code>_swarm_group_chat.py:100,108</code>, <code>autogen-agentchat/state/</code></td></tr></tbody></table>
+<h2 id="设计权衡与特性">设计权衡与特性</h2>
+<ul>
+<li><strong>actor/事件驱动 vs 命令式编排</strong>：与多数”主循环 + 工具列表”的 single-agent 框架不同，AutoGen 把多 agent 协作建模为消息传递系统。优点是天然支持并发、分布式、跨语言（.NET ↔ Python via gRPC + protobuf）；代价是心智模型更重——理解 topic/subscription/runtime 才能玩转底层 core。</li>
+<li><strong>双层 API 的清晰分工</strong>：<code>autogen-core</code> 给追求控制力的用户（自定义 runtime、消息类型），<code>autogen-agentchat</code> 给要快速搭多 agent 团队的用户。多数应用只碰 agentchat 层，从 v0.2 升级者也最熟悉它。</li>
+<li><strong>编排模式齐全</strong>：RoundRobin（确定性轮转）、Selector（LLM 动态选人）、Swarm（handoff/交接驱动，OpenAI Swarm 风格）、GraphFlow（DiGraph 显式工作流，支持条件边/并行/循环）、Magentic-One（task+progress ledger 的通用 orchestrator，可跑 web/代码任务）——覆盖从静态流水线到自主编排的谱系。</li>
+<li><strong>Component 声明式序列化</strong>：几乎所有对象可 dump/load 成配置，是 AutoGen Studio 无代码 GUI 的基础，也利于 team/agent 的存取与复现。</li>
+<li><strong>可观测性是一等公民</strong>：runtime 原生埋 OpenTelemetry，外加细粒度结构化事件流（thought / tool-call / memory-query 等），调试多 agent 交互比纯日志清晰。</li>
+<li><strong>License 分裂（注意）</strong>：仓库根 <code>LICENSE</code> 是 <strong>CC BY 4.0</strong>（面向文档/内容），而各 Python 包的 <code>pyproject.toml</code> 与 <code>LICENSE-CODE</code> 声明 <strong>MIT</strong>（面向代码）。引用时应以 MIT 视代码许可。</li>
+<li><strong>Maintenance mode（重要）</strong>：README 顶部明确 AutoGen 已进入维护模式，不再加新功能，社区管理；官方建议新项目用 Microsoft Agent Framework（MAF），并提供迁移指南。学习其架构仍有价值，但生产选型需权衡。</li>
+</ul>
+<h2 id="关联">关联</h2>
+<ul>
+<li><a class="wikilink" href="/concepts/component-taxonomy/">component-taxonomy</a> · <a class="wikilink" href="/concepts/single-vs-multi-agent/">single-vs-multi-agent</a> · <a class="wikilink" href="/components/multi-agent-orchestration/">multi-agent-orchestration</a></li>
+<li>同范式（multi-agent 编排）：<a class="wikilink" href="/frameworks/connectonion/">connectonion</a>（对比：单 agent + 电池/平台） · 源码：<code>agents-example/autogen/</code></li>
+</ul></div></article></main><footer class="site-footer"><div class="wrap cols"><div>Agent Design Atlas: 从源码级理解Agent框架</div><div class="mono"></div></div></footer><script>
+      function initNav() {
+        const tg = document.getElementById('navToggle');
+        const hdr = document.getElementById('siteHeader');
+        if (!tg || !hdr || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const open = hdr.classList.toggle('open');
+          tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => { hdr.classList.remove('open'); tg.setAttribute('aria-expanded', 'false'); }));
+      }
+      function initThemeToggle() {
+        const tg = document.getElementById('themeToggle');
+        if (!tg || tg.dataset.bound) return;
+        tg.dataset.bound = '1';
+        tg.addEventListener('click', () => {
+          const el = document.documentElement;
+          const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+          el.classList.add('theme-anim'); el.dataset.theme = next; localStorage.setItem('theme', next); clearTimeout(window.__themeT); window.__themeT = setTimeout(function () { el.classList.remove('theme-anim'); }, 600);
+        });
+      }
+      function initReveal() {
+        const els = document.querySelectorAll('.reveal-on .axis, .reveal-on .block, .reveal-on .card, .reveal-on .mini-mx, .reveal-on .path li');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((ents) => {
+          for (const e of ents) {
+            if (!e.isIntersecting) continue;
+            const el = e.target;
+            const i = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+            el.style.transitionDelay = Math.min(i, 6) * 55 + 'ms';
+            el.classList.add('in'); io.unobserve(el);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+      function initMatrix() {
+        const mx = document.querySelector('.matrix');
+        if (!mx) return;
+        const q = document.getElementById('q'), lang = document.getElementById('lang'), para = document.getElementById('para'), count = document.getElementById('count');
+        const rows = Array.from(mx.querySelectorAll('tbody tr'));
+        const heads = Array.from(mx.querySelectorAll('thead th.colh'));
+        function apply() {
+          const qq = (q && q.value || '').trim().toLowerCase(), ll = (lang && lang.value) || '', pp = (para && para.value) || '';
+          let n = 0;
+          for (const r of rows) {
+            const ok = (!qq || r.dataset.name.toLowerCase().includes(qq)) && (!ll || r.dataset.lang === ll) && (!pp || r.dataset.paradigm.split(' ').includes(pp));
+            r.style.display = ok ? '' : 'none'; if (ok) n++;
+          }
+          if (count) count.textContent = n + ' 个框架';
+        }
+        [q, lang, para].forEach((el) => el && el.addEventListener('input', apply)); apply();
+        const detail = document.getElementById('mxDetail');
+        function clearHi() { mx.querySelectorAll('.col-hi,.row-hi').forEach((e) => e.classList.remove('col-hi', 'row-hi')); }
+        mx.addEventListener('mouseover', (ev) => {
+          const td = ev.target.closest('td.cell'); if (!td) return;
+          clearHi();
+          const tr = td.parentElement;
+          const idx = [].indexOf.call(tr.children, td);
+          tr.querySelectorAll('.cell').forEach((c) => c.classList.add('row-hi'));
+          const rh = tr.querySelector('.rowh'); if (rh) rh.classList.add('row-hi');
+          rows.forEach((r) => { const c = r.children[idx]; if (c && c.classList && c.classList.contains('cell')) c.classList.add('col-hi'); });
+          if (heads[idx - 1]) heads[idx - 1].classList.add('col-hi');
+          if (detail) {
+            detail.style.setProperty('--h', td.dataset.h || '40');
+            detail.querySelector('.d-fw').textContent = td.dataset.fw || '';
+            detail.querySelector('.d-comp').textContent = td.dataset.comp || '';
+            detail.querySelector('.d-impl').textContent = td.dataset.impl || 'N/A';
+          }
+        });
+        mx.addEventListener('mouseleave', clearHi);
+        mx.addEventListener('click', (ev) => { const td = ev.target.closest('td.cell'); if (td && td.dataset.href) location.href = td.dataset.href; });
+      }
+      function initCourse() {
+        const KEY = 'course-progress';
+        const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+        const save = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+
+        const ch = document.querySelector('[data-chapter]');
+        if (ch && !ch.dataset.bound) {
+          ch.dataset.bound = '1';
+          const slug = ch.dataset.chapter;
+
+          const readBarFill = () => {
+            const el = document.getElementById('readBar');
+            if (!el) return;
+            const fill = el.tagName === 'I' ? el : (el.querySelector('i') || el);
+            const h = document.documentElement;
+            fill.style.transform = 'scaleX(' + Math.min(1, h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+          };
+          if (!window.__courseScrollBound) {
+            window.__courseScrollBound = true;
+            document.addEventListener('scroll', readBarFill, { passive: true });
+          }
+          readBarFill();
+
+          ch.querySelectorAll('[data-quiz]').forEach((qz) => {
+            const btn = qz.querySelector('.quiz-check');
+            const result = qz.querySelector('.quiz-result');
+            if (!btn) return;
+            btn.hidden = false;
+            btn.addEventListener('click', () => {
+              let ok = true, answered = false;
+              qz.querySelectorAll('.quiz-opt').forEach((o) => {
+                const input = o.querySelector('input');
+                o.classList.remove('is-right', 'is-wrong');
+                const correct = input.dataset.correct === '1';
+                if (input.checked) answered = true;
+                if (input.checked && correct) o.classList.add('is-right');
+                if (input.checked && !correct) { o.classList.add('is-wrong'); ok = false; }
+                if (!input.checked && correct) ok = false;
+              });
+              if (!answered) { result.textContent = '请先选择答案'; result.classList.remove('ok'); return; }
+              result.textContent = ok ? '✓ 回答正确！' : '✗ 再想想——展开下方解析看看哪里理解偏了';
+              result.classList.toggle('ok', ok);
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].quiz = d[slug].quiz || {};
+              d[slug].quiz[qz.dataset.key] = ok;
+              save(d);
+            });
+          });
+
+          ch.querySelectorAll('.code-lab').forEach((fig) => {
+            const btn = fig.querySelector('.cl-copy');
+            const pre = fig.querySelector('pre');
+            if (btn && pre) {
+              btn.hidden = false;
+              btn.addEventListener('click', async () => {
+                try {
+                  await navigator.clipboard.writeText(pre.textContent);
+                  btn.textContent = '已复制'; setTimeout(() => (btn.textContent = '复制'), 1200);
+                } catch {}
+              });
+            }
+            const added = (fig.dataset.added || '').split(',').filter(Boolean);
+            if (added.length && pre) {
+              const lines = pre.querySelectorAll('.line');
+              for (const range of added) {
+                const [a, b] = range.split('-').map(Number);
+                for (let i = a; i <= (b || a); i++) if (lines[i - 1]) lines[i - 1].classList.add('diff-add');
+              }
+            }
+          });
+
+          const done = document.getElementById('chapterDone');
+          if (done && !done.dataset.bound) {
+            done.dataset.bound = '1';
+            const refresh = () => {
+              const isDone = !!load()[slug]?.done;
+              done.textContent = isDone ? '✓ 已完成本章' : '标记完成本章';
+              done.classList.toggle('is-done', isDone);
+            };
+            done.addEventListener('click', () => {
+              const d = load();
+              d[slug] = d[slug] || {}; d[slug].done = !d[slug].done;
+              save(d); refresh();
+            });
+            refresh();
+          }
+        }
+
+        const list = document.querySelector('[data-course-list]');
+        if (list && !list.dataset.bound) {
+          list.dataset.bound = '1';
+          const d = load();
+          let n = 0;
+          const cards = list.querySelectorAll('[data-course-card]');
+          cards.forEach((card) => { if (d[card.dataset.courseCard]?.done) { card.classList.add('is-done'); n++; } });
+          const ring = document.querySelector('[data-progress-ring]');
+          if (ring && cards.length) {
+            const pct = Math.round((n / cards.length) * 100);
+            ring.style.setProperty('--pct', pct);
+            const label = ring.querySelector('.ring-num');
+            if (label) label.textContent = pct + '%';
+          }
+        }
+      }
+      function boot() { initNav(); initThemeToggle(); initReveal(); initMatrix(); initCourse(); }
+      document.addEventListener('ada:gate-injected', () => {
+        const ch = document.querySelector('[data-chapter]');
+        if (ch) delete ch.dataset.bound; // 注入的新正文需要重新绑定 quiz/code-lab
+        initCourse();
+      });
+      document.addEventListener('astro:page-load', boot);
+    </script></body></html>
